@@ -78,10 +78,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 100%;
 }
 .quick-order-container {
     overflow: hidden;
-    width: 100%;
+    width: calc(100% - 60px); /* Adjust to fit the arrows */
     display: flex;
     justify-content: center;
 }
@@ -118,9 +119,9 @@
     background-color: #6F4E37;
     color: white;
     border: none;
-    padding: 10px;
+    padding: 5px; /* Adjusted for smaller arrows */
     cursor: pointer;
-    font-size: 18px;
+    font-size: 14px; /* Adjusted for smaller arrows */
     border-radius: 50%;
     z-index: 1;
     position: absolute;
@@ -128,10 +129,10 @@
     transform: translateY(-50%);
 }
 .left-arrow {
-    left: -30px; /* Adjusted to be outside the container */
+    left: 0; /* Adjusted to be within the container */
 }
 .right-arrow {
-    right: -30px; /* Adjusted to be outside the container */
+    right: 0; /* Adjusted to be within the container */
 }
 .menu-section {
     display: grid;
