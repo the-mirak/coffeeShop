@@ -73,17 +73,31 @@
     margin-bottom: 20px;
     color: #4A3E3E;
 }
-.quick-order-container {
+.quick-order-wrapper {
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
+}
+.quick-order-container {
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 .quick-order {
     display: flex;
+    gap: 10px;
     overflow-x: auto;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    gap: 10px;
+}
+.quick-order::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar */
+}
+.quick-order {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 .quick-order-item {
     min-width: 200px;
@@ -101,9 +115,6 @@
     margin-bottom: 15px;
 }
 .scroll-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     background-color: #6F4E37;
     color: white;
     border: none;
@@ -112,12 +123,15 @@
     font-size: 18px;
     border-radius: 50%;
     z-index: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 .left-arrow {
-    left: 0;
+    left: -30px; /* Adjusted to be outside the container */
 }
 .right-arrow {
-    right: 0;
+    right: -30px; /* Adjusted to be outside the container */
 }
 .menu-section {
     display: grid;
@@ -200,7 +214,6 @@
     gap: 20px;
 }
 
-
 .contact-form {
     display: flex;
     flex-direction: column;
@@ -259,4 +272,3 @@
 .contact-details p {
     margin-bottom: 10px;
 }
-
