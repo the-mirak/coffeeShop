@@ -73,13 +73,20 @@
     margin-bottom: 20px;
     color: #4A3E3E;
 }
+.quick-order-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 .quick-order {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 30px;
-    margin-bottom: 50px;
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
 }
 .quick-order-item {
+    min-width: 200px;
     background-color: #F9F1E7;
     padding: 20px;
     border-radius: 8px;
@@ -92,6 +99,25 @@
 .quick-order-text {
     font-size: 18px;
     margin-bottom: 15px;
+}
+.scroll-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #6F4E37;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%;
+    z-index: 1;
+}
+.left-arrow {
+    left: 0;
+}
+.right-arrow {
+    right: 0;
 }
 .menu-section {
     display: grid;
