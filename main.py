@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, Request, Form, UploadFile, File
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 import uuid
 import logging
 from decimal import Decimal
+import random
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -37,34 +38,45 @@ class Product(BaseModel):
     image_url: str = None
     type: str
 
+# Home page
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    response = table.scan()
+    products = response.get('Items', [])
+    # Select 10 random products for quick order strip
+    quick_order_products = random.sample(products, min(len(products), 10))
+    return templates.TemplateResponse("index.html", {"request": request, "quick_order_products": quick_order_products})
 
+# Menu page
 @app.get("/menu", response_class=HTMLResponse)
 async def menu(request: Request):
     response = table.scan()
     products = response.get('Items', [])
     return templates.TemplateResponse("menu.html", {"request": request, "products": products})
 
+# About page
 @app.get("/about", response_class=HTMLResponse)
 async def about(request: Request):
     return templates.TemplateResponse("about.html", {"request": request})
 
+# Contact page
 @app.get("/contact", response_class=HTMLResponse)
 async def contact(request: Request):
     return templates.TemplateResponse("contact.html", {"request": request})
 
+# Admin dashboard
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_dashboard(request: Request):
     response = table.scan()
     products = response.get('Items', [])
     return templates.TemplateResponse("admin.html", {"request": request, "products": products})
 
+# Add product page
 @app.get("/add", response_class=HTMLResponse)
 async def add_product_page(request: Request):
     return templates.TemplateResponse("add_product.html", {"request": request})
 
+# Edit product page
 @app.get("/edit/{product_id}", response_class=HTMLResponse)
 async def edit_product_page(request: Request, product_id: str):
     try:
@@ -74,14 +86,16 @@ async def edit_product_page(request: Request, product_id: str):
         raise HTTPException(status_code=404, detail="Product not found")
     return templates.TemplateResponse("edit_product.html", {"request": request, "product": product})
 
+# Retrieve all products
 @app.get("/products", response_model=List[Product])
 async def get_products():
     response = table.scan()
     products = response.get('Items', [])
     return products
 
-@app.post("/products", response_model=Product)
-async def create_product(name: str = Form(...), description: str = Form(...), price: float = Form(...), type: str = Form(...), image: UploadFile = File(...)):
+# Create a new product
+@app.post("/products")
+async def create_product(request: Request, name: str = Form(...), description: str = Form(...), price: float = Form(...), type: str = Form(...), image: UploadFile = File(...)):
     logger.info("Received request to create product with data: name=%s, description=%s, price=%f, type=%s", name, description, price, type)
     
     try:
@@ -106,15 +120,16 @@ async def create_product(name: str = Form(...), description: str = Form(...), pr
         table.put_item(Item=item)
 
         logger.info("Successfully created product: %s", item)
-        return item
+        return RedirectResponse(url="/admin?msg=Product added successfully", status_code=303)
 
     except Exception as e:
         logger.error("Error creating product: %s", str(e))
         raise HTTPException(status_code=400, detail="Error creating product")
 
-@app.post("/edit/{product_id}", response_model=Product)
-async def update_product(product_id: str, name: str = Form(...), description: str = Form(...), price: float = Form(...), type: str = Form(...), image: UploadFile = File(None)):
-    update_expression = "SET #n = :name, description = :description, price = :price, type = :type"
+# Update an existing product
+@app.post("/edit/{product_id}")
+async def update_product(request: Request, product_id: str, name: str = Form(...), description: str = Form(...), price: float = Form(...), type: str = Form(...), image: UploadFile = File(None)):
+    update_expression = "SET #n = :name, description = :description, price = :price, #t = :type"
     expression_attribute_values = {
         ":name": name,
         ":description": description,
@@ -122,7 +137,8 @@ async def update_product(product_id: str, name: str = Form(...), description: st
         ":type": type
     }
     expression_attribute_names = {
-        "#n": "name"
+        "#n": "name",
+        "#t": "type"
     }
     
     if image:
@@ -145,17 +161,18 @@ async def update_product(product_id: str, name: str = Form(...), description: st
         ExpressionAttributeNames=expression_attribute_names
     )
     
-    response = table.get_item(Key={'product_id': product_id})
-    return response['Item']
+    return RedirectResponse(url="/admin?msg=Product updated successfully", status_code=303)
 
-@app.post("/delete/{product_id}", response_model=dict)
-async def delete_product(product_id: str):
+# Delete a product
+@app.post("/delete/{product_id}")
+async def delete_product(request: Request, product_id: str):
     try:
         table.delete_item(Key={'product_id': product_id})
-        return {"message": "Product deleted successfully"}
+        return RedirectResponse(url="/admin?msg=Product deleted successfully", status_code=303)
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error deleting product")
 
+# Health check endpoint
 @app.get("/healthz", response_model=dict)
 async def health_check():
     return {"status": "healthy"}
