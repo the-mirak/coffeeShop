@@ -38,11 +38,25 @@ class Product(BaseModel):
     image_url: str = None
     type: str
 
+# Generate pre-signed URL
+def create_presigned_url(bucket_name, object_name, expiration=3600):
+    try:
+        response = s3_client.generate_presigned_url('get_object',
+                                                    Params={'Bucket': bucket_name,
+                                                            'Key': object_name},
+                                                    ExpiresIn=expiration)
+    except Exception as e:
+        logger.error(e)
+        return None
+    return response
+
 # Home page
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     response = table.scan()
     products = response.get('Items', [])
+    for product in products:
+        product['image_url'] = create_presigned_url(S3_BUCKET_NAME, product['image_url'])
     # Select 10 random products for quick order strip
     quick_order_products = random.sample(products, min(len(products), 10))
     return templates.TemplateResponse("index.html", {"request": request, "quick_order_products": quick_order_products})
@@ -52,6 +66,8 @@ async def read_root(request: Request):
 async def menu(request: Request):
     response = table.scan()
     products = response.get('Items', [])
+    for product in products:
+        product['image_url'] = create_presigned_url(S3_BUCKET_NAME, product['image_url'])
     return templates.TemplateResponse("menu.html", {"request": request, "products": products})
 
 # About page
@@ -69,6 +85,8 @@ async def contact(request: Request):
 async def admin_dashboard(request: Request):
     response = table.scan()
     products = response.get('Items', [])
+    for product in products:
+        product['image_url'] = create_presigned_url(S3_BUCKET_NAME, product['image_url'])
     return templates.TemplateResponse("admin.html", {"request": request, "products": products})
 
 # Add product page
@@ -82,6 +100,7 @@ async def edit_product_page(request: Request, product_id: str):
     try:
         response = table.get_item(Key={'product_id': product_id})
         product = response['Item']
+        product['image_url'] = create_presigned_url(S3_BUCKET_NAME, product['image_url'])
     except Exception as e:
         raise HTTPException(status_code=404, detail="Product not found")
     return templates.TemplateResponse("edit_product.html", {"request": request, "product": product})
@@ -91,6 +110,8 @@ async def edit_product_page(request: Request, product_id: str):
 async def get_products():
     response = table.scan()
     products = response.get('Items', [])
+    for product in products:
+        product['image_url'] = create_presigned_url(S3_BUCKET_NAME, product['image_url'])
     return products
 
 # Create a new product
@@ -107,7 +128,7 @@ async def create_product(request: Request, name: str = Form(...), description: s
             f.write(await image.read())
 
         s3_client.upload_file(file_path, S3_BUCKET_NAME, filename)
-        image_url = f"https://{S3_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{filename}"
+        image_url = filename  # Store the filename in the database
 
         item = {
             'product_id': product_id,
@@ -149,7 +170,7 @@ async def update_product(request: Request, product_id: str, name: str = Form(...
             f.write(await image.read())
         
         s3_client.upload_file(file_path, S3_BUCKET_NAME, filename)
-        image_url = f"https://{S3_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{filename}"
+        image_url = filename  # Store the filename in the database
         
         update_expression += ", image_url = :image_url"
         expression_attribute_values[":image_url"] = image_url

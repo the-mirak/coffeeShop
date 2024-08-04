@@ -4,16 +4,31 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="/static/styles.css">
+    <script>
+        function showMessage(msg) {
+            const popup = document.createElement('div');
+            popup.className = 'popup';
+            popup.innerText = msg;
+            document.body.appendChild(popup);
+            setTimeout(() => {
+                popup.remove();
+            }, 3000);
+        }
+
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('msg')) {
+                showMessage(urlParams.get('msg'));
+            }
+        };
+    </script>
 </head>
 <body>
     <h1>Admin Dashboard</h1>
-
-    {% if request.query_params.msg %}
-    <div class="popup {{ "green" if "added" in request.query_params.msg or "updated" in request.query_params.msg else "red" }}">
-        {{ request.query_params.msg }}
+    <div class="admin-links">
+        <a href="/">Home</a> | 
+        <a href="/add">Add Product</a>
     </div>
-    {% endif %}
-
     <h2>Products</h2>
     <table>
         <tr>
