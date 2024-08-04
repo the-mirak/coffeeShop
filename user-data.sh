@@ -2,7 +2,9 @@
 
 # Update the system and install necessary packages
 yum update -y
+sleep 5
 yum install -y git python3-pip
+sleep 5
 
 # Clone the repository
 REPO_URL="https://github.com/the-mirak/coffeeShop.git"
