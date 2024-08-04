@@ -2,13 +2,11 @@
 
 # Update the system and install necessary packages
 yum update -y
-sleep 5
-yum install -y git python3 python3-pip
+yum install -y git python3-pip
 
 # Clone the repository
 REPO_URL="https://github.com/the-mirak/coffeeShop.git"
 TARGET_DIR="/home/ec2-user/coffeeShop"
-sleep 5
 git clone $REPO_URL $TARGET_DIR
 
 # Check if the clone was successful
@@ -24,41 +22,32 @@ cd $TARGET_DIR
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
 AVAILABILITY_ZONE=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone)
 
-sleep 5
-
-# Create the .env file with the environment variables
 cat <<EOF > .env
-S3_BUCKET_NAME=your-s3-bucket-name
-DYNAMODB_TABLE_NAME=your-dynamodb-table-name
-AWS_REGION=your-aws-region
-INSTANCE_ID=$INSTANCE_ID
-AVAILABILITY_ZONE=$AVAILABILITY_ZONE
+S3_BUCKET_NAME=coffeeshop-bucket-24
+DYNAMODB_TABLE_NAME=coffeeShopDB
+AWS_REGION=us-east-1
 EOF
-
-echo "Environment variables have been written to .env"
-echo "Instance ID: $INSTANCE_ID"
-echo "Availability Zone: $AVAILABILITY_ZONE"
-
-# Set correct permissions for the templates directory
-chmod -R 755 templates
 
 # Install dependencies
 pip3 install -r requirements.txt
 
-# Install gunicorn globally
+# Install gunicorn
 pip3 install gunicorn
 
-# Create a systemd service to run the Flask application
-cat <<EOF > /etc/systemd/system/coffeeshop-app.service
+# Make sure the script is executable
+chmod +x run.sh
+
+# Create a systemd service to run the FastAPI application with gunicorn
+cat <<EOF > /etc/systemd/system/coffeeShop.service
 [Unit]
-Description=CoffeeShop Flask Application
+Description=CoffeeShop FastAPI Application
 After=network.target
 
 [Service]
 Type=simple
 User=ec2-user
 WorkingDirectory=$TARGET_DIR
-ExecStart=$(which gunicorn) -b 0.0.0.0:8080 app:app
+ExecStart=/usr/local/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app -b 0.0.0.0:8000
 Restart=always
 
 [Install]
@@ -69,7 +58,7 @@ EOF
 systemctl daemon-reload
 
 # Enable the service to start on boot
-systemctl enable coffeeshop-app.service
+systemctl enable coffeeShop.service
 
-# Start the Flask application service
-systemctl start coffeeshop-app.service
+# Start the FastAPI application service
+systemctl start coffeeShop.service
