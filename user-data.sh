@@ -34,9 +34,6 @@ pip3 install -r requirements.txt
 # Install gunicorn
 pip3 install gunicorn
 
-# Make sure the script is executable
-chmod +x run.sh
-
 # Create a systemd service to run the FastAPI application with gunicorn
 cat <<EOF > /etc/systemd/system/coffeeShop.service
 [Unit]
@@ -47,7 +44,7 @@ After=network.target
 Type=simple
 User=ec2-user
 WorkingDirectory=$TARGET_DIR
-ExecStart=/usr/local/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app -b 0.0.0.0:8000
+ExecStart=/usr/local/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app -b 0.0.0.0:8080
 Restart=always
 
 [Install]
