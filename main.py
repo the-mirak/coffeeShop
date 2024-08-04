@@ -1,5 +1,5 @@
-from fastapi import FastAPI, HTTPException, Request, Form, UploadFile, File
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Depends, HTTPException, Request, Form, UploadFile, File
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -9,17 +9,7 @@ import os
 from dotenv import load_dotenv
 import uuid
 import logging
-from jinja2 import TemplateNotFound
-
-
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-# Print current working directory and templates directory
-print("Current working directory:", os.getcwd())
-print("Templates directory absolute path:", os.path.abspath("templates"))
-
+from decimal import Decimal
 
 # Load environment variables
 load_dotenv()
@@ -45,6 +35,10 @@ table = dynamodb.Table(DYNAMODB_TABLE_NAME)
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Print current working directory and templates directory
+print("Current working directory:", os.getcwd())
+print("Templates directory absolute path:", os.path.abspath("templates"))
 
 # Pydantic model for product
 class Product(BaseModel):
@@ -135,7 +129,7 @@ async def create_product(name: str = Form(...), description: str = Form(...), pr
         'product_id': product_id,
         'name': name,
         'description': description,
-        'price': price,
+        'price': Decimal(price),
         'image_url': image_url,
         'type': type
     }
@@ -149,7 +143,7 @@ async def update_product(product_id: str, name: str = Form(...), description: st
     expression_attribute_values = {
         ":name": name,
         ":description": description,
-        ":price": price,
+        ":price": Decimal(price),
         ":type": type
     }
     
