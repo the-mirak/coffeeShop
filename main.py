@@ -37,7 +37,9 @@ async def read_root(request: Request):
 
 @app.get("/menu", response_class=HTMLResponse)
 async def menu(request: Request):
-    return templates.TemplateResponse("menu.html", {"request": request})
+    response = table.scan()
+    products = response.get('Items', [])
+    return templates.TemplateResponse("menu.html", {"request": request, "products": products})
 
 @app.get("/about", response_class=HTMLResponse)
 async def about(request: Request):
@@ -49,7 +51,9 @@ async def contact(request: Request):
 
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_dashboard(request: Request):
-    return templates.TemplateResponse("admin.html", {"request": request})
+    response = table.scan()
+    products = response.get('Items', [])
+    return templates.TemplateResponse("admin.html", {"request": request, "products": products})
 
 @app.get("/add", response_class=HTMLResponse)
 async def add_product_page(request: Request):
