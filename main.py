@@ -114,12 +114,15 @@ async def create_product(name: str = Form(...), description: str = Form(...), pr
 
 @app.post("/edit/{product_id}", response_model=Product)
 async def update_product(product_id: str, name: str = Form(...), description: str = Form(...), price: float = Form(...), type: str = Form(...), image: UploadFile = File(None)):
-    update_expression = "SET name = :name, description = :description, price = :price, type = :type"
+    update_expression = "SET #n = :name, description = :description, price = :price, type = :type"
     expression_attribute_values = {
         ":name": name,
         ":description": description,
         ":price": Decimal(str(price)),  # Ensure price is stored as Decimal
         ":type": type
+    }
+    expression_attribute_names = {
+        "#n": "name"
     }
     
     if image:
@@ -138,7 +141,8 @@ async def update_product(product_id: str, name: str = Form(...), description: st
     table.update_item(
         Key={'product_id': product_id},
         UpdateExpression=update_expression,
-        ExpressionAttributeValues=expression_attribute_values
+        ExpressionAttributeValues=expression_attribute_values,
+        ExpressionAttributeNames=expression_attribute_names
     )
     
     response = table.get_item(Key={'product_id': product_id})
