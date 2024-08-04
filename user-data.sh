@@ -18,6 +18,10 @@ fi
 # Change directory to the application folder
 cd $TARGET_DIR
 
+chmod -R 755 templates
+chmod -R 755 static
+
+
 # Create a .env file with necessary environment variables
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
 AVAILABILITY_ZONE=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone)

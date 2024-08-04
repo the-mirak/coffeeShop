@@ -11,6 +11,16 @@ import uuid
 import logging
 from jinja2 import TemplateNotFound
 
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Print current working directory and templates directory
+print("Current working directory:", os.getcwd())
+print("Templates directory absolute path:", os.path.abspath("templates"))
+
+
 # Load environment variables
 load_dotenv()
 
