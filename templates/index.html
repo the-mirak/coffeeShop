@@ -13,8 +13,12 @@
             <nav class="nav">
                 <a href="/" class="nav-link">Home</a>
                 <a href="/menu" class="nav-link">Menu</a>
-                <a href="/about" class="nav-link">About Us</a>
+                <a href="/about" class="nav-link">About</a>
                 <a href="/contact" class="nav-link">Contact</a>
+                <button class="order-button">Order Online</button>
+                <div class="cart-icon">
+                    <span class="cart-count">0</span>
+                </div>
             </nav>
         </header>
 
@@ -25,7 +29,7 @@
             <div class="quick-order-wrapper">
                 <button class="scroll-arrow left-arrow" onclick="scrollLeftFunction()">&#9664;</button>
                 <div class="quick-order-container">
-                    <div class="quick-order" id="quick-order">
+                    <div class="quick-order">
                         <!-- Products will be dynamically inserted here -->
                     </div>
                 </div>
@@ -35,8 +39,37 @@
 
         <section>
             <h2 class="section-title">Our Menu</h2>
-            <div class="menu-section" id="menu-section">
-                <!-- Menu items will be dynamically inserted here -->
+            <div class="menu-section">
+                <div class="menu-category">
+                    <h3 class="menu-category-title">Coffee</h3>
+                    <div class="menu-item">
+                        <span>Espresso</span>
+                        <button class="add-button">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <span>Cappuccino</span>
+                        <button class="add-button">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <span>Latte</span>
+                        <button class="add-button">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="menu-category">
+                    <h3 class="menu-category-title">Tea</h3>
+                    <div class="menu-item">
+                        <span>Earl Grey</span>
+                        <button class="add-button">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <span>Green Tea</span>
+                        <button class="add-button">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <span>Chai Latte</span>
+                        <button class="add-button">Add to Cart</button>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -91,42 +124,6 @@
                 behavior: 'smooth'
             });
         }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/products')
-                .then(response => response.json())
-                .then(products => {
-                    const quickOrderContainer = document.getElementById('quick-order');
-                    const menuSection = document.getElementById('menu-section');
-                    quickOrderContainer.innerHTML = '';
-                    menuSection.innerHTML = '';
-
-                    products.forEach(product => {
-                        const quickOrderItem = document.createElement('div');
-                        quickOrderItem.classList.add('quick-order-item');
-                        quickOrderItem.innerHTML = `
-                            <img src="${product.image_url}" alt="${product.name}">
-                            <p class="quick-order-text">${product.name}</p>
-                            <button class="add-button">Add to Cart</button>
-                        `;
-                        quickOrderContainer.appendChild(quickOrderItem);
-
-                        const menuItem = document.createElement('div');
-                        menuItem.classList.add('menu-category');
-                        menuItem.innerHTML = `
-                            <h3 class="menu-category-title">${product.name}</h3>
-                            <img src="${product.image_url}" alt="${product.name}">
-                            <div class="menu-item">
-                                <span>${product.description}</span>
-                                <span>$${product.price}</span>
-                                <button class="add-button">Add to Cart</button>
-                            </div>
-                        `;
-                        menuSection.appendChild(menuItem);
-                    });
-                })
-                .catch(error => console.error('Error fetching products:', error));
-        });
     </script>
 </body>
 </html>
