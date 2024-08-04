@@ -1,41 +1,75 @@
 #!/bin/bash
-# Update the package index
-sudo yum update -y
 
-# Install necessary packages
-sudo yum install -y git nginx
+# Update the system and install necessary packages
+yum update -y
+sleep 5
+yum install -y git python3 python3-pip
 
-# Start and enable Nginx
-sudo systemctl start nginx
-sudo systemctl enable nginx
+# Clone the repository
+REPO_URL="https://github.com/the-mirak/coffeeShop.git"
+TARGET_DIR="/home/ec2-user/coffeeShop"
+sleep 5
+git clone $REPO_URL $TARGET_DIR
 
-# Clone the GitHub repository
-cd /home/ec2-user
-git clone https://github.com/the-mirak/coffeeShop.git
+# Check if the clone was successful
+if [ ! -d "$TARGET_DIR" ]; then
+  echo "Directory $TARGET_DIR does not exist. Git clone might have failed."
+  exit 1
+fi
 
-# Move the cloned files to the Nginx web directory
-sudo cp -r coffeeShop/* /usr/share/nginx/html/
+# Change directory to the application folder
+cd $TARGET_DIR
 
-# Set the correct permissions
-sudo chown -R nginx:nginx /usr/share/nginx/html
+# Create a .env file with necessary environment variables
+INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+AVAILABILITY_ZONE=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone)
 
-# Configure Nginx to serve the static website
-sudo tee /etc/nginx/conf.d/coffeeShop.conf <<EOL
-server {
-    listen 80;
-    server_name _;
+sleep 5
 
-    root /usr/share/nginx/html;
-    index coffee_shop.html;
+# Create the .env file with the environment variables
+cat <<EOF > .env
+S3_BUCKET_NAME=your-s3-bucket-name
+DYNAMODB_TABLE_NAME=your-dynamodb-table-name
+AWS_REGION=your-aws-region
+INSTANCE_ID=$INSTANCE_ID
+AVAILABILITY_ZONE=$AVAILABILITY_ZONE
+EOF
 
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-}
-EOL
+echo "Environment variables have been written to .env"
+echo "Instance ID: $INSTANCE_ID"
+echo "Availability Zone: $AVAILABILITY_ZONE"
 
-# Remove the default Nginx configuration file
-sudo rm /etc/nginx/conf.d/default.conf
+# Set correct permissions for the templates directory
+chmod -R 755 templates
 
-# Restart Nginx to apply the changes
-sudo systemctl restart nginx
+# Install dependencies
+pip3 install -r requirements.txt
+
+# Install gunicorn globally
+pip3 install gunicorn
+
+# Create a systemd service to run the Flask application
+cat <<EOF > /etc/systemd/system/coffeeshop-app.service
+[Unit]
+Description=CoffeeShop Flask Application
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=$TARGET_DIR
+ExecStart=$(which gunicorn) -b 0.0.0.0:8080 app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Reload systemd to apply the new service
+systemctl daemon-reload
+
+# Enable the service to start on boot
+systemctl enable coffeeshop-app.service
+
+# Start the Flask application service
+systemctl start coffeeshop-app.service
