@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product - Brew Haven</title>
+    <title>Add Product - Brew Haven Admin</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
@@ -16,9 +16,9 @@
             </nav>
         </header>
 
-        <section class="add-product-section">
+        <section>
             <h2 class="section-title">Add Product</h2>
-            <form action="/products" method="post" enctype="multipart/form-data">
+            <form action="/products" method="post" enctype="multipart/form-data" class="add-product-form">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
                 
@@ -26,26 +26,17 @@
                 <textarea id="description" name="description" required></textarea>
                 
                 <label for="price">Price:</label>
-                <input type="number" id="price" name="price" step="0.01" required>
+                <input type="number" step="0.01" id="price" name="price" required>
                 
                 <label for="type">Type:</label>
                 <input type="text" id="type" name="type" required>
                 
                 <label for="image">Image:</label>
-                <input type="file" id="image" name="image" accept="image/*" required>
+                <input type="file" id="image" name="image" required>
                 
                 <button type="submit" class="submit-button">Add Product</button>
             </form>
         </section>
-
-        <footer class="footer">
-            <div class="social-icons">
-                <span class="icon"><!-- Insert Instagram Icon --></span>
-                <span class="icon"><!-- Insert Facebook Icon --></span>
-                <span class="icon"><!-- Insert Twitter Icon --></span>
-            </div>
-            <p>© 2024 Brew Haven. All rights reserved.</p>
-        </footer>
     </div>
 </body>
 </html>

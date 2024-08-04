@@ -11,83 +11,30 @@
         <header class="header">
             <h1 class="logo">Brew Haven Admin</h1>
             <nav class="nav">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/admin" class="nav-link">Admin Dashboard</a>
+                <a href="/admin" class="nav-link">Dashboard</a>
+                <a href="/add" class="nav-link">Add Product</a>
             </nav>
         </header>
 
         <section>
-            <h2 class="section-title">Product Management</h2>
-            <a href="/add" class="button">Add Product</a>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Image</th>
-                        <th>Type</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="product-table-body">
-                    <!-- Products will be dynamically inserted here -->
-                </tbody>
-            </table>
+            <h2 class="section-title">Admin Dashboard</h2>
+            <div class="product-list">
+                {% for product in products %}
+                <div class="product-item">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image">
+                    <div class="product-info">
+                        <h3>{{ product.name }}</h3>
+                        <p>{{ product.description }}</p>
+                        <p>${{ product.price }}</p>
+                        <a href="/edit/{{ product.product_id }}" class="edit-button">Edit</a>
+                        <form action="/delete/{{ product.product_id }}" method="post" class="delete-form">
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </section>
-
-        <footer class="footer">
-            <p>© 2024 Brew Haven. All rights reserved.</p>
-        </footer>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/products')
-                .then(response => response.json())
-                .then(products => {
-                    const tableBody = document.getElementById('product-table-body');
-                    tableBody.innerHTML = '';
-
-                    products.forEach(product => {
-                        const tableRow = document.createElement('tr');
-                        tableRow.innerHTML = `
-                            <td>${product.name}</td>
-                            <td>${product.description}</td>
-                            <td>$${product.price}</td>
-                            <td><img src="${product.image_url}" alt="${product.name}" width="50"></td>
-                            <td>${product.type}</td>
-                            <td>
-                                <a href="/edit/${product.product_id}" class="button">Edit</a>
-                                <button class="button button-danger" onclick="deleteProduct('${product.product_id}')">Delete</button>
-                            </td>
-                        `;
-                        tableBody.appendChild(tableRow);
-                    });
-                })
-                .catch(error => console.error('Error fetching products:', error));
-        });
-
-        function deleteProduct(productId) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                fetch(`/delete/${productId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message === 'Product deleted successfully') {
-                        alert('Product deleted successfully');
-                        location.reload();
-                    } else {
-                        alert('Error deleting product');
-                    }
-                })
-                .catch(error => console.error('Error deleting product:', error));
-            }
-        }
-    </script>
 </body>
 </html>

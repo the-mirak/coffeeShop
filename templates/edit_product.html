@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Product - Brew Haven</title>
+    <title>Edit Product - Brew Haven Admin</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
@@ -16,9 +16,9 @@
             </nav>
         </header>
 
-        <section class="edit-product-section">
+        <section>
             <h2 class="section-title">Edit Product</h2>
-            <form action="/edit/{{ product.product_id }}" method="post" enctype="multipart/form-data">
+            <form action="/edit/{{ product.product_id }}" method="post" enctype="multipart/form-data" class="edit-product-form">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" value="{{ product.name }}" required>
                 
@@ -26,26 +26,17 @@
                 <textarea id="description" name="description" required>{{ product.description }}</textarea>
                 
                 <label for="price">Price:</label>
-                <input type="number" id="price" name="price" value="{{ product.price }}" step="0.01" required>
+                <input type="number" step="0.01" id="price" name="price" value="{{ product.price }}" required>
                 
                 <label for="type">Type:</label>
                 <input type="text" id="type" name="type" value="{{ product.type }}" required>
                 
                 <label for="image">Image:</label>
-                <input type="file" id="image" name="image" accept="image/*">
+                <input type="file" id="image" name="image">
                 
                 <button type="submit" class="submit-button">Update Product</button>
             </form>
         </section>
-
-        <footer class="footer">
-            <div class="social-icons">
-                <span class="icon"><!-- Insert Instagram Icon --></span>
-                <span class="icon"><!-- Insert Facebook Icon --></span>
-                <span class="icon"><!-- Insert Twitter Icon --></span>
-            </div>
-            <p>© 2024 Brew Haven. All rights reserved.</p>
-        </footer>
     </div>
 </body>
 </html>

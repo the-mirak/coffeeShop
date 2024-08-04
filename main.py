@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Depends, HTTPException, Request, Form, UploadFile, File
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import FastAPI, HTTPException, Request, Form, UploadFile, File
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -8,13 +8,22 @@ import boto3
 import os
 from dotenv import load_dotenv
 import uuid
+import logging
+from jinja2 import TemplateNotFound
 
+# Load environment variables
 load_dotenv()
 
+# Initialize FastAPI app
 app = FastAPI()
+
+# Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Setup Jinja2 templates
 templates = Jinja2Templates(directory="templates")
 
+# Setup AWS services
 S3_BUCKET_NAME = os.getenv('S3_BUCKET_NAME')
 DYNAMODB_TABLE_NAME = os.getenv('DYNAMODB_TABLE_NAME')
 AWS_REGION = os.getenv('AWS_REGION')
@@ -23,6 +32,11 @@ dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION)
 s3_client = boto3.client('s3', region_name=AWS_REGION)
 table = dynamodb.Table(DYNAMODB_TABLE_NAME)
 
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Pydantic model for product
 class Product(BaseModel):
     product_id: str
     name: str
@@ -33,40 +47,59 @@ class Product(BaseModel):
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    try:
+        return templates.TemplateResponse("index.html", {"request": request})
+    except TemplateNotFound:
+        raise HTTPException(status_code=404, detail="Template not found: index.html")
 
 @app.get("/menu", response_class=HTMLResponse)
 async def menu(request: Request):
-    response = table.scan()
-    products = response.get('Items', [])
-    return templates.TemplateResponse("menu.html", {"request": request, "products": products})
+    try:
+        response = table.scan()
+        products = response.get('Items', [])
+        return templates.TemplateResponse("menu.html", {"request": request, "products": products})
+    except TemplateNotFound:
+        raise HTTPException(status_code=404, detail="Template not found: menu.html")
 
 @app.get("/about", response_class=HTMLResponse)
 async def about(request: Request):
-    return templates.TemplateResponse("about.html", {"request": request})
+    try:
+        return templates.TemplateResponse("about.html", {"request": request})
+    except TemplateNotFound:
+        raise HTTPException(status_code=404, detail="Template not found: about.html")
 
 @app.get("/contact", response_class=HTMLResponse)
 async def contact(request: Request):
-    return templates.TemplateResponse("contact.html", {"request": request})
+    try:
+        return templates.TemplateResponse("contact.html", {"request": request})
+    except TemplateNotFound:
+        raise HTTPException(status_code=404, detail="Template not found: contact.html")
 
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_dashboard(request: Request):
-    response = table.scan()
-    products = response.get('Items', [])
-    return templates.TemplateResponse("admin.html", {"request": request, "products": products})
+    try:
+        response = table.scan()
+        products = response.get('Items', [])
+        return templates.TemplateResponse("admin.html", {"request": request, "products": products})
+    except TemplateNotFound:
+        raise HTTPException(status_code=404, detail="Template not found: admin.html")
 
 @app.get("/add", response_class=HTMLResponse)
 async def add_product_page(request: Request):
-    return templates.TemplateResponse("add_product.html", {"request": request})
+    try:
+        return templates.TemplateResponse("add_product.html", {"request": request})
+    except TemplateNotFound:
+        raise HTTPException(status_code=404, detail="Template not found: add_product.html")
 
 @app.get("/edit/{product_id}", response_class=HTMLResponse)
 async def edit_product_page(request: Request, product_id: str):
     try:
         response = table.get_item(Key={'product_id': product_id})
         product = response['Item']
+        return templates.TemplateResponse("edit_product.html", {"request": request, "product": product})
     except Exception as e:
+        logger.error(f"Error fetching product {product_id}: {e}")
         raise HTTPException(status_code=404, detail="Product not found")
-    return templates.TemplateResponse("edit_product.html", {"request": request, "product": product})
 
 @app.get("/products", response_model=List[Product])
 async def get_products():
@@ -79,6 +112,8 @@ async def create_product(name: str = Form(...), description: str = Form(...), pr
     product_id = str(uuid.uuid4())
     filename = f"{product_id}_{image.filename}"
     file_path = f"/tmp/{filename}"
+
+    os.makedirs("/tmp", exist_ok=True)
     
     with open(file_path, "wb") as f:
         f.write(await image.read())
@@ -111,6 +146,8 @@ async def update_product(product_id: str, name: str = Form(...), description: st
     if image:
         filename = f"{product_id}_{image.filename}"
         file_path = f"/tmp/{filename}"
+
+        os.makedirs("/tmp", exist_ok=True)
         
         with open(file_path, "wb") as f:
             f.write(await image.read())
@@ -136,6 +173,7 @@ async def delete_product(product_id: str):
         table.delete_item(Key={'product_id': product_id})
         return {"message": "Product deleted successfully"}
     except Exception as e:
+        logger.error(f"Error deleting product {product_id}: {e}")
         raise HTTPException(status_code=500, detail="Error deleting product")
 
 @app.get("/healthz", response_model=dict)
