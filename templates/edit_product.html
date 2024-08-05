@@ -18,7 +18,7 @@
 
         <section>
             <h2 class="section-title">Edit Product</h2>
-            <form action="/edit/{{ product.product_id }}" method="post" enctype="multipart/form-data" class="edit-product-form">
+            <form action="/edit/{{ product.product_id }}" method="post" enctype="multipart/form-data" class="edit-product-form" onsubmit="return handleFormSubmit()">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" value="{{ product.name }}" required>
                 
@@ -29,8 +29,12 @@
                 <input type="number" step="0.01" id="price" name="price" value="{{ product.price }}" required>
                 
                 <label for="type">Type:</label>
-                <input type="text" id="type" name="type" value="{{ product.type }}" required>
-                
+                <select id="type" name="type" required>
+                    <option value="Beverage" {% if product.type == 'Beverage' %}selected{% endif %}>Beverage</option>
+                    <option value="Snack" {% if product.type == 'Snack' %}selected{% endif %}>Snack</option>
+                    <option value="Dessert" {% if product.type == 'Dessert' %}selected{% endif %}>Dessert</option>
+                </select>
+
                 <label for="image">Image:</label>
                 <input type="file" id="image" name="image">
                 
@@ -38,5 +42,14 @@
             </form>
         </section>
     </div>
+    <script>
+        function handleFormSubmit() {
+            const imageInput = document.getElementById('image');
+            if (!imageInput.value) {
+                imageInput.disabled = true;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>

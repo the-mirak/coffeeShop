@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu - Brew Haven</title>
+    <title>Brew Haven Menu</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
@@ -22,18 +22,41 @@
             </nav>
         </header>
 
-        <section class="hero-section"></section>
+        <section>
+            <h2 class="section-title">Filter by Type</h2>
+            <div class="filter-section">
+                <div class="filter-item" onclick="filterProducts('All')">
+                    <img src="images/all.png" alt="All" class="filter-image">
+                    <p class="filter-name">All</p>
+                </div>
+                <div class="filter-item" onclick="filterProducts('Coffee')">
+                    <img src="images/coffee.png" alt="Coffee" class="filter-image">
+                    <p class="filter-name">Coffee</p>
+                </div>
+                <div class="filter-item" onclick="filterProducts('Tea')">
+                    <img src="images/tea.png" alt="Tea" class="filter-image">
+                    <p class="filter-name">Tea</p>
+                </div>
+                <div class="filter-item" onclick="filterProducts('Dessert')">
+                    <img src="images/dessert.png" alt="Dessert" class="filter-image">
+                    <p class="filter-name">Dessert</p>
+                </div>
+                <div class="filter-item" onclick="filterProducts('Snack')">
+                    <img src="images/snack.png" alt="Snack" class="filter-image">
+                    <p class="filter-name">Snack</p>
+                </div>
+            </div>
+        </section>
 
         <section>
             <h2 class="section-title">Our Menu</h2>
-            <div class="menu-section">
+            <div class="menu-section" id="menu-section">
                 {% for product in products %}
-                <div class="menu-category">
-                    <h3 class="menu-category-title">{{ product.type }}</h3>
-                    <div class="menu-item">
-                        <span>{{ product.name }}</span>
-                        <button class="add-button">Add to Cart</button>
-                    </div>
+                <div class="menu-category" data-type="{{ product.type }}">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}" class="menu-item-image">
+                    <h3 class="menu-category-title">{{ product.name }}</h3>
+                    <p class="menu-item-price">from ${{ product.price }}</p>
+                    <p class="menu-item-description">{{ product.description }}</p>
                 </div>
                 {% endfor %}
             </div>
@@ -48,5 +71,18 @@
             <p>© 2024 Brew Haven. All rights reserved.</p>
         </footer>
     </div>
+
+    <script>
+        function filterProducts(type) {
+            const menuItems = document.querySelectorAll('.menu-category');
+            menuItems.forEach(item => {
+                if (type === 'All' || item.getAttribute('data-type') === type) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
