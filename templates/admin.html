@@ -5,9 +5,9 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="/static/styles.css">
     <script>
-        function showMessage(msg) {
+        function showMessage(msg, type) {
             const popup = document.createElement('div');
-            popup.className = 'popup';
+            popup.className = 'popup ' + (type === 'success' ? 'green' : 'red');
             popup.innerText = msg;
             document.body.appendChild(popup);
             setTimeout(() => {
@@ -18,42 +18,45 @@
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('msg')) {
-                showMessage(urlParams.get('msg'));
+                const msgType = urlParams.get('type') || 'success';
+                showMessage(urlParams.get('msg'), msgType);
             }
         };
     </script>
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
-    <div class="admin-links">
-        <a href="/">Home</a> | 
-        <a href="/add">Add Product</a>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <div class="admin-links">
+            <a href="/">Home</a> | 
+            <a href="/add">Add Product</a>
+        </div>
+        <h2>Products</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Type</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.type }}</td>
+                <td><img src="{{ product.image_url }}" alt="{{ product.name }}" width="100"></td>
+                <td>
+                    <a href="/edit/{{ product.product_id }}">Edit</a>
+                    <form action="/delete/{{ product.product_id }}" method="post" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-    <h2>Products</h2>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Type</th>
-            <th>Image</th>
-            <th>Actions</th>
-        </tr>
-        {% for product in products %}
-        <tr>
-            <td>{{ product.name }}</td>
-            <td>{{ product.description }}</td>
-            <td>{{ product.price }}</td>
-            <td>{{ product.type }}</td>
-            <td><img src="{{ product.image_url }}" alt="{{ product.name }}" width="100"></td>
-            <td>
-                <a href="/edit/{{ product.product_id }}">Edit</a>
-                <form action="/delete/{{ product.product_id }}" method="post" onsubmit="return confirm('Are you sure you want to delete this product?');">
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
 </body>
 </html>
