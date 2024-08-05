@@ -30,8 +30,10 @@
                 
                 <label for="type">Type:</label>
                 <select id="type" name="type" required>
-                    <option value="Beverage" {% if product.type == 'Beverage' %}selected{% endif %}>Beverage</option>
-                    <option value="Snack" {% if product.type == 'Snack' %}selected{% endif %}>Snack</option>
+                    <option value="Coffee" {% if product.type == 'Coffee' %}selected{% endif %}>Coffee</option>
+                    <option value="Tea" {% if product.type == 'Tea' %}selected{% endif %}>Tea</option>
+                    <option value="Juice" {% if product.type == 'Juice' %}selected{% endif %}>Juice</option>
+                    <option value="Pastry" {% if product.type == 'Pastry' %}selected{% endif %}>Pastry</option>
                     <option value="Dessert" {% if product.type == 'Dessert' %}selected{% endif %}>Dessert</option>
                 </select>
 
