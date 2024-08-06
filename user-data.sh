@@ -2,7 +2,7 @@
 
 # Update the system and install necessary packages
 yum update -y
-sleep 5
+sleep 15
 yum install -y git python3-pip
 sleep 5
 
