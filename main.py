@@ -197,7 +197,7 @@ async def delete_product(request: Request, product_id: str):
 # Health check endpoint
 @app.get("/healthz", response_model=dict)
 async def health_check():
-    return {"status": "healthy"}
+    return JSONResponse(content={"status": "healthy"}, status_code=200)
 
 if __name__ == "__main__":
     import uvicorn
