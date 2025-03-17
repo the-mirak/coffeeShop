@@ -52,6 +52,7 @@ User=ec2-user
 WorkingDirectory=$TARGET_DIR
 ExecStart=/usr/local/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app -b 0.0.0.0:8080
 Restart=always
+Environment="PYTHONPATH=$TARGET_DIR"
 
 [Install]
 WantedBy=multi-user.target
@@ -63,5 +64,22 @@ systemctl daemon-reload
 # Enable the service to start on boot
 systemctl enable coffeeShop.service
 
+# Make sure the ec2-user owns all application files
+chown -R ec2-user:ec2-user $TARGET_DIR
+
+# Verify template directory exists and is accessible
+if [ ! -d "$TARGET_DIR/templates" ]; then
+  echo "Templates directory does not exist. Creating it..."
+  mkdir -p $TARGET_DIR/templates
+  chown -R ec2-user:ec2-user $TARGET_DIR/templates
+  chmod -R 755 $TARGET_DIR/templates
+else
+  echo "Templates directory exists. Checking files..."
+  ls -la $TARGET_DIR/templates
+fi
+
 # Start the FastAPI application service
 systemctl start coffeeShop.service
+
+# Check service status
+systemctl status coffeeShop.service
