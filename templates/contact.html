@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Brew Haven</title>
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="description" content="Get in touch with Brew Haven. Visit our coffee shop, send us a message, or book an event with us.">
 </head>
 <body>
     <div class="container">
@@ -14,40 +16,267 @@
                 <a href="/" class="nav-link">Home</a>
                 <a href="/menu" class="nav-link">Menu</a>
                 <a href="/about" class="nav-link">About</a>
-                <a href="/contact" class="nav-link">Contact</a>
-                <button class="order-button">Order Online</button>
+                <a href="/contact" class="nav-link active">Contact</a>
+                <button class="order-button">
+                    <i class="fas fa-mug-hot"></i> Order Online
+                </button>
                 <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count">0</span>
                 </div>
             </nav>
         </header>
 
-        <section class="hero-section"></section>
+        <section class="hero-section" style="height: 300px; background-image: url('/static/images/contact-hero.jpg');">
+            <div class="hero-content">
+                <h1 class="hero-title">Contact Us</h1>
+                <p class="hero-subtitle">We'd love to hear from you</p>
+            </div>
+        </section>
 
-        <section>
-            <h2 class="section-title">Contact Us</h2>
-            <form class="contact-form" action="/contact" method="post">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" required></textarea>
-                
-                <button type="submit" class="submit-button">Send</button>
-            </form>
+        <section style="padding: 5rem 2rem;">
+            <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem;">
+                <div>
+                    <h2 style="font-size: 2rem; margin-bottom: 2rem; color: var(--primary-color);">Get In Touch</h2>
+                    <p style="color: var(--dark-gray); line-height: 1.7; margin-bottom: 2.5rem;">
+                        Have questions about our menu, want to book a private event, or interested in our wholesale options? Drop us a message and we'll get back to you as soon as possible.
+                    </p>
+
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem; color: var(--primary-color);">Visit Our Shop</h3>
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 40px; height: 40px; background-color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-map-marker-alt" style="color: var(--light-color);"></i>
+                            </div>
+                            <div>
+                                <p style="font-weight: 500; color: var(--text-color); margin-bottom: 0.2rem;">123 Coffee Street</p>
+                                <p style="color: var(--dark-gray);">Beantown, BT 12345</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 40px; height: 40px; background-color: var(--secondary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-phone" style="color: var(--light-color);"></i>
+                            </div>
+                            <div>
+                                <p style="font-weight: 500; color: var(--text-color); margin-bottom: 0.2rem;">(555) 123-4567</p>
+                                <p style="color: var(--dark-gray);">Mon-Fri: 9am-6pm</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; background-color: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-envelope" style="color: var(--light-color);"></i>
+                            </div>
+                            <div>
+                                <p style="font-weight: 500; color: var(--text-color); margin-bottom: 0.2rem;">hello@brewhaven.com</p>
+                                <p style="color: var(--dark-gray);">We'll respond within 24 hours</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem; color: var(--primary-color);">Opening Hours</h3>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: var(--text-color); font-weight: 500;">Monday - Friday</span>
+                            <span style="color: var(--dark-gray);">7:00 AM - 8:00 PM</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: var(--text-color); font-weight: 500;">Saturday</span>
+                            <span style="color: var(--dark-gray);">8:00 AM - 6:00 PM</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-color); font-weight: 500;">Sunday</span>
+                            <span style="color: var(--dark-gray);">8:00 AM - 4:00 PM</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#" style="width: 40px; height: 40px; background-color: #E1306C; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: transform 0.3s;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" style="width: 40px; height: 40px; background-color: #1877F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: transform 0.3s;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" style="width: 40px; height: 40px; background-color: #1DA1F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: transform 0.3s;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="form-container" style="padding: 2.5rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow); background-color: var(--light-color);">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 2rem; color: var(--primary-color); text-align: center;">Send a Message</h2>
+                    
+                    <form class="contact-form" action="/contact" method="post">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <div style="position: relative;">
+                                <i class="fas fa-user" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--dark-gray);"></i>
+                                <input type="text" id="name" name="name" required style="padding-left: 3rem;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <div style="position: relative;">
+                                <i class="fas fa-envelope" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--dark-gray);"></i>
+                                <input type="email" id="email" name="email" required style="padding-left: 3rem;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <div style="position: relative;">
+                                <i class="fas fa-tag" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--dark-gray);"></i>
+                                <select id="subject" name="subject" style="padding-left: 3rem;">
+                                    <option value="general">General Inquiry</option>
+                                    <option value="reservation">Table Reservation</option>
+                                    <option value="event">Private Event</option>
+                                    <option value="wholesale">Wholesale</option>
+                                    <option value="feedback">Feedback</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" required style="min-height: 150px;"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn" style="width: 100%; margin-top: 1rem; font-size: 1.1rem;">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section style="padding: 0 0 5rem 0;">
+            <div style="width: 100%; height: 450px; overflow: hidden;">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.95373667673663!3d-37.81725074201705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzfCsDQ5JzAyLjEiUyAxNDTCsDU3JzE5LjAiRQ!5e0!3m2!1sen!2sau!4v1636592533096!5m2!1sen!2sau" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </section>
+
+        <section style="padding: 0 2rem 5rem; text-align: center;">
+            <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem; color: var(--primary-color);">Book a Private Event</h2>
+            <p style="max-width: 700px; margin: 0 auto 2rem; color: var(--dark-gray); line-height: 1.7;">
+                Looking for a unique venue for your next event? Brew Haven offers a cozy space for private gatherings, workshops, and celebrations. Our team can customize the menu and setup to fit your needs.
+            </p>
+            <a href="mailto:events@brewhaven.com" class="btn btn-outline" style="font-size: 1.1rem; padding: 0.8rem 2rem;">
+                <i class="fas fa-calendar-alt"></i> Inquire About Events
+            </a>
         </section>
 
         <footer class="footer">
-            <div class="social-icons">
-                <span class="icon"><!-- Insert Instagram Icon --></span>
-                <span class="icon"><!-- Insert Facebook Icon --></span>
-                <span class="icon"><!-- Insert Twitter Icon --></span>
+            <div class="footer-content">
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <div class="footer-links">
+                    <a href="/" class="footer-link">Home</a>
+                    <a href="/menu" class="footer-link">Menu</a>
+                    <a href="/about" class="footer-link">About</a>
+                    <a href="/contact" class="footer-link">Contact</a>
+                    <a href="/privacy" class="footer-link">Privacy Policy</a>
+                    <a href="/terms" class="footer-link">Terms of Service</a>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2024 Brew Haven. All rights reserved.</p>
+                </div>
             </div>
-            <p>© 2024 Brew Haven. All rights reserved.</p>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form validation enhancement
+            const form = document.querySelector('.contact-form');
+            
+            form.addEventListener('submit', function(e) {
+                let valid = true;
+                const name = document.getElementById('name');
+                const email = document.getElementById('email');
+                const message = document.getElementById('message');
+                
+                // Simple validation
+                if (name.value.trim() === '') {
+                    addError(name, 'Please enter your name');
+                    valid = false;
+                } else {
+                    removeError(name);
+                }
+                
+                if (email.value.trim() === '') {
+                    addError(email, 'Please enter your email');
+                    valid = false;
+                } else if (!isValidEmail(email.value)) {
+                    addError(email, 'Please enter a valid email address');
+                    valid = false;
+                } else {
+                    removeError(email);
+                }
+                
+                if (message.value.trim() === '') {
+                    addError(message, 'Please enter your message');
+                    valid = false;
+                } else {
+                    removeError(message);
+                }
+                
+                if (!valid) {
+                    e.preventDefault();
+                }
+            });
+            
+            // Helper functions for validation
+            function addError(field, message) {
+                // Remove any existing error
+                removeError(field);
+                
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.textContent = message;
+                errorMessage.style.color = '#F44336';
+                errorMessage.style.fontSize = '0.8rem';
+                errorMessage.style.marginTop = '0.3rem';
+                
+                field.style.borderColor = '#F44336';
+                field.parentNode.appendChild(errorMessage);
+            }
+            
+            function removeError(field) {
+                field.style.borderColor = '';
+                const errorMessage = field.parentNode.querySelector('.error-message');
+                if (errorMessage) {
+                    errorMessage.remove();
+                }
+            }
+            
+            function isValidEmail(email) {
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+            
+            // Social media icon hover effects
+            const socialIcons = document.querySelectorAll('a[href="#"]');
+            socialIcons.forEach(icon => {
+                icon.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                
+                icon.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
 </body>
 </html>

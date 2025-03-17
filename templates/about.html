@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Brew Haven</title>
+    <title>Our Story - Brew Haven</title>
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="description" content="Discover the story behind Brew Haven, from our humble beginnings to our commitment to sustainability and exceptional coffee.">
 </head>
 <body>
     <div class="container">
@@ -13,38 +15,242 @@
             <nav class="nav">
                 <a href="/" class="nav-link">Home</a>
                 <a href="/menu" class="nav-link">Menu</a>
-                <a href="/about" class="nav-link">About</a>
+                <a href="/about" class="nav-link active">About</a>
                 <a href="/contact" class="nav-link">Contact</a>
-                <button class="order-button">Order Online</button>
+                <button class="order-button">
+                    <i class="fas fa-mug-hot"></i> Order Online
+                </button>
                 <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count">0</span>
                 </div>
             </nav>
         </header>
 
-        <section class="hero-section"></section>
-
-        <section>
-            <h2 class="section-title">About Us</h2>
-            <div class="about-section">
-                <div class="about-image"></div>
-                <p class="about-text">
-                    Brew Haven is your cozy corner for exceptional coffee and warm conversations. 
-                    We source the finest beans and craft each cup with passion, ensuring a perfect brew every time. 
-                    Our skilled baristas are dedicated to providing you with a delightful coffee experience, 
-                    whether you're grabbing a quick espresso or settling in for a leisurely latte.
-                </p>
+        <section class="hero-section" style="height: 400px; background-image: url('/static/images/about-hero.jpg');">
+            <div class="hero-content">
+                <h1 class="hero-title">Our Story</h1>
+                <p class="hero-subtitle">Crafting exceptional coffee experiences since 2010</p>
             </div>
         </section>
 
-        <footer class="footer">
-            <div class="social-icons">
-                <span class="icon"><!-- Insert Instagram Icon --></span>
-                <span class="icon"><!-- Insert Facebook Icon --></span>
-                <span class="icon"><!-- Insert Twitter Icon --></span>
+        <section style="padding: 5rem 2rem;">
+            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: var(--primary-color);">The Brew Haven Journey</h2>
+                <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 3rem; color: var(--text-color);">
+                    Brew Haven began as a small passion project in 2010, born from the belief that coffee is more than just a beverage – it's an experience that brings people together. Our founder, Emma Clarke, traveled across continents to learn from master roasters and baristas, bringing home a vision of creating a space where exceptional coffee meets genuine community.
+                </p>
             </div>
-            <p>© 2024 Brew Haven. All rights reserved.</p>
+
+            <div class="about-section" style="margin-top: 3rem;">
+                <div class="about-image" style="background-image: url('/static/images/our-beans.jpg');"></div>
+                <div class="about-content">
+                    <h2>Our Beans</h2>
+                    <p class="about-text">
+                        We source our beans directly from small-scale farmers in Ethiopia, Colombia, and Guatemala, ensuring fair compensation and sustainable practices. Each batch is carefully selected for its unique flavor profile and roasted in small batches at our local roastery to bring out the distinct characteristics of every origin.
+                    </p>
+                    <p class="about-text">
+                        Every cup tells a story – of the land where the beans were grown, the hands that harvested them, and the care with which they were roasted and brewed.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section style="background-color: var(--background-color); padding: 5rem 2rem;">
+            <h2 class="section-title">Our Values</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
+                <div style="background-color: var(--light-color); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center;">
+                    <div style="width: 80px; height: 80px; background-color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-leaf" style="font-size: 2rem; color: var(--light-color);"></i>
+                    </div>
+                    <h3 style="margin-bottom: 1rem; color: var(--primary-color);">Sustainability</h3>
+                    <p style="color: var(--dark-gray); line-height: 1.6;">
+                        From compostable packaging to energy-efficient equipment, we strive to minimize our environmental footprint in every aspect of our business.
+                    </p>
+                </div>
+                
+                <div style="background-color: var(--light-color); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center;">
+                    <div style="width: 80px; height: 80px; background-color: var(--secondary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-handshake" style="font-size: 2rem; color: var(--light-color);"></i>
+                    </div>
+                    <h3 style="margin-bottom: 1rem; color: var(--primary-color);">Community</h3>
+                    <p style="color: var(--dark-gray); line-height: 1.6;">
+                        We believe in creating spaces where people connect. Our shop hosts local events, showcases local artists, and partners with neighborhood initiatives.
+                    </p>
+                </div>
+                
+                <div style="background-color: var(--light-color); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center;">
+                    <div style="width: 80px; height: 80px; background-color: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-award" style="font-size: 2rem; color: var(--light-color);"></i>
+                    </div>
+                    <h3 style="margin-bottom: 1rem; color: var(--primary-color);">Craftsmanship</h3>
+                    <p style="color: var(--dark-gray); line-height: 1.6;">
+                        We approach coffee as an art form. Our baristas undergo extensive training, continuously refining their skills to deliver the perfect cup every time.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section style="padding: 5rem 2rem;">
+            <h2 class="section-title">Meet Our Team</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
+                <div style="text-align: center;">
+                    <div style="width: 200px; height: 200px; border-radius: 50%; overflow: hidden; margin: 0 auto 1.5rem;">
+                        <img src="/static/images/team-emma.jpg" alt="Emma Clarke" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">Emma Clarke</h3>
+                    <p style="font-weight: 500; color: var(--secondary-color); margin-bottom: 1rem;">Founder & Head Roaster</p>
+                    <p style="color: var(--dark-gray); line-height: 1.6;">
+                        Emma's journey began with a backpacking trip through coffee-growing regions. Her passion for the perfect brew led to the creation of Brew Haven.
+                    </p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div style="width: 200px; height: 200px; border-radius: 50%; overflow: hidden; margin: 0 auto 1.5rem;">
+                        <img src="/static/images/team-michael.jpg" alt="Michael Rodriguez" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">Michael Rodriguez</h3>
+                    <p style="font-weight: 500; color: var(--secondary-color); margin-bottom: 1rem;">Master Barista</p>
+                    <p style="color: var(--dark-gray); line-height: 1.6;">
+                        A three-time national latte art champion, Michael brings creativity and precision to every cup he crafts.
+                    </p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div style="width: 200px; height: 200px; border-radius: 50%; overflow: hidden; margin: 0 auto 1.5rem;">
+                        <img src="/static/images/team-sarah.jpg" alt="Sarah Kim" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">Sarah Kim</h3>
+                    <p style="font-weight: 500; color: var(--secondary-color); margin-bottom: 1rem;">Pastry Chef</p>
+                    <p style="color: var(--dark-gray); line-height: 1.6;">
+                        With training from Paris, Sarah creates artisanal pastries that perfectly complement our coffee offerings.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section style="background-color: var(--background-color); padding: 5rem 2rem; text-align: center;">
+            <h2 style="font-size: 2rem; margin-bottom: 2rem; color: var(--primary-color);">Our Journey</h2>
+            <div style="position: relative; max-width: 800px; margin: 0 auto;">
+                <div style="position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background-color: var(--accent-color); transform: translateX(-50%);"></div>
+                
+                <div style="display: flex; margin-bottom: 3rem; position: relative; z-index: 1;">
+                    <div style="flex: 1; padding-right: 2rem; text-align: right;">
+                        <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">2010</h3>
+                        <p style="color: var(--dark-gray); line-height: 1.6;">The first Brew Haven opens in a small corner shop with just three tables and a vision.</p>
+                    </div>
+                    <div style="width: 20px; height: 20px; background-color: var(--primary-color); border-radius: 50%; margin-top: 5px; position: relative; z-index: 2;"></div>
+                    <div style="flex: 1; padding-left: 2rem; text-align: left;"></div>
+                </div>
+                
+                <div style="display: flex; margin-bottom: 3rem; position: relative; z-index: 1;">
+                    <div style="flex: 1; padding-right: 2rem; text-align: right;"></div>
+                    <div style="width: 20px; height: 20px; background-color: var(--secondary-color); border-radius: 50%; margin-top: 5px; position: relative; z-index: 2;"></div>
+                    <div style="flex: 1; padding-left: 2rem; text-align: left;">
+                        <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">2013</h3>
+                        <p style="color: var(--dark-gray); line-height: 1.6;">We establish direct trade relationships with farmers in Ethiopia and Colombia.</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; margin-bottom: 3rem; position: relative; z-index: 1;">
+                    <div style="flex: 1; padding-right: 2rem; text-align: right;">
+                        <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">2016</h3>
+                        <p style="color: var(--dark-gray); line-height: 1.6;">Our in-house roastery opens, allowing us to control quality from bean to cup.</p>
+                    </div>
+                    <div style="width: 20px; height: 20px; background-color: var(--accent-color); border-radius: 50%; margin-top: 5px; position: relative; z-index: 2;"></div>
+                    <div style="flex: 1; padding-left: 2rem; text-align: left;"></div>
+                </div>
+                
+                <div style="display: flex; margin-bottom: 3rem; position: relative; z-index: 1;">
+                    <div style="flex: 1; padding-right: 2rem; text-align: right;"></div>
+                    <div style="width: 20px; height: 20px; background-color: var(--primary-color); border-radius: 50%; margin-top: 5px; position: relative; z-index: 2;"></div>
+                    <div style="flex: 1; padding-left: 2rem; text-align: left;">
+                        <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">2019</h3>
+                        <p style="color: var(--dark-gray); line-height: 1.6;">Brew Haven achieves carbon neutrality through comprehensive sustainability initiatives.</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; position: relative; z-index: 1;">
+                    <div style="flex: 1; padding-right: 2rem; text-align: right;">
+                        <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">2023</h3>
+                        <p style="color: var(--dark-gray); line-height: 1.6;">We launch our online store, bringing the Brew Haven experience to coffee lovers nationwide.</p>
+                    </div>
+                    <div style="width: 20px; height: 20px; background-color: var(--secondary-color); border-radius: 50%; margin-top: 5px; position: relative; z-index: 2;"></div>
+                    <div style="flex: 1; padding-left: 2rem; text-align: left;"></div>
+                </div>
+            </div>
+        </section>
+
+        <section style="padding: 5rem 2rem; text-align: center;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--primary-color);">Come Visit Us</h2>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 3rem; color: var(--dark-gray);">
+                We'd love to share our passion for coffee with you. Visit our shop and experience the Brew Haven difference.
+            </p>
+            <a href="/contact" class="btn" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                <i class="fas fa-map-marker-alt"></i> Find Our Location
+            </a>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <div class="footer-links">
+                    <a href="/" class="footer-link">Home</a>
+                    <a href="/menu" class="footer-link">Menu</a>
+                    <a href="/about" class="footer-link">About</a>
+                    <a href="/contact" class="footer-link">Contact</a>
+                    <a href="/privacy" class="footer-link">Privacy Policy</a>
+                    <a href="/terms" class="footer-link">Terms of Service</a>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2024 Brew Haven. All rights reserved.</p>
+                </div>
+            </div>
         </footer>
     </div>
+
+    <script>
+        // Add smooth scrolling 
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollElements = document.querySelectorAll('.scroll-to');
+            
+            scrollElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Fade in elements on scroll
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            function checkFade() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('active');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkFade);
+            checkFade();
+        });
+    </script>
 </body>
 </html>

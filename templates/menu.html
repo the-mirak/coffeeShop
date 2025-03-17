@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brew Haven Menu</title>
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -12,81 +13,194 @@
             <h1 class="logo">Brew Haven</h1>
             <nav class="nav">
                 <a href="/" class="nav-link">Home</a>
-                <a href="/menu" class="nav-link">Menu</a>
+                <a href="/menu" class="nav-link active">Menu</a>
                 <a href="/about" class="nav-link">About</a>
                 <a href="/contact" class="nav-link">Contact</a>
-                <button class="order-button">Order Online</button>
+                <button class="order-button">
+                    <i class="fas fa-mug-hot"></i> Order Online
+                </button>
                 <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count">0</span>
                 </div>
             </nav>
         </header>
 
+        <section class="hero-section" style="height: 300px; background-image: url('/static/images/menu-hero.jpg');">
+            <div class="hero-content">
+                <h1 class="hero-title">Our Menu</h1>
+                <p class="hero-subtitle">Discover the perfect brew for every moment</p>
+            </div>
+        </section>
+
         <section>
-            <h2 class="section-title">Filter by Type</h2>
-            <div class="filter-section">
-                <div class="filter-item" onclick="filterProducts('All')">
-                    <img src="static/images/all.png" alt="All" class="filter-image">
-                    <p class="filter-name">All</p>
+            <h2 class="section-title">Browse by Category</h2>
+            <div class="filter-section" style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 3rem;">
+                <div class="filter-item" onclick="filterProducts('All')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: var(--transition);">
+                    <div style="width: 80px; height: 80px; background-color: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; transition: var(--transition);">
+                        <i class="fas fa-th-large" style="font-size: 1.75rem; color: var(--light-color);"></i>
+                    </div>
+                    <p style="font-weight: 500; color: var(--primary-color);">All</p>
                 </div>
-                <div class="filter-item" onclick="filterProducts('Coffee')">
-                    <img src="static/images/coffee_icon.png" alt="Coffee" class="filter-image">
-                    <p class="filter-name">Coffee</p>
+                <div class="filter-item" onclick="filterProducts('Coffee')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: var(--transition);">
+                    <div style="width: 80px; height: 80px; background-color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; transition: var(--transition);">
+                        <i class="fas fa-mug-hot" style="font-size: 1.75rem; color: var(--light-color);"></i>
+                    </div>
+                    <p style="font-weight: 500; color: var(--primary-color);">Coffee</p>
                 </div>
-                <div class="filter-item" onclick="filterProducts('Tea')">
-                    <img src="static/images/tea_icon.png" alt="Tea" class="filter-image">
-                    <p class="filter-name">Tea</p>
+                <div class="filter-item" onclick="filterProducts('Tea')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: var(--transition);">
+                    <div style="width: 80px; height: 80px; background-color: var(--secondary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; transition: var(--transition);">
+                        <i class="fas fa-mug-saucer" style="font-size: 1.75rem; color: var(--light-color);"></i>
+                    </div>
+                    <p style="font-weight: 500; color: var(--primary-color);">Tea</p>
                 </div>
-                <div class="filter-item" onclick="filterProducts('Pastry')">
-                    <img src="static/images/pastry_icon.png" alt="Pastry" class="filter-image">
-                    <p class="filter-name">Pastry</p>
+                <div class="filter-item" onclick="filterProducts('Pastry')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: var(--transition);">
+                    <div style="width: 80px; height: 80px; background-color: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; transition: var(--transition);">
+                        <i class="fas fa-bread-slice" style="font-size: 1.75rem; color: var(--light-color);"></i>
+                    </div>
+                    <p style="font-weight: 500; color: var(--primary-color);">Pastry</p>
                 </div>
-                <div class="filter-item" onclick="filterProducts('Juice')">
-                    <img src="static/images/juice_icon.png" alt="Juice" class="filter-image">
-                    <p class="filter-name">Juice</p>
+                <div class="filter-item" onclick="filterProducts('Juice')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: var(--transition);">
+                    <div style="width: 80px; height: 80px; background-color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; transition: var(--transition);">
+                        <i class="fas fa-glass-water" style="font-size: 1.75rem; color: var(--light-color);"></i>
+                    </div>
+                    <p style="font-weight: 500; color: var(--primary-color);">Juice</p>
                 </div>
-                <div class="filter-item" onclick="filterProducts('Dessert')">
-                    <img src="static/images/dessert_icon.png" alt="Dessert" class="filter-image">
-                    <p class="filter-name">Dessert</p>
+                <div class="filter-item" onclick="filterProducts('Dessert')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: var(--transition);">
+                    <div style="width: 80px; height: 80px; background-color: var(--secondary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; transition: var(--transition);">
+                        <i class="fas fa-ice-cream" style="font-size: 1.75rem; color: var(--light-color);"></i>
+                    </div>
+                    <p style="font-weight: 500; color: var(--primary-color);">Dessert</p>
                 </div>
             </div>
         </section>
 
         <section>
-            <h2 class="section-title">Our Menu</h2>
+            <h2 class="section-title">All Items</h2>
             <div class="menu-section" id="menu-section">
                 {% for product in products %}
                 <div class="menu-category" data-type="{{ product.type }}">
-                    <img src="{{ product.image_url }}" alt="{{ product.name }}" class="menu-item-image">
+                    <div style="height: 180px; overflow: hidden; border-radius: var(--border-radius) var(--border-radius) 0 0; margin: -1.5rem -1.5rem 1.5rem;">
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
                     <h3 class="menu-category-title">{{ product.name }}</h3>
-                    <p class="menu-item-price">from ${{ product.price }}</p>
-                    <p class="menu-item-description">{{ product.description }}</p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1rem;">
+                        <span style="padding: 0.25rem 0.75rem; background-color: rgba(111, 78, 55, 0.1); border-radius: 20px; font-size: 0.8rem; color: var(--primary-color);">{{ product.type }}</span>
+                        <span style="font-weight: 600; color: var(--secondary-color);">${{ product.price }}</span>
+                    </div>
+                    <p style="color: var(--dark-gray); text-align: center; margin-bottom: 1.5rem; min-height: 3rem;">{{ product.description }}</p>
+                    <button class="btn" style="width: 100%;">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
                 </div>
                 {% endfor %}
             </div>
         </section>
 
+        <section style="padding: 4rem 2rem; background-color: var(--background-color); text-align: center; margin-top: 3rem;">
+            <h2 style="margin-bottom: 1.5rem; color: var(--primary-color);">Can't Find What You're Looking For?</h2>
+            <p style="max-width: 600px; margin: 0 auto 2rem; color: var(--dark-gray);">Our baristas can customize any drink to your preference. Just let us know!</p>
+            <a href="/contact" class="btn">Contact Us</a>
+        </section>
+
         <footer class="footer">
-            <div class="social-icons">
-                <span class="icon"><!-- Insert Instagram Icon --></span>
-                <span class="icon"><!-- Insert Facebook Icon --></span>
-                <span class="icon"><!-- Insert Twitter Icon --></span>
+            <div class="footer-content">
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <div class="footer-links">
+                    <a href="/" class="footer-link">Home</a>
+                    <a href="/menu" class="footer-link">Menu</a>
+                    <a href="/about" class="footer-link">About</a>
+                    <a href="/contact" class="footer-link">Contact</a>
+                    <a href="/privacy" class="footer-link">Privacy Policy</a>
+                    <a href="/terms" class="footer-link">Terms of Service</a>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2024 Brew Haven. All rights reserved.</p>
+                </div>
             </div>
-            <p>© 2024 Brew Haven. All rights reserved.</p>
         </footer>
     </div>
 
     <script>
         function filterProducts(type) {
             const menuItems = document.querySelectorAll('.menu-category');
+            
+            // Visual feedback for the filters
+            document.querySelectorAll('.filter-item').forEach(filter => {
+                filter.style.opacity = '0.7';
+                filter.style.transform = 'translateY(0)';
+            });
+            
+            // Highlight the selected filter
+            const selectedFilter = document.querySelector(`.filter-item:nth-child(${getFilterIndex(type) + 1})`);
+            if (selectedFilter) {
+                selectedFilter.style.opacity = '1';
+                selectedFilter.style.transform = 'translateY(-5px)';
+            }
+            
             menuItems.forEach(item => {
                 if (type === 'All' || item.getAttribute('data-type') === type) {
                     item.style.display = 'block';
+                    // Add a subtle animation
+                    item.style.animation = 'fadeIn 0.5s ease-out';
                 } else {
                     item.style.display = 'none';
                 }
             });
+            
+            // Update the section title
+            document.querySelector('section:nth-child(4) h2').textContent = type === 'All' ? 'All Items' : type;
         }
+        
+        function getFilterIndex(type) {
+            const types = ['All', 'Coffee', 'Tea', 'Pastry', 'Juice', 'Dessert'];
+            return types.indexOf(type);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all filter items with the same opacity
+            document.querySelectorAll('.filter-item').forEach(filter => {
+                filter.style.opacity = '0.7';
+            });
+            
+            // Highlight the "All" filter by default
+            const allFilter = document.querySelector('.filter-item:first-child');
+            if (allFilter) {
+                allFilter.style.opacity = '1';
+                allFilter.style.transform = 'translateY(-5px)';
+            }
+            
+            // Add hover effects to filter items
+            document.querySelectorAll('.filter-item').forEach(filter => {
+                filter.addEventListener('mouseenter', function() {
+                    if (this.style.transform !== 'translateY(-5px)') {
+                        this.style.opacity = '0.9';
+                    }
+                });
+                
+                filter.addEventListener('mouseleave', function() {
+                    if (this.style.transform !== 'translateY(-5px)') {
+                        this.style.opacity = '0.7';
+                    }
+                });
+            });
+        });
     </script>
+    
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .filter-item:hover > div {
+            transform: scale(1.1);
+        }
+    </style>
 </body>
 </html>
