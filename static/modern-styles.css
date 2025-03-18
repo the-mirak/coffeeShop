@@ -1396,67 +1396,72 @@ textarea.form-control {
 
 /* Product Modal Styles */
 .modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: var(--z-modal);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding: 1rem;
 }
 
 .modal-backdrop.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-.product-modal {
-  background-color: var(--card-bg);
-  border-radius: var(--radius-lg);
-  width: 90%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  transform: translateY(20px);
-  opacity: 0;
-  transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
 }
 
 .modal-backdrop.show .product-modal {
-  transform: translateY(0);
-  opacity: 1;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.product-modal {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.product-modal {
+    background: white;
+    border-radius: var(--radius-lg);
+    max-width: 90%;
+    width: 600px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .product-modal-image {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: 60vh;
+    background: var(--secondary-light);
 }
 
 .product-modal-content {
-  padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
 }
 
 .product-modal-title {
-  font-size: var(--font-size-2xl);
-  color: var(--primary-dark);
-  margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-2xl);
+    color: var(--primary-dark);
+    margin-bottom: var(--spacing-md);
 }
 
 .product-modal-description {
-  font-size: var(--font-size-base);
-  color: var(--neutral);
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.6;
+    font-size: var(--font-size-base);
+    color: var(--neutral);
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.6;
 }
 
 .product-modal-price-row {
@@ -1514,58 +1519,61 @@ textarea.form-control {
 }
 
 .product-modal-actions {
-  display: flex;
-  gap: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-md);
 }
 
 .modal-close-btn {
-  position: absolute;
-  top: var(--spacing-md);
-  right: var(--spacing-md);
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: var(--shadow-md);
+    transition: all 0.2s ease;
 }
 
 .modal-close-btn:hover {
-  background: white;
-  transform: scale(1.1);
+    background: white;
+    transform: scale(1.1);
 }
 
 .modal-close-btn i {
-  font-size: 1.25rem;
-  color: var(--neutral-dark);
+    font-size: 1.2rem;
+    color: var(--primary-dark);
 }
 
 @media (max-width: 768px) {
-  .product-modal {
-    width: 95%;
-  }
-  
-  .product-modal-image {
-    height: 250px;
-  }
-  
-  .product-modal-content {
-    padding: var(--spacing-lg);
-  }
-  
-  .product-modal-price-row {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-  
-  .quantity-selector {
-    width: 100%;
-    justify-content: center;
-  }
+    .product-modal {
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .product-modal-image {
+        max-height: 50vh;
+    }
+    
+    .product-modal-content {
+        padding: var(--spacing-lg);
+    }
+    
+    .product-modal-price-row {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .quantity-selector {
+        width: 100%;
+        justify-content: center;
+    }
 } 
