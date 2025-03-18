@@ -89,7 +89,8 @@
                         <p class="menu-card-price">${{ product.price }}</p>
                         <div class="menu-card-actions">
                             <button class="btn btn-primary btn-sm add-to-cart-btn" data-id="{{ product.product_id }}" data-name="{{ product.name }}" data-price="{{ product.price }}">
-                                Add to Cart
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Add to Cart</span>
                             </button>
                         </div>
                     </div>
@@ -228,6 +229,24 @@
                 button.addEventListener('click', () => {
                     // Get product info from data attributes
                     const productName = button.dataset.name;
+                    
+                    // Add animation class
+                    button.classList.add('animating');
+                    
+                    // Update button state
+                    const icon = button.querySelector('i');
+                    const span = button.querySelector('span');
+                    icon.className = 'fas fa-check';
+                    span.textContent = 'Added';
+                    button.classList.add('added');
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        icon.className = 'fas fa-shopping-cart';
+                        span.textContent = 'Add to Cart';
+                        button.classList.remove('added');
+                        button.classList.remove('animating');
+                    }, 2000);
                     
                     // Update notification text
                     notification.textContent = `${productName} added to cart`;

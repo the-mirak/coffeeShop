@@ -293,6 +293,9 @@ img {
   overflow: hidden;
   box-shadow: var(--shadow-md);
   transition: all var(--transition-normal);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .menu-card:hover {
@@ -308,6 +311,10 @@ img {
 
 .menu-card-content {
   padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 250px;
 }
 
 .menu-card-title {
@@ -319,6 +326,12 @@ img {
   margin-bottom: var(--spacing-md);
   color: var(--neutral);
   font-size: var(--font-size-sm);
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .menu-card-price {
@@ -332,6 +345,83 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: auto;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-to-cart-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  transition: transform 0.5s ease-out;
+}
+
+.add-to-cart-btn:hover {
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(215, 109, 58, 0.2);
+}
+
+.add-to-cart-btn:active::before {
+  transform: translate(-50%, -50%) scale(2);
+  opacity: 0;
+}
+
+.add-to-cart-btn i {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.add-to-cart-btn:hover i {
+  transform: translateX(2px);
+}
+
+.add-to-cart-btn.added {
+  background: var(--success);
+  pointer-events: none;
+}
+
+.add-to-cart-btn.added i {
+  transform: scale(1.2);
+}
+
+@keyframes addToCart {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.add-to-cart-btn.animating {
+  animation: addToCart 0.3s ease-in-out;
 }
 
 /* Category Filter Styles */
