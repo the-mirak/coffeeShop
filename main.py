@@ -4,7 +4,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from typing import List
-import boto3
 import os
 from dotenv import load_dotenv
 import uuid
@@ -20,15 +19,35 @@ load_dotenv()
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Mount local data directory for serving local images in development
+LOCAL_MODE = os.getenv('LOCAL_MODE', 'false').lower() == 'true'
+if LOCAL_MODE:
+    os.makedirs("local_data/images", exist_ok=True)
+    app.mount("/local_data/images", StaticFiles(directory="local_data/images"), name="local_images")
+
 templates = Jinja2Templates(directory="templates")
 
 S3_BUCKET_NAME = os.getenv('S3_BUCKET_NAME')
 DYNAMODB_TABLE_NAME = os.getenv('DYNAMODB_TABLE_NAME')
 AWS_REGION = os.getenv('AWS_REGION')
 
-dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION)
-s3_client = boto3.client('s3', region_name=AWS_REGION)
-table = dynamodb.Table(DYNAMODB_TABLE_NAME)
+# Initialize storage clients based on environment
+if LOCAL_MODE:
+    from local_storage import get_storage_clients
+    s3_client, dynamodb, table = get_storage_clients(
+        local_mode=True,
+        s3_bucket_name=S3_BUCKET_NAME,
+        dynamodb_table_name=DYNAMODB_TABLE_NAME,
+        aws_region=AWS_REGION
+    )
+    logger.info("🧪 Running in LOCAL MODE with local storage")
+else:
+    import boto3
+    dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION)
+    s3_client = boto3.client('s3', region_name=AWS_REGION)
+    table = dynamodb.Table(DYNAMODB_TABLE_NAME)
+    logger.info("🌍 Running with AWS endpoints")
 
 class Product(BaseModel):
     product_id: str
@@ -52,7 +71,7 @@ async def read_root(request: Request):
     response = table.scan()
     products = response.get('Items', [])
     # Select 10 random products for quick order strip
-    quick_order_products = random.sample(products, min(len(products), 10))
+    quick_order_products = random.sample(products, min(len(products), 10)) if products else []
     # Generate presigned URLs for images
     for product in quick_order_products:
         product['image_url'] = generate_presigned_url(product['image_url'])
@@ -142,7 +161,7 @@ async def create_product(request: Request, name: str = Form(...), description: s
 
     except Exception as e:
         logger.error("Error creating product: %s", str(e))
-        raise HTTPException(status_code=400, detail="Error creating product")
+        raise HTTPException(status_code=400, detail=f"Error creating product: {str(e)}")
 
 # Update an existing product
 @app.post("/edit/{product_id}")
@@ -197,8 +216,8 @@ async def delete_product(request: Request, product_id: str):
 # Health check endpoint
 @app.get("/healthz", response_model=dict)
 async def health_check():
-    return JSONResponse(content={"status": "healthy"}, status_code=200)
+    return JSONResponse(content={"status": "healthy", "mode": "local" if LOCAL_MODE else "aws"}, status_code=200)
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8080, reload=True)

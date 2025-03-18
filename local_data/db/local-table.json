@@ -1,0 +1,42 @@
+[
+  {
+    "product_id": "4154468e-63b9-4d51-b2d9-7f18d2383273",
+    "name": "Cappuccino",
+    "description": "A classic Italian coffee drink prepared with espresso, hot milk, and steamed-milk foam.",
+    "price": "4.99",
+    "image_url": "cappuccino.jpg",
+    "type": "coffee"
+  },
+  {
+    "product_id": "499b5650-3edc-4044-95db-e105fa864286",
+    "name": "Espresso",
+    "description": "A concentrated form of coffee served in small, strong shots.",
+    "price": "3.49",
+    "image_url": "espresso.jpg",
+    "type": "coffee"
+  },
+  {
+    "product_id": "8a81bcfb-514d-429d-be2e-614844b2a836",
+    "name": "Latte",
+    "description": "Coffee drink made with espresso and steamed milk.",
+    "price": "4.49",
+    "image_url": "latte.jpg",
+    "type": "coffee"
+  },
+  {
+    "product_id": "1545c9b1-a267-4c0f-a2f2-6b47cce13cc1",
+    "name": "Chocolate Croissant",
+    "description": "Flaky, buttery pastry filled with rich chocolate.",
+    "price": "3.99",
+    "image_url": "chocolate_croissant.jpg",
+    "type": "pastry"
+  },
+  {
+    "product_id": "985d6f49-5cc2-401c-8ac8-3e8f365cc157",
+    "name": "Blueberry Muffin",
+    "description": "Moist muffin packed with fresh blueberries.",
+    "price": "3.49",
+    "image_url": "blueberry_muffin.jpg",
+    "type": "pastry"
+  }
+]

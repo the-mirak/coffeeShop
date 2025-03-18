@@ -29,6 +29,7 @@ INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
 AVAILABILITY_ZONE=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone)
 
 cat <<EOF > .env
+LOCAL_MODE=false
 S3_BUCKET_NAME=coffeeshop-bucket-24
 DYNAMODB_TABLE_NAME=coffeeShopDB
 AWS_REGION=us-east-1

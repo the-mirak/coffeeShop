@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+      - ./local_data/images:/app/local_data/images
+      - ./local_data/db:/app/local_data/db
+      # Mount AWS config directory for local role-based authentication when LOCAL_MODE=false
+      - ~/.aws:/root/.aws:ro
+    environment:
+      - LOCAL_MODE=true
+      - S3_BUCKET_NAME=local-bucket
+      - DYNAMODB_TABLE_NAME=local-table
+      - AWS_REGION=local
+      - PYTHONUNBUFFERED=1
+      # If needed, specify a named profile from ~/.aws/config
+      # - AWS_PROFILE=your-profile-name
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s 
