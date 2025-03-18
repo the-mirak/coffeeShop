@@ -79,7 +79,7 @@
             
             <div class="menu-grid">
                 {% for product in products %}
-                <div class="menu-card" data-category="{{ product.type }}">
+                <div class="menu-card" data-category="{{ product.type | lower }}">
                     {% if product.image_url %}
                     <img src="{{ product.image_url }}" alt="{{ product.name }}" class="menu-card-image">
                     {% endif %}
@@ -205,11 +205,11 @@
                     // Add active class to clicked pill
                     pill.classList.add('active');
                     
-                    const category = pill.dataset.category;
+                    const category = pill.dataset.category.toLowerCase();
                     
                     // Show/hide menu cards based on category
                     menuCards.forEach(card => {
-                        if (category === 'all' || card.dataset.category === category) {
+                        if (category === 'all' || card.dataset.category.toLowerCase() === category) {
                             card.style.display = 'block';
                         } else {
                             card.style.display = 'none';
