@@ -4,47 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Brew Haven</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/modern-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="logo">Brew Haven</h1>
+    <header class="header">
+        <div class="container">
             <nav class="nav">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/menu" class="nav-link">Menu</a>
-                <a href="/about" class="nav-link">About</a>
-                <a href="/contact" class="nav-link">Contact</a>
-                <button class="order-button">Order Online</button>
-                <div class="cart-icon">
-                    <span class="cart-count">0</span>
+                <a href="/" class="logo">
+                    <i class="fas fa-coffee"></i>
+                    <span>Brew Haven</span>
+                </a>
+                <div class="nav-links">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/menu" class="nav-link">Menu</a>
+                    <a href="/about" class="nav-link active">About</a>
+                    <a href="/contact" class="nav-link">Contact</a>
+                </div>
+                
+                <div class="nav-actions">
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </div>
                 </div>
             </nav>
-        </header>
+        </div>
+    </header>
 
-        <section class="hero-section"></section>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Our Story</h1>
+                    <p class="hero-subtitle">Crafting exceptional coffee experiences since 2010</p>
+                </div>
+            </div>
+            <img src="/static/images/about-hero.jpg" alt="Coffee beans" class="hero-image">
+        </section>
 
-        <section>
-            <h2 class="section-title">About Us</h2>
-            <div class="about-section">
-                <div class="about-image"></div>
-                <p class="about-text">
-                    Brew Haven is your cozy corner for exceptional coffee and warm conversations. 
-                    We source the finest beans and craft each cup with passion, ensuring a perfect brew every time. 
-                    Our skilled baristas are dedicated to providing you with a delightful coffee experience, 
-                    whether you're grabbing a quick espresso or settling in for a leisurely latte.
-                </p>
+        <!-- About Section -->
+        <section class="section">
+            <div class="container">
+                <div class="about-section">
+                    <div class="about-content">
+                        <h2>Our Journey</h2>
+                        <p>Founded in 2010, Brew Haven began with a simple mission: to serve the perfect cup of coffee. What started as a small corner shop has grown into a beloved community hub where coffee lovers gather to enjoy exceptional brews and warm hospitality.</p>
+                        
+                        <h2>Our Philosophy</h2>
+                        <p>We believe in the power of quality ingredients and meticulous preparation. Every cup of coffee we serve is crafted with attention to detail, from selecting the finest beans to perfecting the brewing process.</p>
+                        
+                        <h2>Our Commitment</h2>
+                        <p>We're committed to sustainability and ethical sourcing. Our coffee beans are carefully selected from farmers who share our values of environmental stewardship and fair trade practices.</p>
+                    </div>
+                    
+                    <div class="about-image-container">
+                        <img src="/static/images/about-1.jpg" alt="Coffee preparation" class="about-image about-image-1">
+                        <img src="/static/images/about-2.jpg" alt="Coffee shop interior" class="about-image about-image-2">
+                    </div>
+                </div>
             </div>
         </section>
 
-        <footer class="footer">
-            <div class="social-icons">
-                <span class="icon"><!-- Insert Instagram Icon --></span>
-                <span class="icon"><!-- Insert Facebook Icon --></span>
-                <span class="icon"><!-- Insert Twitter Icon --></span>
+        <!-- Team Section -->
+        <section class="section bg-light">
+            <div class="container">
+                <h2 class="text-center">Meet Our Team</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <img src="/static/images/team-1.jpg" alt="Team member" class="team-member-image">
+                        <h3>Sarah Johnson</h3>
+                        <p class="team-member-role">Founder & Head Barista</p>
+                        <p class="team-member-bio">With over 15 years of experience in specialty coffee, Sarah leads our team with passion and expertise.</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <img src="/static/images/team-2.jpg" alt="Team member" class="team-member-image">
+                        <h3>Michael Chen</h3>
+                        <p class="team-member-role">Coffee Roaster</p>
+                        <p class="team-member-bio">Michael's dedication to perfecting the roast brings out the best in every bean.</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <img src="/static/images/team-3.jpg" alt="Team member" class="team-member-image">
+                        <h3>Emma Rodriguez</h3>
+                        <p class="team-member-role">Customer Experience Manager</p>
+                        <p class="team-member-bio">Emma ensures every visit to Brew Haven is memorable and welcoming.</p>
+                    </div>
+                </div>
             </div>
-            <p>© 2024 Brew Haven. All rights reserved.</p>
-        </footer>
-    </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-heading">Brew Haven</h3>
+                    <p>Exceptional coffee for exceptional moments.</p>
+                    <div class="social-links mt-3">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="/">Home</a></li>
+                        <li class="footer-link"><a href="/menu">Menu</a></li>
+                        <li class="footer-link"><a href="/about">About</a></li>
+                        <li class="footer-link"><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Contact Us</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link">123 Coffee Street, Beantown</li>
+                        <li class="footer-link">(123) 456-7890</li>
+                        <li class="footer-link">hello@brewhaven.com</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Opening Hours</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link">Monday - Friday: 7am - 8pm</li>
+                        <li class="footer-link">Saturday - Sunday: 8am - 6pm</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 Brew Haven. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const nav = document.querySelector('.nav');
+        const body = document.body;
+
+        mobileNavToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            body.classList.toggle('nav-open');
+        });
+    </script>
 </body>
 </html>

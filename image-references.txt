@@ -1,0 +1,71 @@
+Hero Images:
+1. hero-coffee.jpg: https://unsplash.com/photos/coffee-shop-interior-with-warm-lighting
+- Modern coffee shop interior with warm lighting and comfortable seating
+- Size: 1920x1080px
+- Style: Warm, inviting atmosphere with natural light
+
+2. about-hero.jpg: https://unsplash.com/photos/coffee-beans-and-preparation
+- Coffee beans and barista preparation scene
+- Size: 1920x1080px
+- Style: Professional coffee preparation with artistic touch
+
+3. contact-hero.jpg: https://unsplash.com/photos/modern-cafe-facade
+- Modern café exterior/interior blend
+- Size: 1920x1080px
+- Style: Welcoming storefront with large windows
+
+Quick Order Images:
+1. coffee-1.jpg (Classic Espresso):
+- Close-up of perfectly pulled espresso shot
+- Size: 800x800px
+- Style: Rich, dark coffee with crema on top
+
+2. coffee-2.jpg (Vanilla Latte):
+- Latte with artistic foam design
+- Size: 800x800px
+- Style: Creamy latte with vanilla garnish
+
+3. coffee-3.jpg (Cappuccino):
+- Classic cappuccino with perfect foam ratio
+- Size: 800x800px
+- Style: Traditional cappuccino presentation
+
+4. coffee-4.jpg (Americano):
+- Clean, simple Americano presentation
+- Size: 800x800px
+- Style: Clear, dark coffee with steam
+
+About Page Images:
+1. about-1.jpg:
+- Barista crafting coffee
+- Size: 1200x800px
+- Style: Action shot of coffee preparation
+
+2. about-2.jpg:
+- Cozy coffee shop interior
+- Size: 1200x800px
+- Style: Warm, inviting seating area
+
+Team Member Images:
+1. team-1.jpg (Sarah Johnson):
+- Professional headshot of female barista
+- Size: 400x400px
+- Style: Warm, friendly smile
+
+2. team-2.jpg (Michael Chen):
+- Professional headshot of male roaster
+- Size: 400x400px
+- Style: Focused, expert pose
+
+3. team-3.jpg (Emma Rodriguez):
+- Professional headshot of female manager
+- Size: 400x400px
+- Style: Welcoming, professional pose
+
+Image Guidelines:
+- All images should maintain consistent color grading
+- Warm, earthy tones to match brand colors
+- High resolution for retina displays
+- Optimized file sizes for web performance
+- Professional, authentic feel
+- Natural lighting preferred 

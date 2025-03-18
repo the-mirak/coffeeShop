@@ -3,88 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brew Haven Menu</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <title>Menu - Brew Haven Coffee Shop</title>
+    <link rel="stylesheet" href="/static/modern-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="logo">Brew Haven</h1>
+    <header class="header">
+        <div class="container">
             <nav class="nav">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/menu" class="nav-link">Menu</a>
-                <a href="/about" class="nav-link">About</a>
-                <a href="/contact" class="nav-link">Contact</a>
-                <button class="order-button">Order Online</button>
-                <div class="cart-icon">
-                    <span class="cart-count">0</span>
+                <a href="/" class="logo">
+                    <i class="fas fa-coffee"></i>
+                    <span>Brew Haven</span>
+                </a>
+                <div class="nav-links">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/menu" class="nav-link active">Menu</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <a href="/contact" class="nav-link">Contact</a>
+                </div>
+                
+                <div class="nav-actions">
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </div>
                 </div>
             </nav>
-        </header>
-
-        <section>
-            <h2 class="section-title">Filter by Type</h2>
-            <div class="filter-section">
-                <div class="filter-item" onclick="filterProducts('All')">
-                    <img src="static/images/all.png" alt="All" class="filter-image">
-                    <p class="filter-name">All</p>
-                </div>
-                <div class="filter-item" onclick="filterProducts('Coffee')">
-                    <img src="static/images/coffee_icon.png" alt="Coffee" class="filter-image">
-                    <p class="filter-name">Coffee</p>
-                </div>
-                <div class="filter-item" onclick="filterProducts('Tea')">
-                    <img src="static/images/tea_icon.png" alt="Tea" class="filter-image">
-                    <p class="filter-name">Tea</p>
-                </div>
-                <div class="filter-item" onclick="filterProducts('Pastry')">
-                    <img src="static/images/pastry_icon.png" alt="Pastry" class="filter-image">
-                    <p class="filter-name">Pastry</p>
-                </div>
-                <div class="filter-item" onclick="filterProducts('Juice')">
-                    <img src="static/images/juice_icon.png" alt="Juice" class="filter-image">
-                    <p class="filter-name">Juice</p>
-                </div>
-                <div class="filter-item" onclick="filterProducts('Dessert')">
-                    <img src="static/images/dessert_icon.png" alt="Dessert" class="filter-image">
-                    <p class="filter-name">Dessert</p>
-                </div>
+        </div>
+    </header>
+    
+    <section class="section" style="padding-top: 3rem;">
+        <div class="container">
+            <h1 class="section-title text-center">Our Menu</h1>
+            <p class="text-center mb-4" style="max-width: 700px; margin-left: auto; margin-right: auto;">Discover our selection of premium coffees, teas, and pastries crafted with care using only the finest ingredients.</p>
+            
+            <div class="category-filter mb-4">
+                <div class="category-pill active" data-category="all">All</div>
+                <div class="category-pill" data-category="coffee">Coffee</div>
+                <div class="category-pill" data-category="tea">Tea</div>
+                <div class="category-pill" data-category="pastry">Pastries</div>
+                <div class="category-pill" data-category="dessert">Desserts</div>
             </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">Our Menu</h2>
-            <div class="menu-section" id="menu-section">
+            
+            <div class="menu-grid">
                 {% for product in products %}
-                <div class="menu-category" data-type="{{ product.type }}">
-                    <img src="{{ product.image_url }}" alt="{{ product.name }}" class="menu-item-image">
-                    <h3 class="menu-category-title">{{ product.name }}</h3>
-                    <p class="menu-item-price">from ${{ product.price }}</p>
-                    <p class="menu-item-description">{{ product.description }}</p>
+                <div class="menu-card" data-category="{{ product.type }}">
+                    {% if product.image_url %}
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}" class="menu-card-image">
+                    {% endif %}
+                    <div class="menu-card-content">
+                        <h3 class="menu-card-title">{{ product.name }}</h3>
+                        <p class="menu-card-description">{{ product.description }}</p>
+                        <p class="menu-card-price">${{ product.price }}</p>
+                        <div class="menu-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" data-id="{{ product.product_id }}" data-name="{{ product.name }}" data-price="{{ product.price }}">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
-        </section>
-
-        <footer class="footer">
-            <div class="social-icons">
-                <span class="icon"><!-- Insert Instagram Icon --></span>
-                <span class="icon"><!-- Insert Facebook Icon --></span>
-                <span class="icon"><!-- Insert Twitter Icon --></span>
+        </div>
+    </section>
+    
+    <section class="section" style="background-color: var(--secondary); padding: 3rem 0;">
+        <div class="container">
+            <div class="about-section">
+                <div class="about-content">
+                    <h2 class="section-title">Catering & Special Orders</h2>
+                    <p>Planning an event or office meeting? Let us cater your next gathering with our delicious coffee and pastries.</p>
+                    <p>We offer custom orders and catering services for events of all sizes. Contact us for more information or to place a custom order.</p>
+                    <a href="/contact" class="btn btn-primary mt-3">Contact Us</a>
+                </div>
+                
+                <div class="about-image-container" style="min-height: 300px;">
+                    <div style="background-color: var(--primary); height: 300px; width: 100%; border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center; color: white;">
+                        <div style="text-align: center;">
+                            <i class="fas fa-users" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+                            <h3>Perfect for Any Event</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p>© 2024 Brew Haven. All rights reserved.</p>
-        </footer>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-heading">Brew Haven</h3>
+                    <p>Exceptional coffee for exceptional moments.</p>
+                    <div class="social-links mt-3">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="/">Home</a></li>
+                        <li class="footer-link"><a href="/menu">Menu</a></li>
+                        <li class="footer-link"><a href="/about">About</a></li>
+                        <li class="footer-link"><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Contact Us</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link">123 Coffee Street, Beantown</li>
+                        <li class="footer-link">(123) 456-7890</li>
+                        <li class="footer-link">hello@brewhaven.com</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Opening Hours</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link">Monday - Friday: 7am - 8pm</li>
+                        <li class="footer-link">Saturday - Sunday: 8am - 6pm</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 Brew Haven. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <div class="notification notification-success" id="notification">
+        Product added to cart
     </div>
-
+    
     <script>
-        function filterProducts(type) {
-            const menuItems = document.querySelectorAll('.menu-category');
-            menuItems.forEach(item => {
-                if (type === 'All' || item.getAttribute('data-type') === type) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
+        // Mobile navigation
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const nav = document.getElementById('nav');
+        const navBackdrop = document.getElementById('nav-backdrop');
+        
+        if (mobileNavToggle && nav && navBackdrop) {
+            mobileNavToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                navBackdrop.classList.toggle('active');
+                document.body.classList.toggle('no-scroll');
+            });
+            
+            navBackdrop.addEventListener('click', () => {
+                nav.classList.remove('active');
+                navBackdrop.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            });
+        }
+        
+        // Category filter
+        const categoryPills = document.querySelectorAll('.category-pill');
+        const menuCards = document.querySelectorAll('.menu-card');
+        
+        if (categoryPills.length && menuCards.length) {
+            categoryPills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    // Remove active class from all pills
+                    categoryPills.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to clicked pill
+                    pill.classList.add('active');
+                    
+                    const category = pill.dataset.category;
+                    
+                    // Show/hide menu cards based on category
+                    menuCards.forEach(card => {
+                        if (category === 'all' || card.dataset.category === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Add to cart notification
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+        const notification = document.getElementById('notification');
+        
+        if (addToCartButtons.length && notification) {
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Get product info from data attributes
+                    const productName = button.dataset.name;
+                    
+                    // Update notification text
+                    notification.textContent = `${productName} added to cart`;
+                    
+                    // Show notification
+                    notification.classList.add('show');
+                    
+                    // Hide notification after 3 seconds
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 3000);
+                    
+                    // Increment cart count
+                    const cartCount = document.querySelector('.cart-count');
+                    if (cartCount) {
+                        cartCount.textContent = parseInt(cartCount.textContent) + 1;
+                    }
+                });
             });
         }
     </script>

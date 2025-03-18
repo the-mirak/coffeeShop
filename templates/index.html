@@ -3,125 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brew Haven</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <title>Brew Haven - Exceptional Coffee Experience</title>
+    <link rel="stylesheet" href="/static/modern-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="logo">Brew Haven</h1>
+    <header class="header">
+        <div class="container">
             <nav class="nav">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/menu" class="nav-link">Menu</a>
-                <a href="/about" class="nav-link">About</a>
-                <a href="/contact" class="nav-link">Contact</a>
-                <button class="order-button">Order Online</button>
-                <div class="cart-icon">
-                    <span class="cart-count">0</span>
+                <a href="/" class="logo">
+                    <i class="fas fa-coffee"></i>
+                    <span>Brew Haven</span>
+                </a>
+                <div class="nav-links">
+                    <a href="/" class="nav-link active">Home</a>
+                    <a href="/menu" class="nav-link">Menu</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <a href="/contact" class="nav-link">Contact</a>
+                </div>
+                
+                <div class="nav-actions">
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </div>
                 </div>
             </nav>
-        </header>
-
-        <section class="hero-section"></section>
-
-        <section>
-            <h2 class="section-title">Quick Order</h2>
-            <div class="quick-order-wrapper">
-                <button class="scroll-arrow left-arrow" onclick="scrollLeftFunction()">&#9664;</button>
-                <div class="quick-order-container">
-                    <div class="quick-order">
-                        <!-- Products will be dynamically inserted here -->
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content animate-fade-in">
+                <h1 class="hero-title">Exceptional Coffee for Exceptional Moments</h1>
+                <p class="hero-subtitle">Experience premium coffee sourced from sustainable farms around the world, crafted to perfection by our expert baristas.</p>
+                <a href="/menu" class="btn btn-accent btn-lg">Explore Menu</a>
+            </div>
+        </div>
+        <img src="/static/images/hero-coffee.jpg" alt="Freshly brewed coffee" class="hero-image">
+    </section>
+    
+    <section class="quick-order-section">
+        <div class="container">
+            <h2 class="text-center">Quick Order Favorites</h2>
+            <div class="quick-order-grid">
+                <div class="quick-order-card">
+                    <img src="/static/images/coffee-1.jpg" alt="Espresso" class="quick-order-image">
+                    <div class="quick-order-content">
+                        <h3 class="quick-order-title">Classic Espresso</h3>
+                        <p class="quick-order-description">Rich and bold single shot espresso</p>
+                        <p class="quick-order-price">$3.50</p>
+                        <div class="quick-order-actions">
+                            <button class="btn btn-sm btn-outline">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
-                <button class="scroll-arrow right-arrow" onclick="scrollRightFunction()">&#9654;</button>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">Our Menu</h2>
-            <div class="menu-section">
-                <div class="menu-category">
-                    <h3 class="menu-category-title">Coffee</h3>
-                    <div class="menu-item">
-                        <span>Espresso</span>
-                        <button class="add-button">Add to Cart</button>
-                    </div>
-                    <div class="menu-item">
-                        <span>Cappuccino</span>
-                        <button class="add-button">Add to Cart</button>
-                    </div>
-                    <div class="menu-item">
-                        <span>Latte</span>
-                        <button class="add-button">Add to Cart</button>
+                
+                <div class="quick-order-card">
+                    <img src="/static/images/coffee-2.jpg" alt="Latte" class="quick-order-image">
+                    <div class="quick-order-content">
+                        <h3 class="quick-order-title">Vanilla Latte</h3>
+                        <p class="quick-order-description">Smooth espresso with vanilla and steamed milk</p>
+                        <p class="quick-order-price">$4.50</p>
+                        <div class="quick-order-actions">
+                            <button class="btn btn-sm btn-outline">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
-                <div class="menu-category">
-                    <h3 class="menu-category-title">Tea</h3>
-                    <div class="menu-item">
-                        <span>Earl Grey</span>
-                        <button class="add-button">Add to Cart</button>
+                
+                <div class="quick-order-card">
+                    <img src="/static/images/coffee-3.jpg" alt="Cappuccino" class="quick-order-image">
+                    <div class="quick-order-content">
+                        <h3 class="quick-order-title">Cappuccino</h3>
+                        <p class="quick-order-description">Perfect balance of espresso, steamed milk, and foam</p>
+                        <p class="quick-order-price">$4.00</p>
+                        <div class="quick-order-actions">
+                            <button class="btn btn-sm btn-outline">Add to Cart</button>
+                        </div>
                     </div>
-                    <div class="menu-item">
-                        <span>Green Tea</span>
-                        <button class="add-button">Add to Cart</button>
-                    </div>
-                    <div class="menu-item">
-                        <span>Chai Latte</span>
-                        <button class="add-button">Add to Cart</button>
+                </div>
+                
+                <div class="quick-order-card">
+                    <img src="/static/images/coffee-4.jpg" alt="Americano" class="quick-order-image">
+                    <div class="quick-order-content">
+                        <h3 class="quick-order-title">Americano</h3>
+                        <p class="quick-order-description">Espresso shots topped with hot water</p>
+                        <p class="quick-order-price">$3.75</p>
+                        <div class="quick-order-actions">
+                            <button class="btn btn-sm btn-outline">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section class="about-section">
-            <div class="about-image"></div>
-            <p class="about-text">
-                Brew Haven is your cozy corner for exceptional coffee and warm conversations. 
-                We source the finest beans and craft each cup with passion, ensuring a perfect brew every time. 
-                Our skilled baristas are dedicated to providing you with a delightful coffee experience, 
-                whether you're grabbing a quick espresso or settling in for a leisurely latte.
-            </p>
-        </section>
-
-        <section class="location-section">
-            <div class="location-info">
-                <h2 class="section-title">Visit Us</h2>
-                <p class="location-details">
-                    <span class="icon"><!-- Insert MapPin Icon --></span> 123 Coffee Street, Beantown
-                </p>
-                <p class="location-details">
-                    <span class="icon"><!-- Insert Clock Icon --></span> Mon-Fri: 7am-8pm, Sat-Sun: 8am-6pm
-                </p>
+            <div class="text-center mt-4">
+                <a href="/menu" class="btn btn-outline btn-lg">View Full Menu</a>
             </div>
-            <div class="map"></div>
-        </section>
-
-        <footer class="footer">
-            <div class="social-icons">
-                <span class="icon"><!-- Insert Instagram Icon --></span>
-                <span class="icon"><!-- Insert Facebook Icon --></span>
-                <span class="icon"><!-- Insert Twitter Icon --></span>
+        </div>
+    </section>
+    
+    <section class="section" style="background-color: var(--background);">
+        <div class="container">
+            <div class="about-section">
+                <div class="about-image-container">
+                    <img src="/static/images/about-1.jpg" alt="Coffee shop interior" class="about-image about-image-1">
+                    <img src="/static/images/about-2.jpg" alt="Coffee beans" class="about-image about-image-2">
+                </div>
+                
+                <div class="about-content">
+                    <h2 class="section-title">Welcome to Brew Haven</h2>
+                    <p>Your cozy corner for exceptional coffee and warm conversations. We're passionate about crafting the perfect cup while creating a welcoming space for our community.</p>
+                    <div class="features-grid mt-4">
+                        <div class="feature-item">
+                            <i class="fas fa-coffee"></i>
+                            <h3>Premium Coffee</h3>
+                            <p>Ethically sourced, expertly roasted</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-leaf"></i>
+                            <h3>Sustainable</h3>
+                            <p>Eco-friendly practices</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-users"></i>
+                            <h3>Community</h3>
+                            <p>A gathering place for all</p>
+                        </div>
+                    </div>
+                    <a href="/about" class="btn btn-primary mt-4">Learn More</a>
+                </div>
             </div>
-            <p>© 2024 Brew Haven. All rights reserved.</p>
-        </footer>
+        </div>
+    </section>
+    
+    <section class="section cta-section">
+        <div class="container text-center">
+            <h2 class="section-title">Join Our Coffee Community</h2>
+            <p>Stay updated with our latest offerings, events, and exclusive promotions.</p>
+            <form class="newsletter-form">
+                <div class="form-group">
+                    <input type="email" placeholder="Enter your email" class="form-control" required>
+                    <button type="submit" class="btn btn-accent">Subscribe</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-heading">Brew Haven</h3>
+                    <p>Exceptional coffee for exceptional moments.</p>
+                    <div class="social-links mt-3">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="/">Home</a></li>
+                        <li class="footer-link"><a href="/menu">Menu</a></li>
+                        <li class="footer-link"><a href="/about">About</a></li>
+                        <li class="footer-link"><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Contact Us</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link">123 Coffee Street, Beantown</li>
+                        <li class="footer-link">(123) 456-7890</li>
+                        <li class="footer-link">hello@brewhaven.com</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Opening Hours</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link">Monday - Friday: 7am - 8pm</li>
+                        <li class="footer-link">Saturday - Sunday: 8am - 6pm</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 Brew Haven. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <div class="notification notification-success" id="notification">
+        Product added to cart
     </div>
-
+    
     <script>
-        function scrollLeftFunction() {
-            const container = document.querySelector('.quick-order');
-            container.scrollBy({
-                top: 0,
-                left: -300,
-                behavior: 'smooth'
+        // Mobile navigation
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const nav = document.getElementById('nav');
+        const navBackdrop = document.getElementById('nav-backdrop');
+        
+        if (mobileNavToggle && nav && navBackdrop) {
+            mobileNavToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                navBackdrop.classList.toggle('active');
+                document.body.classList.toggle('no-scroll');
+            });
+            
+            navBackdrop.addEventListener('click', () => {
+                nav.classList.remove('active');
+                navBackdrop.classList.remove('active');
+                document.body.classList.remove('no-scroll');
             });
         }
-
-        function scrollRightFunction() {
-            const container = document.querySelector('.quick-order');
-            container.scrollBy({
-                top: 0,
-                left: 300,
-                behavior: 'smooth'
+        
+        // Newsletter form submission
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const notification = document.getElementById('notification');
+                notification.textContent = 'Thank you for subscribing!';
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+                newsletterForm.reset();
             });
         }
     </script>
