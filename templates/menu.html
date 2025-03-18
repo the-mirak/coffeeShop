@@ -80,19 +80,29 @@
             <div class="menu-grid">
                 {% for product in products %}
                 <div class="menu-card" data-category="{{ product.type | lower }}">
-                    {% if product.image_url %}
-                    <img src="{{ product.image_url }}" alt="{{ product.name }}" class="menu-card-image">
-                    {% endif %}
-                    <div class="menu-card-content">
-                        <h3 class="menu-card-title">{{ product.name }}</h3>
-                        <p class="menu-card-description">{{ product.description }}</p>
-                        <p class="menu-card-price">${{ product.price }}</p>
-                        <div class="menu-card-actions">
-                            <button class="btn btn-primary btn-sm add-to-cart-btn" data-id="{{ product.product_id }}" data-name="{{ product.name }}" data-price="{{ product.price }}">
+                    <div class="menu-card-image-container" onclick="showProductModal(this.parentElement)" 
+                        data-id="{{ product.product_id }}" 
+                        data-name="{{ product.name }}" 
+                        data-price="{{ product.price }}" 
+                        data-description="{{ product.description }}" 
+                        data-image="{{ product.image_url }}">
+                        {% if product.image_url %}
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="menu-card-image">
+                        {% endif %}
+                        <div class="quick-add-btn">
+                            <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCartFromCard(this)" 
+                                data-id="{{ product.product_id }}" 
+                                data-name="{{ product.name }}" 
+                                data-price="{{ product.price }}">
                                 <i class="fas fa-shopping-cart"></i>
-                                <span>Add to Cart</span>
+                                <span>Quick Add</span>
                             </button>
                         </div>
+                    </div>
+                    <div class="menu-card-content" onclick="showProductModal(this.parentElement)">
+                        <h3 class="menu-card-title">{{ product.name }}</h3>
+                        <p class="menu-card-price">${{ product.price }}</p>
+                        <span class="view-details-text">Click to view details</span>
                     </div>
                 </div>
                 {% endfor %}
@@ -173,6 +183,38 @@
         Product added to cart
     </div>
     
+    <!-- Product Modal -->
+    <div class="modal-backdrop" id="productModal">
+        <div class="product-modal">
+            <button class="modal-close-btn" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalImage" src="" alt="" class="product-modal-image">
+            <div class="product-modal-content">
+                <h3 id="modalTitle" class="product-modal-title"></h3>
+                <p id="modalDescription" class="product-modal-description"></p>
+                <div class="product-modal-price-row">
+                    <p id="modalPrice" class="product-modal-price"></p>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus" onclick="updateQuantity(-1)">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span id="quantity" class="quantity-value">1</span>
+                        <button class="quantity-btn plus" onclick="updateQuantity(1)">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-modal-actions">
+                    <button class="add-to-cart-btn" onclick="addToCartFromModal(this)" data-id="" data-name="" data-price="">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script>
         // Mobile navigation
         const mobileNavToggle = document.getElementById('mobile-nav-toggle');
@@ -208,64 +250,138 @@
                     
                     const category = pill.dataset.category.toLowerCase();
                     
-                    // Show/hide menu cards based on category
+                    // Show/hide menu cards based on category with animation
                     menuCards.forEach(card => {
-                        if (category === 'all' || card.dataset.category.toLowerCase() === category) {
+                        const cardCategory = card.dataset.category.toLowerCase();
+                        if (category === 'all' || cardCategory === category) {
                             card.style.display = 'block';
+                            // Add a small delay for a staggered animation effect
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 50);
                         } else {
-                            card.style.display = 'none';
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300); // Match this with the CSS transition duration
                         }
                     });
                 });
             });
         }
         
-        // Add to cart notification
-        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-        const notification = document.getElementById('notification');
+        // Product Modal Functions
+        const modal = document.getElementById('productModal');
         
-        if (addToCartButtons.length && notification) {
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Get product info from data attributes
-                    const productName = button.dataset.name;
-                    
-                    // Add animation class
-                    button.classList.add('animating');
-                    
-                    // Update button state
-                    const icon = button.querySelector('i');
-                    const span = button.querySelector('span');
-                    icon.className = 'fas fa-check';
-                    span.textContent = 'Added';
-                    button.classList.add('added');
-                    
-                    // Reset button after 2 seconds
-                    setTimeout(() => {
-                        icon.className = 'fas fa-shopping-cart';
-                        span.textContent = 'Add to Cart';
-                        button.classList.remove('added');
-                        button.classList.remove('animating');
-                    }, 2000);
-                    
-                    // Update notification text
-                    notification.textContent = `${productName} added to cart`;
-                    
-                    // Show notification
-                    notification.classList.add('show');
-                    
-                    // Hide notification after 3 seconds
-                    setTimeout(() => {
-                        notification.classList.remove('show');
-                    }, 3000);
-                    
-                    // Increment cart count
-                    const cartCount = document.querySelector('.cart-count');
-                    if (cartCount) {
-                        cartCount.textContent = parseInt(cartCount.textContent) + 1;
-                    }
-                });
-            });
+        function showProductModal(card) {
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalPrice = document.getElementById('modalPrice');
+            const addToCartBtn = modal.querySelector('.add-to-cart-btn');
+            
+            const imageContainer = card.querySelector('.menu-card-image-container');
+            
+            modalImage.src = imageContainer.querySelector('.menu-card-image').src;
+            modalImage.alt = imageContainer.dataset.name;
+            modalTitle.textContent = imageContainer.dataset.name;
+            modalDescription.textContent = imageContainer.dataset.description;
+            modalPrice.textContent = `$${imageContainer.dataset.price}`;
+            
+            // Update add to cart button data
+            addToCartBtn.dataset.id = imageContainer.dataset.id;
+            addToCartBtn.dataset.name = imageContainer.dataset.name;
+            addToCartBtn.dataset.price = imageContainer.dataset.price;
+            
+            // Reset quantity
+            document.getElementById('quantity').textContent = '1';
+            
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = message;
+            notification.classList.add('show');
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        function updateCartCount() {
+            const cartCount = document.querySelector('.cart-count');
+            if (cartCount) {
+                cartCount.textContent = parseInt(cartCount.textContent) + 1;
+            }
+        }
+        
+        function updateButtonState(button, isQuickAdd = false) {
+            // Add animation class
+            button.classList.add('animating');
+            
+            // Update button state
+            const icon = button.querySelector('i');
+            const span = button.querySelector('span');
+            icon.className = 'fas fa-check';
+            span.textContent = 'Added';
+            button.classList.add('added');
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                icon.className = 'fas fa-shopping-cart';
+                span.textContent = isQuickAdd ? 'Quick Add' : 'Add to Cart';
+                button.classList.remove('added');
+                button.classList.remove('animating');
+            }, 2000);
+        }
+        
+        function updateQuantity(change) {
+            const quantityElement = document.getElementById('quantity');
+            let currentQuantity = parseInt(quantityElement.textContent);
+            currentQuantity = Math.max(1, currentQuantity + change); // Ensure quantity doesn't go below 1
+            quantityElement.textContent = currentQuantity;
+        }
+        
+        function addToCartFromModal(button) {
+            const quantity = parseInt(document.getElementById('quantity').textContent);
+            const price = parseFloat(button.dataset.price);
+            const totalPrice = (price * quantity).toFixed(2);
+            
+            updateButtonState(button);
+            showNotification(`Added <strong>${quantity}x ${button.dataset.name}</strong> to cart`);
+            
+            // Update cart count with quantity
+            const cartCount = document.querySelector('.cart-count');
+            if (cartCount) {
+                cartCount.textContent = parseInt(cartCount.textContent) + quantity;
+            }
+            
+            // Reset quantity after adding to cart
+            document.getElementById('quantity').textContent = '1';
+        }
+        
+        // Add to cart from card
+        function addToCartFromCard(button) {
+            updateButtonState(button, true);
+            showNotification(`Added <strong>${button.dataset.name}</strong> to cart`);
+            updateCartCount();
         }
     </script>
 </body>
