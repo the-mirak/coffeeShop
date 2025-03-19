@@ -38,7 +38,7 @@
             <div class="hero-content animate-fade-in">
                 <h1 class="hero-title">Exceptional Coffee for Exceptional Moments</h1>
                 <p class="hero-subtitle">Experience premium coffee sourced from sustainable farms around the world, crafted to perfection by our expert baristas.</p>
-                <a href="/menu" class="btn btn-accent btn-lg">Explore Menu</a>
+                <a href="/menu" class="btn btn-primary btn-lg" style="background: white; color: var(--primary-dark); border: none; padding: 1rem 2rem; font-weight: 500; border-radius: 30px; text-decoration: none; display: inline-block; transition: all 0.3s ease;">Explore Menu</a>
             </div>
         </div>
         <img src="/static/images/hero-coffee.jpg" alt="Freshly brewed coffee" class="hero-image">
@@ -130,7 +130,7 @@
                             <p>A gathering place for all</p>
                         </div>
                     </div>
-                    <a href="/about" class="btn btn-primary mt-4">Learn More</a>
+                    <a href="/about" class="btn btn-primary mt-4" style="background: var(--primary-dark); color: white; border: none; padding: 1rem 3rem; font-weight: 500; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-size: 1.1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">Learn More</a>
                 </div>
             </div>
         </div>
@@ -142,7 +142,23 @@
             <p>Stay updated with our latest offerings, events, and exclusive promotions.</p>
             <form class="newsletter-form">
                 <div class="form-group">
-                    <input type="email" placeholder="Enter your email" class="form-control" required>
+                    <div>
+                        <label class="preferences-label">Email</label>
+                        <input type="email" placeholder="Enter your email" class="form-control" required>
+                    </div>
+                    <div>
+                        <label class="preferences-label">I'm interested in</label>
+                        <select class="form-control" required>
+                            <option value="">Select your interests...</option>
+                            <option value="new_blends">New Coffee Blends & Roasts</option>
+                            <option value="seasonal_drinks">Seasonal Drink Specials</option>
+                            <option value="coffee_tastings">Coffee Tastings & Workshops</option>
+                            <option value="early_bird">Early Bird Deals (6AM-9AM)</option>
+                            <option value="pastry_updates">Fresh Pastry Updates</option>
+                            <option value="events">Coffee Club Events</option>
+                            <option value="all">All Updates</option>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-accent">Subscribe</button>
                 </div>
             </form>
@@ -160,16 +176,6 @@
                         <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
                         <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
                     </div>
-                </div>
-                
-                <div>
-                    <h3 class="footer-heading">Quick Links</h3>
-                    <ul class="footer-links">
-                        <li class="footer-link"><a href="/">Home</a></li>
-                        <li class="footer-link"><a href="/menu">Menu</a></li>
-                        <li class="footer-link"><a href="/about">About</a></li>
-                        <li class="footer-link"><a href="/contact">Contact</a></li>
-                    </ul>
                 </div>
                 
                 <div>
