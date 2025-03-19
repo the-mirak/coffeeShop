@@ -49,55 +49,62 @@
             <h2 class="text-center">Quick Order Favorites</h2>
             <div class="quick-order-grid">
                 <div class="quick-order-card">
-                    <img src="/static/images/coffee-1.jpg" alt="Espresso" class="quick-order-image">
                     <div class="quick-order-content">
-                        <h3 class="quick-order-title">Classic Espresso</h3>
-                        <p class="quick-order-description">Rich and bold single shot espresso</p>
-                        <p class="quick-order-price">$3.50</p>
-                        <div class="quick-order-actions">
-                            <button class="btn btn-sm btn-outline">Add to Cart</button>
+                        <img src="/static/images/coffee-1.jpg" alt="Espresso" class="quick-order-image">
+                        <div class="quick-order-info">
+                            <h3 class="quick-order-title">Classic Espresso</h3>
+                            <p class="quick-order-price">$3.50</p>
                         </div>
+                        <button class="quick-add-button" onclick="quickAddToCart(this)" data-name="Classic Espresso" data-price="3.50">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                 </div>
                 
                 <div class="quick-order-card">
-                    <img src="/static/images/coffee-2.jpg" alt="Latte" class="quick-order-image">
                     <div class="quick-order-content">
-                        <h3 class="quick-order-title">Vanilla Latte</h3>
-                        <p class="quick-order-description">Smooth espresso with vanilla and steamed milk</p>
-                        <p class="quick-order-price">$4.50</p>
-                        <div class="quick-order-actions">
-                            <button class="btn btn-sm btn-outline">Add to Cart</button>
+                        <img src="/static/images/coffee-2.jpg" alt="Latte" class="quick-order-image">
+                        <div class="quick-order-info">
+                            <h3 class="quick-order-title">Vanilla Latte</h3>
+                            <p class="quick-order-price">$4.50</p>
                         </div>
+                        <button class="quick-add-button" onclick="quickAddToCart(this)" data-name="Vanilla Latte" data-price="4.50">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                 </div>
                 
                 <div class="quick-order-card">
-                    <img src="/static/images/coffee-3.jpg" alt="Cappuccino" class="quick-order-image">
                     <div class="quick-order-content">
-                        <h3 class="quick-order-title">Cappuccino</h3>
-                        <p class="quick-order-description">Perfect balance of espresso, steamed milk, and foam</p>
-                        <p class="quick-order-price">$4.00</p>
-                        <div class="quick-order-actions">
-                            <button class="btn btn-sm btn-outline">Add to Cart</button>
+                        <img src="/static/images/coffee-3.jpg" alt="Cappuccino" class="quick-order-image">
+                        <div class="quick-order-info">
+                            <h3 class="quick-order-title">Cappuccino</h3>
+                            <p class="quick-order-price">$4.00</p>
                         </div>
+                        <button class="quick-add-button" onclick="quickAddToCart(this)" data-name="Cappuccino" data-price="4.00">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                 </div>
                 
                 <div class="quick-order-card">
-                    <img src="/static/images/coffee-4.jpg" alt="Americano" class="quick-order-image">
                     <div class="quick-order-content">
-                        <h3 class="quick-order-title">Americano</h3>
-                        <p class="quick-order-description">Espresso shots topped with hot water</p>
-                        <p class="quick-order-price">$3.75</p>
-                        <div class="quick-order-actions">
-                            <button class="btn btn-sm btn-outline">Add to Cart</button>
+                        <img src="/static/images/coffee-4.jpg" alt="Americano" class="quick-order-image">
+                        <div class="quick-order-info">
+                            <h3 class="quick-order-title">Americano</h3>
+                            <p class="quick-order-price">$3.75</p>
                         </div>
+                        <button class="quick-add-button" onclick="quickAddToCart(this)" data-name="Americano" data-price="3.75">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                 </div>
             </div>
             <div class="text-center mt-4">
-                <a href="/menu" class="btn btn-outline btn-lg">View Full Menu</a>
+                <a href="/menu" class="view-full-menu-btn">
+                    <span>View Full Menu</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -224,6 +231,41 @@
                 navBackdrop.classList.remove('active');
                 document.body.classList.remove('no-scroll');
             });
+        }
+        
+        // Quick Add to Cart functionality
+        function quickAddToCart(button) {
+            // Add animation class
+            button.classList.add('animating');
+            
+            // Update cart count
+            const cartCount = document.querySelector('.cart-count');
+            if (cartCount) {
+                cartCount.textContent = parseInt(cartCount.textContent) + 1;
+            }
+            
+            // Show notification
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `Added <strong>${button.dataset.name}</strong> to cart`;
+            notification.classList.add('show');
+            
+            // Change button state temporarily
+            const icon = button.querySelector('i');
+            const originalClass = icon.className;
+            icon.className = 'fas fa-check';
+            button.style.background = 'var(--success)';
+            
+            // Reset button after animation
+            setTimeout(() => {
+                icon.className = originalClass;
+                button.style.background = '';
+                button.classList.remove('animating');
+            }, 1000);
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
         }
         
         // Newsletter form submission

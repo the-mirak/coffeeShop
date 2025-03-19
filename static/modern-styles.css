@@ -972,7 +972,7 @@ select.form-control:focus {
 .quick-order-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--spacing-xl);
+    gap: var(--spacing-md);
     margin-top: var(--spacing-xl);
 }
 
@@ -980,47 +980,116 @@ select.form-control:focus {
     background-color: var(--card-bg);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
     transition: all var(--transition-normal);
 }
 
 .quick-order-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-}
-
-.quick-order-image {
-    height: 200px;
-    width: 100%;
-    object-fit: cover;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .quick-order-content {
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.quick-order-image {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.quick-order-info {
+    flex: 1;
 }
 
 .quick-order-title {
-    font-size: var(--font-size-xl);
-    margin-bottom: var(--spacing-sm);
-}
-
-.quick-order-description {
-    margin-bottom: var(--spacing-md);
-    color: var(--neutral);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-xs);
+    color: var(--primary-dark);
 }
 
 .quick-order-price {
     color: var(--accent);
     font-weight: 600;
     font-size: var(--font-size-lg);
-    margin-bottom: var(--spacing-md);
+    margin: 0;
 }
 
-.quick-order-actions {
+.quick-add-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary-dark);
+    color: white;
+    border: none;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-add-button:hover {
+    background: var(--accent);
+    transform: scale(1.1);
+}
+
+.quick-add-button i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.quick-add-button.animating {
+    animation: quickAddPulse 0.3s ease-in-out;
+}
+
+@keyframes quickAddPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.view-full-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 2rem;
+    background: transparent;
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: 2px solid var(--primary-dark);
+    border-radius: var(--radius-full);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.view-full-menu-btn i {
+    transition: transform 0.3s ease;
+}
+
+.view-full-menu-btn:hover {
+    background: var(--primary-dark);
+    color: white;
+}
+
+.view-full-menu-btn:hover i {
+    transform: translateX(4px);
 }
 
 /* About Page Styles */
