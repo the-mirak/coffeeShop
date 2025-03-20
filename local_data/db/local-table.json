@@ -16,14 +16,6 @@
     "type": "coffee"
   },
   {
-    "product_id": "8a81bcfb-514d-429d-be2e-614844b2a836",
-    "name": "Latte",
-    "description": "Coffee drink made with espresso and steamed milk.",
-    "price": "4.49",
-    "image_url": "latte.jpg",
-    "type": "Coffee"
-  },
-  {
     "product_id": "1545c9b1-a267-4c0f-a2f2-6b47cce13cc1",
     "name": "Chocolate Croissant",
     "description": "Flaky, buttery pastry filled with rich chocolate.",
@@ -38,5 +30,13 @@
     "price": "3.49",
     "image_url": "blueberry_muffin.jpg",
     "type": "pastry"
+  },
+  {
+    "product_id": "a4cdaea3-9210-4b38-8711-9ec6a61d3eb2",
+    "name": "Latte",
+    "description": "Latte Coffee drink made with espresso and steamed milk.Coffee drink made with espresso and steamed milk.",
+    "price": "4.45",
+    "image_url": "latte",
+    "type": "Coffee"
   }
 ]
