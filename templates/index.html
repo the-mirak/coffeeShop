@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header class="header">
+<body class="home-page">
+    <header class="header transparent" id="header">
         <div class="container">
             <nav class="nav">
                 <a href="/" class="logo">
@@ -26,22 +26,27 @@
                 <div class="nav-actions">
                     <div class="cart-icon">
                         <i class="fas fa-shopping-bag"></i>
-                        <span class="cart-count">0</span>
+                        <span class="cart-count"></span>
                     </div>
                 </div>
             </nav>
         </div>
     </header>
     
-    <section class="hero">
-        <div class="container">
+    <section class="hero fullscreen-hero">
+        <div class="hero-content-wrapper">
             <div class="hero-content animate-fade-in">
                 <h1 class="hero-title">Exceptional Coffee for Exceptional Moments</h1>
                 <p class="hero-subtitle">Experience premium coffee sourced from sustainable farms around the world, crafted to perfection by our expert baristas.</p>
                 <a href="/menu" class="btn btn-primary btn-lg" style="background: white; color: var(--primary-dark); border: none; padding: 1rem 2rem; font-weight: 500; border-radius: 30px; text-decoration: none; display: inline-block; transition: all 0.3s ease;">Explore Menu</a>
             </div>
         </div>
-        <img src="/static/images/hero-coffee.jpg" alt="Freshly brewed coffee" class="hero-image">
+        <div class="hero-image-container">
+            <img src="/static/images/hero-coffee.jpg" alt="Freshly brewed coffee" class="hero-image">
+        </div>
+        <div class="scroll-arrow" id="scrollArrow">
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </section>
     
     <section class="quick-order-section">
@@ -233,6 +238,40 @@
             });
         }
         
+        // Header scroll effect for home page
+        if (document.body.classList.contains('home-page')) {
+            const header = document.getElementById('header');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.remove('transparent');
+                } else {
+                    header.classList.add('transparent');
+                }
+            });
+        }
+        
+        // Scroll arrow functionality
+        const scrollArrow = document.getElementById('scrollArrow');
+        if (scrollArrow) {
+            scrollArrow.addEventListener('click', () => {
+                const heroHeight = document.querySelector('.hero').offsetHeight;
+                window.scrollTo({
+                    top: heroHeight,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Hide scroll arrow on scroll
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 150) {
+                    scrollArrow.style.opacity = '0';
+                } else {
+                    scrollArrow.style.opacity = '1';
+                }
+            });
+        }
+        
         // Quick Add to Cart functionality
         function quickAddToCart(button) {
             // Add animation class
@@ -244,28 +283,35 @@
                 cartCount.textContent = parseInt(cartCount.textContent) + 1;
             }
             
+            // Get product name for notification
+            const productName = button.dataset.name || 'Product';
+            
             // Show notification
             const notification = document.getElementById('notification');
-            notification.innerHTML = `Added <strong>${button.dataset.name}</strong> to cart`;
-            notification.classList.add('show');
+            if (notification) {
+                notification.innerHTML = `Added <strong>${productName}</strong> to cart`;
+                notification.classList.add('show');
+                
+                // Hide notification after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
             
             // Change button state temporarily
             const icon = button.querySelector('i');
-            const originalClass = icon.className;
-            icon.className = 'fas fa-check';
-            button.style.background = 'var(--success)';
-            
-            // Reset button after animation
-            setTimeout(() => {
-                icon.className = originalClass;
-                button.style.background = '';
-                button.classList.remove('animating');
-            }, 1000);
-            
-            // Hide notification after 3 seconds
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+            if (icon) {
+                const originalClass = icon.className;
+                icon.className = 'fas fa-check';
+                button.style.background = 'var(--success)';
+                
+                // Reset button after animation
+                setTimeout(() => {
+                    icon.className = originalClass;
+                    button.style.background = '';
+                    button.classList.remove('animating');
+                }, 1000);
+            }
         }
         
         // Newsletter form submission
@@ -274,12 +320,16 @@
             newsletterForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const notification = document.getElementById('notification');
-                notification.textContent = 'Thank you for subscribing!';
-                notification.classList.add('show');
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 3000);
-                newsletterForm.reset();
+                if (notification) {
+                    notification.innerHTML = '<i class="fas fa-check-circle"></i> Thank you for subscribing!';
+                    notification.classList.add('show', 'notification-success');
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 3000);
+                    
+                    newsletterForm.reset();
+                }
             });
         }
     </script>
