@@ -227,9 +227,9 @@
         const scrollArrow = document.getElementById('scrollArrow');
         if (scrollArrow) {
             scrollArrow.addEventListener('click', () => {
-                const heroHeight = document.querySelector('.hero').offsetHeight;
+                const headerHeight = document.getElementById('header').offsetHeight;
                 window.scrollTo({
-                    top: heroHeight,
+                    top: window.innerHeight - headerHeight,
                     behavior: 'smooth'
                 });
             });
