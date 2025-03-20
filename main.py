@@ -177,7 +177,7 @@ async def create_product(request: Request, name: str = Form(...), description: s
         table.put_item(Item=item)
 
         logger.info("Successfully created product: %s", item)
-        return RedirectResponse(url="/admin/products?msg=Product added successfully", status_code=303)
+        return RedirectResponse(url="/admin?section=products&msg=Product added successfully", status_code=303)
 
     except Exception as e:
         logger.error("Error creating product: %s", str(e))
@@ -222,14 +222,14 @@ async def update_product(request: Request, product_id: str, name: str = Form(...
         ExpressionAttributeNames=expression_attribute_names
     )
     
-    return RedirectResponse(url="/admin/products?msg=Product updated successfully", status_code=303)
+    return RedirectResponse(url="/admin?section=products&msg=Product updated successfully", status_code=303)
 
 # Delete a product
 @app.post("/delete/{product_id}")
 async def delete_product(request: Request, product_id: str):
     try:
         table.delete_item(Key={'product_id': product_id})
-        return RedirectResponse(url="/admin/products?msg=Product deleted successfully", status_code=303)
+        return RedirectResponse(url="/admin?section=products&msg=Product deleted successfully", status_code=303)
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error deleting product")
 
