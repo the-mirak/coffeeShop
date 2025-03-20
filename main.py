@@ -117,6 +117,16 @@ async def admin_products(request: Request):
         product['image_url'] = generate_presigned_url(product['image_url'])
     return templates.TemplateResponse("admin_products.html", {"request": request, "products": products})
 
+# Alternate route for admin products (for AWS compatibility)
+@app.get("/admin-products", response_class=HTMLResponse)
+async def admin_products_alt(request: Request):
+    response = table.scan()
+    products = response.get('Items', [])
+    # Generate presigned URLs for images
+    for product in products:
+        product['image_url'] = generate_presigned_url(product['image_url'])
+    return templates.TemplateResponse("admin_products.html", {"request": request, "products": products})
+
 # Add product page
 @app.get("/add", response_class=HTMLResponse)
 async def add_product_page(request: Request):

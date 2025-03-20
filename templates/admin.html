@@ -913,7 +913,7 @@
                     </a>
                 </li>
                 <li class="admin-nav-item">
-                    <a href="/admin/products" class="admin-nav-link">
+                    <a href="/admin/products" class="admin-nav-link" onclick="navigateToProducts(event)">
                         <i class="fas fa-coffee"></i>
                         <span>Products</span>
                     </a>
@@ -1333,6 +1333,26 @@
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);
+        }
+        
+        // Function to handle products navigation - tries both URLs
+        function navigateToProducts(event) {
+            event.preventDefault();
+            
+            // Try to fetch the /admin/products URL first
+            fetch('/admin/products')
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/admin/products';
+                    } else {
+                        // If that fails, try the alternate URL
+                        window.location.href = '/admin-products';
+                    }
+                })
+                .catch(error => {
+                    // If an error occurs, try the alternate URL
+                    window.location.href = '/admin-products';
+                });
         }
     </script>
 </body>

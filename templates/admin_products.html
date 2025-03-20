@@ -625,6 +625,153 @@
                 showMessage(urlParams.get('msg'));
             }
         };
+
+        // Mobile navigation toggle
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const nav = document.getElementById('nav');
+        const navBackdrop = document.getElementById('nav-backdrop');
+        
+        if (mobileNavToggle && nav && navBackdrop) {
+            mobileNavToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                navBackdrop.classList.toggle('active');
+                document.body.classList.toggle('no-scroll');
+            });
+            
+            navBackdrop.addEventListener('click', () => {
+                nav.classList.remove('active');
+                navBackdrop.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            });
+        }
+        
+        // Admin sidebar toggle
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const adminSidebar = document.getElementById('adminSidebar');
+        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+        
+        if (toggleSidebar && adminSidebar && sidebarBackdrop) {
+            toggleSidebar.addEventListener('click', () => {
+                adminSidebar.classList.toggle('active');
+                sidebarBackdrop.classList.toggle('active');
+            });
+            
+            sidebarBackdrop.addEventListener('click', () => {
+                adminSidebar.classList.remove('active');
+                sidebarBackdrop.classList.remove('active');
+            });
+        }
+        
+        // Category filter
+        const categoryPills = document.querySelectorAll('.category-filter .category-pill');
+        const productItems = document.querySelectorAll('.product-item');
+        
+        if (categoryPills.length && productItems.length) {
+            categoryPills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    // Remove active class from all pills
+                    categoryPills.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to clicked pill
+                    pill.classList.add('active');
+                    
+                    const category = pill.dataset.category;
+                    
+                    // Show/hide product items based on category
+                    productItems.forEach(item => {
+                        if (category === 'all' || item.dataset.category === category) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Product search functionality
+        const searchInput = document.getElementById('productSearch');
+        const productListBody = document.getElementById('productListBody');
+        
+        if (searchInput && productListBody) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const items = productListBody.querySelectorAll('.product-item');
+                
+                items.forEach(item => {
+                    const name = item.querySelector('.name-col').textContent.toLowerCase();
+                    const price = item.querySelector('.price-col').textContent.toLowerCase();
+                    const type = item.querySelector('.type-col').textContent.toLowerCase();
+                    const description = item.querySelector('.desc-col').textContent.toLowerCase();
+                    
+                    if (name.includes(searchTerm) || 
+                        price.includes(searchTerm) || 
+                        type.includes(searchTerm) || 
+                        description.includes(searchTerm)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
+        
+        // Delete confirmation modal
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteForm = document.getElementById('deleteForm');
+        const cancelDelete = document.getElementById('cancelDelete');
+        const closeModal = document.querySelector('.close-modal');
+        
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productId = this.dataset.id;
+                deleteForm.action = `/delete/${productId}`;
+                deleteModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        if (cancelDelete) {
+            cancelDelete.addEventListener('click', function() {
+                deleteModal.classList.remove('show');
+                document.body.style.overflow = '';
+            });
+        }
+        
+        if (closeModal) {
+            closeModal.addEventListener('click', function() {
+                deleteModal.classList.remove('show');
+                document.body.style.overflow = '';
+            });
+        }
+        
+        // Close modal when clicking outside
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                deleteModal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Function to handle dashboard navigation
+        function navigateToDashboard(event) {
+            event.preventDefault();
+            
+            // Try to fetch the /admin URL first
+            fetch('/admin')
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/admin';
+                    } else {
+                        // If that fails, try an alternate URL if needed
+                        console.error('Admin dashboard URL not working');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error navigating to dashboard:', error);
+                });
+        }
     </script>
 </head>
 <body>
@@ -665,7 +812,7 @@
             
             <ul class="admin-nav">
                 <li class="admin-nav-item">
-                    <a href="/admin" class="admin-nav-link">
+                    <a href="/admin" class="admin-nav-link" onclick="navigateToDashboard(event)">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
@@ -813,135 +960,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Mobile navigation toggle
-        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
-        const nav = document.getElementById('nav');
-        const navBackdrop = document.getElementById('nav-backdrop');
-        
-        if (mobileNavToggle && nav && navBackdrop) {
-            mobileNavToggle.addEventListener('click', () => {
-                nav.classList.toggle('active');
-                navBackdrop.classList.toggle('active');
-                document.body.classList.toggle('no-scroll');
-            });
-            
-            navBackdrop.addEventListener('click', () => {
-                nav.classList.remove('active');
-                navBackdrop.classList.remove('active');
-                document.body.classList.remove('no-scroll');
-            });
-        }
-        
-        // Admin sidebar toggle
-        const toggleSidebar = document.getElementById('toggleSidebar');
-        const adminSidebar = document.getElementById('adminSidebar');
-        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
-        
-        if (toggleSidebar && adminSidebar && sidebarBackdrop) {
-            toggleSidebar.addEventListener('click', () => {
-                adminSidebar.classList.toggle('active');
-                sidebarBackdrop.classList.toggle('active');
-            });
-            
-            sidebarBackdrop.addEventListener('click', () => {
-                adminSidebar.classList.remove('active');
-                sidebarBackdrop.classList.remove('active');
-            });
-        }
-        
-        // Category filter
-        const categoryPills = document.querySelectorAll('.category-filter .category-pill');
-        const productItems = document.querySelectorAll('.product-item');
-        
-        if (categoryPills.length && productItems.length) {
-            categoryPills.forEach(pill => {
-                pill.addEventListener('click', () => {
-                    // Remove active class from all pills
-                    categoryPills.forEach(p => p.classList.remove('active'));
-                    
-                    // Add active class to clicked pill
-                    pill.classList.add('active');
-                    
-                    const category = pill.dataset.category;
-                    
-                    // Show/hide product items based on category
-                    productItems.forEach(item => {
-                        if (category === 'all' || item.dataset.category === category) {
-                            item.style.display = 'flex';
-                        } else {
-                            item.style.display = 'none';
-                        }
-                    });
-                });
-            });
-        }
-        
-        // Product search functionality
-        const searchInput = document.getElementById('productSearch');
-        const productListBody = document.getElementById('productListBody');
-        
-        if (searchInput && productListBody) {
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                const items = productListBody.querySelectorAll('.product-item');
-                
-                items.forEach(item => {
-                    const name = item.querySelector('.name-col').textContent.toLowerCase();
-                    const price = item.querySelector('.price-col').textContent.toLowerCase();
-                    const type = item.querySelector('.type-col').textContent.toLowerCase();
-                    const description = item.querySelector('.desc-col').textContent.toLowerCase();
-                    
-                    if (name.includes(searchTerm) || 
-                        price.includes(searchTerm) || 
-                        type.includes(searchTerm) || 
-                        description.includes(searchTerm)) {
-                        item.style.display = 'flex';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        }
-        
-        // Delete confirmation modal
-        const deleteButtons = document.querySelectorAll('.delete-btn');
-        const deleteModal = document.getElementById('deleteModal');
-        const deleteForm = document.getElementById('deleteForm');
-        const cancelDelete = document.getElementById('cancelDelete');
-        const closeModal = document.querySelector('.close-modal');
-        
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const productId = this.dataset.id;
-                deleteForm.action = `/delete/${productId}`;
-                deleteModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-        
-        if (cancelDelete) {
-            cancelDelete.addEventListener('click', function() {
-                deleteModal.classList.remove('show');
-                document.body.style.overflow = '';
-            });
-        }
-        
-        if (closeModal) {
-            closeModal.addEventListener('click', function() {
-                deleteModal.classList.remove('show');
-                document.body.style.overflow = '';
-            });
-        }
-        
-        // Close modal when clicking outside
-        deleteModal.addEventListener('click', function(e) {
-            if (e.target === this) {
-                deleteModal.classList.remove('show');
-                document.body.style.overflow = '';
-            }
-        });
-    </script>
 </body>
 </html> 
