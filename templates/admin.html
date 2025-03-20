@@ -7,6 +7,852 @@
     <link rel="stylesheet" href="/static/modern-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Admin-specific styles */
+        .admin-container {
+            display: flex;
+            min-height: calc(100vh - 4rem);
+            background-color: #f8f9fa;
+        }
+        
+        /* Admin header styles */
+        .admin-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-dark);
+            font-weight: 500;
+            background-color: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .admin-user i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .placeholder-div {
+            width: 80px;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background: linear-gradient(to bottom, var(--primary-dark), #2c3e50);
+            color: white;
+            padding: 2rem 0;
+            position: fixed;
+            height: calc(100vh - 4rem);
+            overflow-y: auto;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .admin-sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-nav {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .admin-nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .admin-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .admin-nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .admin-nav-link.active {
+            background-color: var(--accent);
+            color: white;
+            border-left: 3px solid white;
+        }
+        
+        .admin-nav-link i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+            margin-left: 250px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .admin-title {
+            font-size: 1.75rem;
+            margin: 0;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-dark), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .stat-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            background: var(--secondary-light);
+            color: var(--primary-dark);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            color: var(--neutral);
+            font-size: 0.9rem;
+        }
+        
+        .stat-change {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .stat-change.positive {
+            color: var(--success);
+        }
+        
+        .stat-change.negative {
+            color: var(--error);
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(215, 109, 58, 0.15);
+            outline: none;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral);
+        }
+        
+        .toggle-sidebar {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 991px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 100;
+            }
+            
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .admin-content {
+                margin-left: 0;
+            }
+            
+            .toggle-sidebar {
+                display: block;
+            }
+            
+            .admin-sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 99;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+            
+            .admin-sidebar-backdrop.active {
+                opacity: 1;
+                pointer-events: all;
+            }
+        }
+        
+        /* Product list styles */
+        .product-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        
+        .category-pill {
+            background-color: var(--secondary-light);
+            color: var(--primary-dark);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-pill:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .category-pill.active {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .product-list {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .product-list-header {
+            display: flex;
+            background-color: var(--primary-dark);
+            color: white;
+            font-weight: 600;
+            padding: 1rem;
+        }
+        
+        .product-list-col {
+            padding: 0.75rem;
+        }
+        
+        .image-col {
+            flex: 0 0 100px;
+        }
+        
+        .name-col {
+            flex: 1;
+        }
+        
+        .price-col {
+            flex: 0 0 80px;
+            text-align: right;
+        }
+        
+        .type-col {
+            flex: 0 0 120px;
+            text-align: center;
+        }
+        
+        .desc-col {
+            flex: 2;
+        }
+        
+        .actions-col {
+            flex: 0 0 100px;
+            text-align: center;
+        }
+        
+        .product-item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+        
+        .product-item:hover {
+            background-color: var(--secondary-light);
+        }
+        
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .product-image-placeholder {
+            width: 80px;
+            height: 80px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .product-image-placeholder i {
+            color: #ccc;
+            font-size: 1.5rem;
+        }
+        
+        .category-chip {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            background-color: var(--secondary-light);
+            color: var(--primary-dark);
+        }
+        
+        .category-chip.coffee {
+            background-color: #e6f7ff;
+            color: #0090e0;
+        }
+        
+        .category-chip.tea {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .category-chip.pastry {
+            background-color: #fff2e9;
+            color: #fa8c16;
+        }
+        
+        .category-chip.dessert {
+            background-color: #f9f0ff;
+            color: #722ed1;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .btn-icon.edit {
+            background-color: var(--accent);
+        }
+        
+        .btn-icon.delete {
+            background-color: var(--error);
+        }
+        
+        .btn-icon:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 0;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        
+        .empty-state-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--secondary-light);
+            color: var(--primary-dark);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .time-range-select {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .time-range-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(215, 109, 58, 0.15);
+        }
+        
+        .dashboard-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .dashboard-card {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dashboard-card-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: #f8f9fa;
+        }
+        
+        .dashboard-card-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .dashboard-card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .dashboard-card-body {
+            padding: 1.5rem;
+            flex: 1;
+        }
+        
+        /* Sales Chart */
+        .chart-container {
+            height: 220px;
+            position: relative;
+        }
+        
+        .chart-placeholder {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 100%;
+            padding-bottom: 30px;
+        }
+        
+        .chart-bar {
+            width: calc(100% / 7 - 8px);
+            background: linear-gradient(to top, var(--accent), #e67e22);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(215, 109, 58, 0.2);
+        }
+        
+        .chart-bar:hover {
+            transform: scaleY(1.05);
+            box-shadow: 0 4px 15px rgba(215, 109, 58, 0.3);
+        }
+        
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        
+        .chart-labels span {
+            font-size: 0.85rem;
+            color: var(--neutral);
+            text-align: center;
+            width: calc(100% / 7);
+        }
+        
+        /* Popular Products */
+        .popular-products-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .popular-product-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .popular-product-item:last-child {
+            border-bottom: none;
+        }
+        
+        .popular-product-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .popular-product-rank {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            border-radius: 50%;
+            font-weight: 600;
+            margin-right: 1rem;
+            color: var(--primary-dark);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .popular-product-info {
+            flex: 1;
+        }
+        
+        .popular-product-name {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .popular-product-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .popular-product-category.coffee {
+            background-color: #e6f7ff;
+            color: #0090e0;
+        }
+        
+        .popular-product-category.tea {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .popular-product-category.pastry {
+            background-color: #fff2e9;
+            color: #fa8c16;
+        }
+        
+        .popular-product-sales {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        /* Recent Orders */
+        .recent-orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .recent-order-item {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .recent-order-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .recent-order-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        
+        .recent-order-id {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .recent-order-customer {
+            color: var(--neutral);
+        }
+        
+        .recent-order-products {
+            margin-bottom: 0.75rem;
+            color: var(--neutral);
+            flex: 1;
+        }
+        
+        .recent-order-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .recent-order-price {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .recent-order-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .recent-order-status.complete {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .recent-order-status.processing {
+            background-color: #e6f7ff;
+            color: #0090e0;
+        }
+        
+        .view-all-link {
+            color: var(--accent);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .view-all-link:hover {
+            color: #e67e22;
+            transform: translateX(3px);
+        }
+        
+        /* Inventory Status */
+        .inventory-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .inventory-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .inventory-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .inventory-item-name {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .inventory-item-percentage {
+            font-weight: 500;
+        }
+        
+        .percentage-ok {
+            color: #52c41a;
+        }
+        
+        .percentage-warning {
+            color: #fa8c16;
+        }
+        
+        .percentage-danger {
+            color: #f5222d;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #f5f5f5;
+            border-radius: 50px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-fill.ok {
+            background-color: #52c41a;
+            box-shadow: 0 2px 8px rgba(82, 196, 26, 0.2);
+        }
+        
+        .progress-fill.warning {
+            background-color: #fa8c16;
+            box-shadow: 0 2px 8px rgba(250, 140, 22, 0.2);
+        }
+        
+        .progress-fill.danger {
+            background-color: #f5222d;
+            box-shadow: 0 2px 8px rgba(245, 34, 45, 0.2);
+        }
+        
+        /* Time range selector */
+        .time-range-select {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background-color: white;
+            padding: 0.5rem;
+            border-radius: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .time-range-option {
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--neutral);
+        }
+        
+        .time-range-option:hover {
+            color: var(--primary-dark);
+        }
+        
+        .time-range-option.active {
+            background-color: var(--accent);
+            color: white;
+            box-shadow: 0 2px 8px rgba(215, 109, 58, 0.2);
+        }
+        
+        .btn-icon-sm {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            color: var(--neutral);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .btn-icon-sm:hover, .btn-icon-sm.active {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(215, 109, 58, 0.25);
+        }
+    </style>
     <script>
         function showMessage(msg) {
             const popup = document.createElement('div');
@@ -32,147 +878,351 @@
     </script>
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
-        <div class="container nav-container">
-            <a href="/" class="logo">
-                <i class="fas fa-coffee"></i>
-                <span>Brew Haven</span>
-            </a>
-            
-            <button class="mobile-nav-toggle" id="mobile-nav-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <nav class="nav" id="nav">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/menu" class="nav-link">Menu</a>
-                <a href="/about" class="nav-link">About</a>
-                <a href="/contact" class="nav-link">Contact</a>
-                <a href="/admin" class="nav-link active">Admin</a>
+        <div class="container">
+            <nav class="nav admin-nav-bar">
+                <div class="admin-user">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Admin</span>
+                </div>
+                
+                <a href="/" class="logo">
+                    <i class="fas fa-coffee"></i>
+                    <span>Brew Haven</span>
+                </a>
+                
+                <div class="placeholder-div"></div>
             </nav>
-            
-            <div class="nav-backdrop" id="nav-backdrop"></div>
         </div>
     </header>
     
-    <section class="section" style="padding-top: 3rem;">
-        <div class="container">
-            <div class="mb-4 text-center">
-                <h1 class="section-title">Admin Dashboard</h1>
-                <p>Manage your products and inventory</p>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="admin-sidebar-header">
+                <div class="admin-sidebar-title">Admin Panel</div>
+                <small>Welcome back, Admin</small>
             </div>
             
-            <div class="mb-4 text-center">
-                <a href="/add" class="btn btn-accent">
-                    <i class="fas fa-plus"></i> Add New Product
-                </a>
-            </div>
-            
-            <div class="category-filter mb-4">
-                <div class="category-pill active" data-category="all">All</div>
-                <div class="category-pill" data-category="coffee">Coffee</div>
-                <div class="category-pill" data-category="tea">Tea</div>
-                <div class="category-pill" data-category="pastry">Pastries</div>
-                <div class="category-pill" data-category="dessert">Desserts</div>
-            </div>
-            
-            {% if products %}
-            <div class="table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Type</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in products %}
-                        <tr data-category="{{ product.type }}">
-                            <td>
-                                {% if product.image_url %}
-                                <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
-                                {% else %}
-                                <div style="width: 80px; height: 80px; background-color: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-image" style="color: #ccc; font-size: 1.5rem;"></i>
-                                </div>
-                                {% endif %}
-                            </td>
-                            <td>{{ product.name }}</td>
-                            <td>${{ product.price }}</td>
-                            <td>
-                                <span class="category-pill" style="cursor: default;">
-                                    {{ product.type }}
-                                </span>
-                            </td>
-                            <td>{{ product.description | truncate(50) }}</td>
-                            <td class="table-actions">
-                                <a href="/edit/{{ product.product_id }}" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                <form action="/delete/{{ product.product_id }}" method="post" onsubmit="return confirm('Are you sure you want to delete this product?');" style="display: inline;">
-                                    <button type="submit" class="btn btn-sm" style="background-color: var(--error);">
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% else %}
-            <div class="text-center" style="padding: 3rem 0;">
-                <i class="fas fa-coffee" style="font-size: 3rem; color: var(--text-light); margin-bottom: 1rem;"></i>
-                <h3>No products yet</h3>
-                <p>Start by adding your first product</p>
-                <a href="/add" class="btn btn-accent mt-3">
-                    <i class="fas fa-plus"></i> Add Product
-                </a>
-            </div>
-            {% endif %}
-        </div>
-    </section>
-    
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
+            <ul class="admin-nav">
+                <li class="admin-nav-item">
+                    <a href="/admin" class="admin-nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/products" class="admin-nav-link">
+                        <i class="fas fa-coffee"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/orders" class="admin-nav-link">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/customers" class="admin-nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Customers</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/analytics" class="admin-nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/settings" class="admin-nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/logout" class="admin-nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        
+        <div class="admin-sidebar-backdrop" id="sidebarBackdrop"></div>
+        
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="admin-header">
                 <div>
-                    <h3 class="footer-heading">Brew Haven</h3>
-                    <p>Exceptional coffee for exceptional moments.</p>
-                    <div class="social-links mt-3">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <button class="toggle-sidebar" id="toggleSidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="admin-title">Dashboard</h1>
+                </div>
+                
+                <div class="admin-actions">
+                    <select class="time-range-select">
+                        <option value="today">Today</option>
+                        <option value="week" selected>This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="year">This Year</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart fa-lg"></i>
+                    </div>
+                    <div class="stat-value">154</div>
+                    <div class="stat-label">Total Orders</div>
+                    <div class="stat-change positive">+12% from last week</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e6f7ff; color: #0090e0;">
+                        <i class="fas fa-dollar-sign fa-lg"></i>
+                    </div>
+                    <div class="stat-value">$1,254</div>
+                    <div class="stat-label">Revenue</div>
+                    <div class="stat-change positive">+8% from last week</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #fff2e9; color: #fa8c16;">
+                        <i class="fas fa-user-friends fa-lg"></i>
+                    </div>
+                    <div class="stat-value">38</div>
+                    <div class="stat-label">New Customers</div>
+                    <div class="stat-change positive">+5% from last week</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #f6ffed; color: #52c41a;">
+                        <i class="fas fa-coffee fa-lg"></i>
+                    </div>
+                    <div class="stat-value">420</div>
+                    <div class="stat-label">Cups Served</div>
+                    <div class="stat-change positive">+15% from last week</div>
+                </div>
+            </div>
+            
+            <!-- Sales Chart -->
+            <div class="dashboard-row">
+                <div class="dashboard-card sales-chart">
+                    <div class="dashboard-card-header">
+                        <h3>Sales Overview</h3>
+                        <div class="dashboard-card-actions">
+                            <button class="btn-icon-sm active" data-period="weekly">
+                                <i class="fas fa-calendar-week"></i>
+                            </button>
+                            <button class="btn-icon-sm" data-period="monthly">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card-body">
+                        <div class="chart-container">
+                            <div class="chart-placeholder">
+                                <div class="chart-bar" style="height: 30%"></div>
+                                <div class="chart-bar" style="height: 45%"></div>
+                                <div class="chart-bar" style="height: 70%"></div>
+                                <div class="chart-bar" style="height: 55%"></div>
+                                <div class="chart-bar" style="height: 60%"></div>
+                                <div class="chart-bar" style="height: 75%"></div>
+                                <div class="chart-bar" style="height: 85%"></div>
+                            </div>
+                            <div class="chart-labels">
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                                <span>Sun</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div>
-                    <h3 class="footer-heading">Contact Us</h3>
-                    <ul class="footer-links">
-                        <li class="footer-link">123 Coffee Street, Beantown</li>
-                        <li class="footer-link">(123) 456-7890</li>
-                        <li class="footer-link">hello@brewhaven.com</li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="footer-heading">Opening Hours</h3>
-                    <ul class="footer-links">
-                        <li class="footer-link">Monday - Friday: 7am - 8pm</li>
-                        <li class="footer-link">Saturday - Sunday: 8am - 6pm</li>
-                    </ul>
+                <div class="dashboard-card popular-products">
+                    <div class="dashboard-card-header">
+                        <h3>Popular Products</h3>
+                    </div>
+                    <div class="dashboard-card-body">
+                        <ul class="popular-products-list">
+                            <li class="popular-product-item">
+                                <div class="popular-product-rank">1</div>
+                                <div class="popular-product-info">
+                                    <span class="popular-product-name">Cappuccino</span>
+                                    <span class="popular-product-category coffee">Coffee</span>
+                                </div>
+                                <div class="popular-product-sales">143 sold</div>
+                            </li>
+                            <li class="popular-product-item">
+                                <div class="popular-product-rank">2</div>
+                                <div class="popular-product-info">
+                                    <span class="popular-product-name">Chocolate Croissant</span>
+                                    <span class="popular-product-category pastry">Pastry</span>
+                                </div>
+                                <div class="popular-product-sales">98 sold</div>
+                            </li>
+                            <li class="popular-product-item">
+                                <div class="popular-product-rank">3</div>
+                                <div class="popular-product-info">
+                                    <span class="popular-product-name">Latte</span>
+                                    <span class="popular-product-category coffee">Coffee</span>
+                                </div>
+                                <div class="popular-product-sales">87 sold</div>
+                            </li>
+                            <li class="popular-product-item">
+                                <div class="popular-product-rank">4</div>
+                                <div class="popular-product-info">
+                                    <span class="popular-product-name">Green Tea</span>
+                                    <span class="popular-product-category tea">Tea</span>
+                                </div>
+                                <div class="popular-product-sales">65 sold</div>
+                            </li>
+                            <li class="popular-product-item">
+                                <div class="popular-product-rank">5</div>
+                                <div class="popular-product-info">
+                                    <span class="popular-product-name">Blueberry Muffin</span>
+                                    <span class="popular-product-category pastry">Pastry</span>
+                                </div>
+                                <div class="popular-product-sales">52 sold</div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
-            <div class="copyright">
-                <p>&copy; 2024 Brew Haven. All rights reserved.</p>
+            <!-- Recent Orders & Inventory Status -->
+            <div class="dashboard-row">
+                <div class="dashboard-card recent-orders">
+                    <div class="dashboard-card-header">
+                        <h3>Recent Orders</h3>
+                        <a href="/admin/orders" class="view-all-link">View All <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="dashboard-card-body">
+                        <div class="recent-orders-list">
+                            <div class="recent-order-item">
+                                <div class="recent-order-info">
+                                    <div class="recent-order-id">#1234</div>
+                                    <div class="recent-order-customer">John D.</div>
+                                </div>
+                                <div class="recent-order-products">2× Cappuccino, 1× Chocolate Croissant</div>
+                                <div class="recent-order-details">
+                                    <div class="recent-order-price">$15.47</div>
+                                    <div class="recent-order-status complete">Complete</div>
+                                </div>
+                            </div>
+                            <div class="recent-order-item">
+                                <div class="recent-order-info">
+                                    <div class="recent-order-id">#1233</div>
+                                    <div class="recent-order-customer">Emma S.</div>
+                                </div>
+                                <div class="recent-order-products">1× Latte, 1× Blueberry Muffin</div>
+                                <div class="recent-order-details">
+                                    <div class="recent-order-price">$9.98</div>
+                                    <div class="recent-order-status complete">Complete</div>
+                                </div>
+                            </div>
+                            <div class="recent-order-item">
+                                <div class="recent-order-info">
+                                    <div class="recent-order-id">#1232</div>
+                                    <div class="recent-order-customer">Mike T.</div>
+                                </div>
+                                <div class="recent-order-products">1× Green Tea, 2× Chocolate Croissant</div>
+                                <div class="recent-order-details">
+                                    <div class="recent-order-price">$12.97</div>
+                                    <div class="recent-order-status processing">Processing</div>
+                                </div>
+                            </div>
+                            <div class="recent-order-item">
+                                <div class="recent-order-info">
+                                    <div class="recent-order-id">#1231</div>
+                                    <div class="recent-order-customer">Sarah J.</div>
+                                </div>
+                                <div class="recent-order-products">2× Cappuccino</div>
+                                <div class="recent-order-details">
+                                    <div class="recent-order-price">$9.98</div>
+                                    <div class="recent-order-status processing">Processing</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card inventory-status">
+                    <div class="dashboard-card-header">
+                        <h3>Inventory Status</h3>
+                    </div>
+                    <div class="dashboard-card-body">
+                        <div class="inventory-item">
+                            <div class="inventory-item-info">
+                                <span class="inventory-item-name">Coffee Beans (Arabica)</span>
+                                <div class="inventory-item-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill ok" style="width: 65%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inventory-item-status ok">65%</div>
+                        </div>
+                        <div class="inventory-item">
+                            <div class="inventory-item-info">
+                                <span class="inventory-item-name">Milk</span>
+                                <div class="inventory-item-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill warning" style="width: 45%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inventory-item-status warning">45%</div>
+                        </div>
+                        <div class="inventory-item">
+                            <div class="inventory-item-info">
+                                <span class="inventory-item-name">Chocolate</span>
+                                <div class="inventory-item-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill ok" style="width: 80%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inventory-item-status ok">80%</div>
+                        </div>
+                        <div class="inventory-item">
+                            <div class="inventory-item-info">
+                                <span class="inventory-item-name">Tea Leaves (Green)</span>
+                                <div class="inventory-item-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill danger" style="width: 20%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inventory-item-status danger">20%</div>
+                        </div>
+                        <div class="inventory-item">
+                            <div class="inventory-item-info">
+                                <span class="inventory-item-name">Pastry Flour</span>
+                                <div class="inventory-item-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill ok" style="width: 55%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inventory-item-status ok">55%</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </footer>
+        </main>
+    </div>
     
     <div class="notification notification-success" id="notification">
         {% if request.query_params.get('msg') %}
@@ -181,7 +1231,7 @@
     </div>
     
     <script>
-        // Mobile navigation
+        // Mobile navigation toggle
         const mobileNavToggle = document.getElementById('mobile-nav-toggle');
         const nav = document.getElementById('nav');
         const navBackdrop = document.getElementById('nav-backdrop');
@@ -200,11 +1250,28 @@
             });
         }
         
+        // Admin sidebar toggle
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const adminSidebar = document.getElementById('adminSidebar');
+        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+        
+        if (toggleSidebar && adminSidebar && sidebarBackdrop) {
+            toggleSidebar.addEventListener('click', () => {
+                adminSidebar.classList.toggle('active');
+                sidebarBackdrop.classList.toggle('active');
+            });
+            
+            sidebarBackdrop.addEventListener('click', () => {
+                adminSidebar.classList.remove('active');
+                sidebarBackdrop.classList.remove('active');
+            });
+        }
+        
         // Category filter
         const categoryPills = document.querySelectorAll('.category-filter .category-pill');
-        const tableRows = document.querySelectorAll('table tr[data-category]');
+        const productItems = document.querySelectorAll('.product-item');
         
-        if (categoryPills.length && tableRows.length) {
+        if (categoryPills.length && productItems.length) {
             categoryPills.forEach(pill => {
                 pill.addEventListener('click', () => {
                     // Remove active class from all pills
@@ -215,14 +1282,41 @@
                     
                     const category = pill.dataset.category;
                     
-                    // Show/hide table rows based on category
-                    tableRows.forEach(row => {
-                        if (category === 'all' || row.dataset.category === category) {
-                            row.style.display = 'table-row';
+                    // Show/hide product items based on category
+                    productItems.forEach(item => {
+                        if (category === 'all' || item.dataset.category === category) {
+                            item.style.display = 'flex';
                         } else {
-                            row.style.display = 'none';
+                            item.style.display = 'none';
                         }
                     });
+                });
+            });
+        }
+        
+        // Product search functionality
+        const searchInput = document.getElementById('productSearch');
+        const productListBody = document.getElementById('productListBody');
+        
+        if (searchInput && productListBody) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const items = productListBody.querySelectorAll('.product-item');
+                
+                items.forEach(item => {
+                    const name = item.querySelector('.name-col').textContent.toLowerCase();
+                    const price = item.querySelector('.price-col').textContent.toLowerCase();
+                    const type = item.querySelector('.type-col').textContent.toLowerCase();
+                    const description = item.querySelector('.desc-col').textContent.toLowerCase();
+                    
+                    if (name.includes(searchTerm) || 
+                        price.includes(searchTerm) || 
+                        type.includes(searchTerm) || 
+                        description.includes(searchTerm)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
                 });
             });
         }

@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - Brew Haven</title>
+    <link rel="stylesheet" href="/static/modern-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Admin-specific styles */
+        .admin-container {
+            display: flex;
+            min-height: calc(100vh - 4rem);
+            background-color: #f8f9fa;
+        }
+        
+        /* Admin header styles */
+        .admin-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-dark);
+            font-weight: 500;
+            background-color: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .admin-user i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .placeholder-div {
+            width: 80px;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background: linear-gradient(to bottom, var(--primary-dark), #2c3e50);
+            color: white;
+            padding: 2rem 0;
+            position: fixed;
+            height: calc(100vh - 4rem);
+            overflow-y: auto;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .admin-sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-nav {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .admin-nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .admin-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .admin-nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .admin-nav-link.active {
+            background-color: var(--accent);
+            color: white;
+            border-left: 3px solid white;
+        }
+        
+        .admin-nav-link i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+            margin-left: 250px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .admin-title {
+            font-size: 1.75rem;
+            margin: 0;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-dark), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn.btn-primary {
+            background: linear-gradient(45deg, var(--accent), #e67e22);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(215, 109, 58, 0.25);
+        }
+        
+        .btn.btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(215, 109, 58, 0.35);
+        }
+        
+        /* Product list styles */
+        .product-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .search-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: space-between;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 0;
+            flex: 1;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9aa0a6;
+            font-size: 1rem;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            border: none;
+            border-radius: 50px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            outline: none;
+        }
+        
+        .add-product-btn {
+            white-space: nowrap;
+        }
+        
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        
+        .category-pill {
+            background-color: white;
+            color: var(--primary-dark);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+        }
+        
+        .category-pill:hover {
+            background-color: var(--secondary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .category-pill.active {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(215, 109, 58, 0.25);
+        }
+        
+        .product-list {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 250px);
+        }
+        
+        .product-list-header {
+            display: flex;
+            background: linear-gradient(45deg, var(--primary-dark), #2c3e50);
+            color: white;
+            font-weight: 600;
+            padding: 1.25rem 1rem;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        #productListBody {
+            overflow-y: auto;
+        }
+        
+        .product-list-col {
+            padding: 0.75rem;
+        }
+        
+        .image-col {
+            flex: 0 0 80px;
+        }
+        
+        .name-col {
+            flex: 0 0 150px;
+            font-weight: 600;
+        }
+        
+        .price-col {
+            flex: 0 0 80px;
+            text-align: right;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .type-col {
+            flex: 0 0 120px;
+            text-align: center;
+        }
+        
+        .desc-col {
+            flex: 1;
+        }
+        
+        .actions-col {
+            flex: 0 0 100px;
+            text-align: center;
+        }
+        
+        .product-item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            padding: 0.75rem 0;
+        }
+        
+        .product-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+        
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .product-item:hover .product-image {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        
+        .product-image-placeholder {
+            width: 80px;
+            height: 80px;
+            background-color: #f5f5f5;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .product-image-placeholder i {
+            color: #ccc;
+            font-size: 1.5rem;
+        }
+        
+        .category-chip {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .category-chip.coffee {
+            background-color: #e6f7ff;
+            color: #0090e0;
+        }
+        
+        .category-chip.tea {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .category-chip.pastry {
+            background-color: #fff2e9;
+            color: #fa8c16;
+        }
+        
+        .category-chip.dessert {
+            background-color: #f9f0ff;
+            color: #722ed1;
+        }
+        
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .btn-icon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-icon.edit-btn {
+            background-color: #e6f7ff;
+            color: #0090e0;
+        }
+        
+        .btn-icon.edit-btn:hover {
+            background-color: #0090e0;
+            color: white;
+        }
+        
+        .btn-icon.delete-btn {
+            background-color: #fff1f0;
+            color: #f5222d;
+        }
+        
+        .btn-icon.delete-btn:hover {
+            background-color: #f5222d;
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            background-color: var(--secondary-light);
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 10px 25px rgba(215, 109, 58, 0.15);
+        }
+        
+        .empty-state p {
+            font-size: 1.1rem;
+            color: var(--neutral);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 16px;
+            width: 450px;
+            max-width: 90%;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--neutral);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary-dark);
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .btn-outline {
+            background-color: white;
+            border: 2px solid var(--border-color);
+            color: var(--neutral);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--primary-dark);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(45deg, #f5222d, #ff4d4f);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(245, 34, 45, 0.25);
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 34, 45, 0.35);
+        }
+
+        /* Toggle sidebar button */
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-dark);
+            display: none;
+            font-size: 1.5rem;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 991px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 100;
+            }
+            
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .admin-content {
+                margin-left: 0;
+            }
+            
+            .toggle-sidebar {
+                display: block;
+            }
+            
+            .admin-sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 99;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+            
+            .admin-sidebar-backdrop.active {
+                opacity: 1;
+                pointer-events: all;
+            }
+        }
+    </style>
+    <script>
+        function showMessage(msg) {
+            const popup = document.createElement('div');
+            popup.className = 'popup';
+            if (msg.includes('added') || msg.includes('updated')) {
+                popup.classList.add('green');
+            } else if (msg.includes('deleted')) {
+                popup.classList.add('red');
+            }
+            popup.innerText = msg;
+            document.body.appendChild(popup);
+            setTimeout(() => {
+                popup.remove();
+            }, 3000);
+        }
+
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('msg')) {
+                showMessage(urlParams.get('msg'));
+            }
+        };
+    </script>
+</head>
+<body>
+    <!-- Notification component -->
+    <div class="notification notification-success" id="notification">
+        {% if request.query_params.get('msg') %}
+        {{ request.query_params.get('msg') }}
+        {% endif %}
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav admin-nav-bar">
+                <div class="admin-user">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Admin</span>
+                </div>
+                
+                <a href="/" class="logo">
+                    <i class="fas fa-coffee"></i>
+                    <span>Brew Haven</span>
+                </a>
+                
+                <div class="placeholder-div"></div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Admin container -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="admin-sidebar-header">
+                <div class="admin-sidebar-title">Admin Panel</div>
+                <small>Welcome back, Admin</small>
+            </div>
+            
+            <ul class="admin-nav">
+                <li class="admin-nav-item">
+                    <a href="/admin" class="admin-nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/products" class="admin-nav-link active">
+                        <i class="fas fa-coffee"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/orders" class="admin-nav-link">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/customers" class="admin-nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Customers</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/analytics" class="admin-nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/settings" class="admin-nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item mt-auto">
+                    <a href="/logout" class="admin-nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        
+        <!-- Sidebar backdrop for mobile -->
+        <div class="admin-sidebar-backdrop" id="sidebarBackdrop"></div>
+        
+        <!-- Main content -->
+        <main class="admin-content">
+            <div class="admin-header">
+                <div>
+                    <button class="toggle-sidebar" id="toggleSidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="admin-title">Products</h1>
+                </div>
+            </div>
+
+            <!-- Product Controls -->
+            <div class="product-controls">
+                <div class="category-filter">
+                    <div class="category-pill active" data-category="all">All</div>
+                    <div class="category-pill" data-category="coffee">Coffee</div>
+                    <div class="category-pill" data-category="tea">Tea</div>
+                    <div class="category-pill" data-category="pastry">Pastries</div>
+                    <div class="category-pill" data-category="dessert">Desserts</div>
+                </div>
+                
+                <div class="search-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="productSearch" placeholder="Search by name, type, or description">
+                    </div>
+                    <a href="/add" class="btn btn-primary add-product-btn">
+                        <i class="fas fa-plus"></i> Add Product
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Product List -->
+            <div class="product-list">
+                <div class="product-list-header">
+                    <div class="product-list-col image-col">Image</div>
+                    <div class="product-list-col name-col">Name</div>
+                    <div class="product-list-col price-col">Price</div>
+                    <div class="product-list-col type-col">Type</div>
+                    <div class="product-list-col desc-col">Description</div>
+                    <div class="product-list-col actions-col">Actions</div>
+                </div>
+                <div id="productListBody">
+                    {% if products %}
+                        {% for product in products %}
+                            <div class="product-item" data-category="{{ product.type.lower() }}">
+                                <div class="product-list-col image-col">
+                                    {% if product.image_url %}
+                                        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image">
+                                    {% else %}
+                                        <div class="product-image-placeholder">
+                                            <i class="fas fa-coffee"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="product-list-col name-col">{{ product.name }}</div>
+                                <div class="product-list-col price-col">${{ product.price }}</div>
+                                <div class="product-list-col type-col">
+                                    <span class="category-chip {{ product.type.lower() }}">{{ product.type }}</span>
+                                </div>
+                                <div class="product-list-col desc-col">{{ product.description }}</div>
+                                <div class="product-list-col actions-col">
+                                    <a href="/edit/{{ product.product_id }}" class="btn-icon edit-btn" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn-icon delete-btn" data-id="{{ product.product_id }}" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-coffee"></i>
+                            <p>No products yet. Add your first product to get started!</p>
+                            <a href="/add" class="btn btn-primary">Add Product</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Delete confirmation modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Delete</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this product? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelDelete">Cancel</button>
+                <form id="deleteForm" method="post" action="">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile navigation toggle
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const nav = document.getElementById('nav');
+        const navBackdrop = document.getElementById('nav-backdrop');
+        
+        if (mobileNavToggle && nav && navBackdrop) {
+            mobileNavToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                navBackdrop.classList.toggle('active');
+                document.body.classList.toggle('no-scroll');
+            });
+            
+            navBackdrop.addEventListener('click', () => {
+                nav.classList.remove('active');
+                navBackdrop.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            });
+        }
+        
+        // Admin sidebar toggle
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const adminSidebar = document.getElementById('adminSidebar');
+        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+        
+        if (toggleSidebar && adminSidebar && sidebarBackdrop) {
+            toggleSidebar.addEventListener('click', () => {
+                adminSidebar.classList.toggle('active');
+                sidebarBackdrop.classList.toggle('active');
+            });
+            
+            sidebarBackdrop.addEventListener('click', () => {
+                adminSidebar.classList.remove('active');
+                sidebarBackdrop.classList.remove('active');
+            });
+        }
+        
+        // Category filter
+        const categoryPills = document.querySelectorAll('.category-filter .category-pill');
+        const productItems = document.querySelectorAll('.product-item');
+        
+        if (categoryPills.length && productItems.length) {
+            categoryPills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    // Remove active class from all pills
+                    categoryPills.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to clicked pill
+                    pill.classList.add('active');
+                    
+                    const category = pill.dataset.category;
+                    
+                    // Show/hide product items based on category
+                    productItems.forEach(item => {
+                        if (category === 'all' || item.dataset.category === category) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Product search functionality
+        const searchInput = document.getElementById('productSearch');
+        const productListBody = document.getElementById('productListBody');
+        
+        if (searchInput && productListBody) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const items = productListBody.querySelectorAll('.product-item');
+                
+                items.forEach(item => {
+                    const name = item.querySelector('.name-col').textContent.toLowerCase();
+                    const price = item.querySelector('.price-col').textContent.toLowerCase();
+                    const type = item.querySelector('.type-col').textContent.toLowerCase();
+                    const description = item.querySelector('.desc-col').textContent.toLowerCase();
+                    
+                    if (name.includes(searchTerm) || 
+                        price.includes(searchTerm) || 
+                        type.includes(searchTerm) || 
+                        description.includes(searchTerm)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
+        
+        // Delete confirmation modal
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteForm = document.getElementById('deleteForm');
+        const cancelDelete = document.getElementById('cancelDelete');
+        const closeModal = document.querySelector('.close-modal');
+        
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productId = this.dataset.id;
+                deleteForm.action = `/delete/${productId}`;
+                deleteModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        if (cancelDelete) {
+            cancelDelete.addEventListener('click', function() {
+                deleteModal.classList.remove('show');
+                document.body.style.overflow = '';
+            });
+        }
+        
+        if (closeModal) {
+            closeModal.addEventListener('click', function() {
+                deleteModal.classList.remove('show');
+                document.body.style.overflow = '';
+            });
+        }
+        
+        // Close modal when clicking outside
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                deleteModal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</body>
+</html> 

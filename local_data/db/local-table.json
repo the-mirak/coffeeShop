@@ -5,7 +5,7 @@
     "description": "A classic Italian coffee drink prepared with espresso, hot milk, and steamed-milk foam.",
     "price": "4.99",
     "image_url": "cappuccino.jpg",
-    "type": "coffee"
+    "type": "Coffee"
   },
   {
     "product_id": "499b5650-3edc-4044-95db-e105fa864286",
@@ -21,7 +21,7 @@
     "description": "Coffee drink made with espresso and steamed milk.",
     "price": "4.49",
     "image_url": "latte.jpg",
-    "type": "coffee"
+    "type": "Coffee"
   },
   {
     "product_id": "1545c9b1-a267-4c0f-a2f2-6b47cce13cc1",

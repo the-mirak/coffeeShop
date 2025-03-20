@@ -107,6 +107,16 @@ async def admin_dashboard(request: Request):
         product['image_url'] = generate_presigned_url(product['image_url'])
     return templates.TemplateResponse("admin.html", {"request": request, "products": products})
 
+# Admin products page
+@app.get("/admin/products", response_class=HTMLResponse)
+async def admin_products(request: Request):
+    response = table.scan()
+    products = response.get('Items', [])
+    # Generate presigned URLs for images
+    for product in products:
+        product['image_url'] = generate_presigned_url(product['image_url'])
+    return templates.TemplateResponse("admin_products.html", {"request": request, "products": products})
+
 # Add product page
 @app.get("/add", response_class=HTMLResponse)
 async def add_product_page(request: Request):
@@ -157,7 +167,7 @@ async def create_product(request: Request, name: str = Form(...), description: s
         table.put_item(Item=item)
 
         logger.info("Successfully created product: %s", item)
-        return RedirectResponse(url="/admin?msg=Product added successfully", status_code=303)
+        return RedirectResponse(url="/admin/products?msg=Product added successfully", status_code=303)
 
     except Exception as e:
         logger.error("Error creating product: %s", str(e))
@@ -202,14 +212,14 @@ async def update_product(request: Request, product_id: str, name: str = Form(...
         ExpressionAttributeNames=expression_attribute_names
     )
     
-    return RedirectResponse(url="/admin?msg=Product updated successfully", status_code=303)
+    return RedirectResponse(url="/admin/products?msg=Product updated successfully", status_code=303)
 
 # Delete a product
 @app.post("/delete/{product_id}")
 async def delete_product(request: Request, product_id: str):
     try:
         table.delete_item(Key={'product_id': product_id})
-        return RedirectResponse(url="/admin?msg=Product deleted successfully", status_code=303)
+        return RedirectResponse(url="/admin/products?msg=Product deleted successfully", status_code=303)
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error deleting product")
 
