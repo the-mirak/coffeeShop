@@ -1496,6 +1496,35 @@
                 showMessage(urlParams.get('msg'));
             }
         };
+
+        // Function to handle products navigation
+        function navigateToProducts(event) {
+            event.preventDefault();
+            
+            // First try to switch tabs within the current page
+            try {
+                showProductsSection();
+            } catch (error) {
+                console.error('Error showing products section:', error);
+                
+                // If tab switching fails, navigate to the products URL
+                try {
+                    window.location.href = '/admin?section=products';
+                } catch (error) {
+                    console.error('Error navigating to products:', error);
+                }
+            }
+            
+            return false;
+        }
+
+        // Update the products link to use the navigation function
+        document.addEventListener('DOMContentLoaded', function() {
+            const productsLink = document.querySelector('.admin-nav-link i.fa-coffee').closest('.admin-nav-link');
+            if (productsLink) {
+                productsLink.setAttribute('onclick', 'navigateToProducts(event); return false;');
+            }
+        });
     </script>
 </head>
 <body style="margin: 0; padding: 0;">
@@ -1509,13 +1538,13 @@
             
             <ul class="admin-nav">
                 <li class="admin-nav-item">
-                    <a href="/admin" class="admin-nav-link active">
+                    <a href="/admin" class="admin-nav-link active" onclick="sessionStorage.removeItem('currentAdminSection')">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="admin-nav-item">
-                    <a href="#" class="admin-nav-link" onclick="showProductsSection(); return false;">
+                    <a href="#" class="admin-nav-link" onclick="navigateToProducts(event); return false;">
                         <i class="fas fa-coffee"></i>
                         <span>Products</span>
                     </a>
@@ -2020,13 +2049,25 @@
             // Update active nav link
             const navLinks = document.querySelectorAll('.admin-nav-link');
             navLinks.forEach(link => link.classList.remove('active'));
-            navLinks[1].classList.add('active');
+            
+            // Make sure we're selecting the Products nav link (index 1)
+            const productsLink = document.querySelector('.admin-nav-link i.fa-coffee').closest('.admin-nav-link');
+            if (productsLink) {
+                productsLink.classList.add('active');
+            }
+            
+            // Store the current section in sessionStorage
+            sessionStorage.setItem('currentAdminSection', 'products');
         }
         
         // Check URL parameters
         window.addEventListener('load', function() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('section') && urlParams.get('section') === 'products') {
+                showProductsSection();
+            } 
+            // Check session storage for persisting view between page refreshes
+            else if (sessionStorage.getItem('currentAdminSection') === 'products') {
                 showProductsSection();
             }
         });
