@@ -1509,6 +1509,18 @@
             return false;
         }
 
+        // Function to handle dashboard navigation
+        function navigateToDashboard(event) {
+            event.preventDefault();
+            
+            console.log('Navigating to dashboard section');
+            
+            // Direct URL navigation to admin without section parameter
+            window.location.href = '/admin';
+            
+            return false;
+        }
+
         // Update the products link to use the navigation function
         document.addEventListener('DOMContentLoaded', function() {
             const productsLink = document.querySelector('.admin-nav-link i.fa-coffee').closest('.admin-nav-link');
@@ -1561,10 +1573,30 @@
                     console.log('Products section:', productsSection);
                 }
             } 
-            // If no URL parameter, check session storage
-            else if (sessionStorage.getItem('currentAdminSection') === 'products') {
-                console.log('Session storage detected: products section');
-                showProductsSection();
+            // If no URL parameter, display dashboard by default
+            else {
+                console.log('No URL parameter, showing dashboard by default');
+                const dashboardSection = document.getElementById('dashboard-section');
+                const productsSection = document.getElementById('products-section');
+                
+                if (dashboardSection && productsSection) {
+                    dashboardSection.style.display = 'block';
+                    productsSection.style.display = 'none';
+                    
+                    // Update active nav links
+                    const navLinks = document.querySelectorAll('.admin-nav-link');
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    
+                    // Make Dashboard link active
+                    const dashboardLink = document.querySelector('.admin-nav-link i.fa-tachometer-alt').closest('.admin-nav-link');
+                    if (dashboardLink) {
+                        dashboardLink.classList.add('active');
+                        console.log('Dashboard link activated');
+                    }
+                    
+                    // Store the current section in sessionStorage
+                    sessionStorage.setItem('currentAdminSection', 'dashboard');
+                }
             }
         });
     </script>
@@ -1580,7 +1612,7 @@
             
             <ul class="admin-nav">
                 <li class="admin-nav-item">
-                    <a href="/admin" class="admin-nav-link active">
+                    <a href="/admin" class="admin-nav-link active" onclick="navigateToDashboard(event); return false;">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>

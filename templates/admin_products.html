@@ -818,24 +818,12 @@
             }
         });
 
-        // Function to handle dashboard navigation
-        function navigateToDashboard(event) {
-            event.preventDefault();
-            
-            // Try to fetch the /admin URL first
-            fetch('/admin')
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = '/admin';
-                    } else {
-                        // If that fails, try an alternate URL if needed
-                        console.error('Admin dashboard URL not working');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error navigating to dashboard:', error);
-                });
-        }
+        deleteModalBackdrop.addEventListener('click', function(e) {
+            if (e.target === this) {
+                deleteModal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        });
     </script>
 </head>
 <body style="margin: 0; padding: 0;">
@@ -857,7 +845,7 @@
             
             <ul class="admin-nav">
                 <li class="admin-nav-item">
-                    <a href="/admin" class="admin-nav-link" onclick="navigateToDashboard(event)">
+                    <a href="/admin" class="admin-nav-link">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
