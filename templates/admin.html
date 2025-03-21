@@ -2080,7 +2080,7 @@
                 <p>Are you sure you want to delete this product? This action cannot be undone.</p>
             </div>
             <div class="modal-footer">
-                <form id="deleteForm" method="post">
+                <form id="deleteForm" method="post" onsubmit="localStorage.setItem('redirect_to_products', 'true');">
                     <button type="submit" class="btn-danger">Delete</button>
                     <button type="button" id="cancelDelete" class="btn-secondary">Cancel</button>
                 </form>
@@ -2253,10 +2253,10 @@
             notification.textContent = msg;
             notification.classList.add('show');
             
-            // If there's a message and it's about products being added, updated, or deleted,
-            // ensure we're showing the products section regardless of how we got here
-            if (msg.includes('Product') && (msg.includes('added') || msg.includes('updated') || msg.includes('deleted'))) {
-                // Make sure to show the products section
+            // More direct check for product operations
+            if (urlParams.get('section') === 'products' && msg) {
+                // Ensure we're showing the products section when there's both a section parameter and a message
+                console.log('Product operation detected in URL params, showing products section');
                 showProductsSection();
             }
             
