@@ -13,7 +13,7 @@
     "description": "A concentrated form of coffee served in small, strong shots.",
     "price": "3.49",
     "image_url": "espresso.jpg",
-    "type": "coffee"
+    "type": "Coffee"
   },
   {
     "product_id": "1545c9b1-a267-4c0f-a2f2-6b47cce13cc1",

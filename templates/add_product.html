@@ -487,7 +487,7 @@
             </div>
             
             <div class="product-form-container">
-                <form action="/products" method="post" enctype="multipart/form-data" id="productForm">
+                <form action="/products" method="post" enctype="multipart/form-data" id="productForm" onsubmit="localStorage.setItem('redirect_to_products', 'true');">
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="name" class="form-label">Product Name</label>

@@ -1535,7 +1535,19 @@
         window.addEventListener('DOMContentLoaded', function() {
             console.log('DOMContentLoaded event fired');
             
-            // First check URL parameters
+            // Check if we're being redirected from a form submission
+            const redirectToProducts = localStorage.getItem('redirect_to_products');
+            if (redirectToProducts === 'true') {
+                // Clear the flag
+                localStorage.removeItem('redirect_to_products');
+                
+                // Force show products section and update URL
+                window.history.pushState({}, '', '/admin?section=products');
+                showProductsSection();
+                return;
+            }
+            
+            // Then check URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const sectionParam = urlParams.get('section');
             
@@ -2240,6 +2252,13 @@
         if (notification && msg) {
             notification.textContent = msg;
             notification.classList.add('show');
+            
+            // If there's a message and it's about products being added, updated, or deleted,
+            // ensure we're showing the products section regardless of how we got here
+            if (msg.includes('Product') && (msg.includes('added') || msg.includes('updated') || msg.includes('deleted'))) {
+                // Make sure to show the products section
+                showProductsSection();
+            }
             
             setTimeout(() => {
                 notification.classList.remove('show');
