@@ -1503,8 +1503,9 @@
             
             console.log('Navigating to products section');
             
-            // First try direct URL navigation - works most reliably in production
-            window.location.href = '/admin?section=products';
+            // Change URL and update UI
+            window.history.pushState({}, '', '/admin?section=products');
+            showProductsSection();
             
             return false;
         }
@@ -1515,8 +1516,9 @@
             
             console.log('Navigating to dashboard section');
             
-            // Direct URL navigation to admin without section parameter
-            window.location.href = '/admin';
+            // Change URL and update UI
+            window.history.pushState({}, '', '/admin');
+            showDashboardSection();
             
             return false;
         }
@@ -1541,64 +1543,73 @@
             
             if (sectionParam === 'products') {
                 console.log('URL parameter detected: products section');
-                // Force display of products section
-                const dashboardSection = document.getElementById('dashboard-section');
-                const productsSection = document.getElementById('products-section');
-                
-                console.log('Dashboard section found:', !!dashboardSection);
-                console.log('Products section found:', !!productsSection);
-                
-                if (dashboardSection && productsSection) {
-                    dashboardSection.style.display = 'none';
-                    productsSection.style.display = 'block';
-                    
-                    // Update active nav links
-                    const navLinks = document.querySelectorAll('.admin-nav-link');
-                    navLinks.forEach(link => link.classList.remove('active'));
-                    
-                    // Make Products link active by finding the link with the coffee icon
-                    const productsLink = document.querySelector('.admin-nav-link i.fa-coffee').closest('.admin-nav-link');
-                    if (productsLink) {
-                        productsLink.classList.add('active');
-                        console.log('Products link activated');
-                    } else {
-                        console.error('Could not find products link with coffee icon');
-                    }
-                    
-                    // Store the current section in sessionStorage
-                    sessionStorage.setItem('currentAdminSection', 'products');
-                } else {
-                    console.error('Could not find dashboard or products sections');
-                    console.log('Dashboard section:', dashboardSection);
-                    console.log('Products section:', productsSection);
-                }
+                showProductsSection();
             } 
             // If no URL parameter, display dashboard by default
             else {
                 console.log('No URL parameter, showing dashboard by default');
-                const dashboardSection = document.getElementById('dashboard-section');
-                const productsSection = document.getElementById('products-section');
-                
-                if (dashboardSection && productsSection) {
-                    dashboardSection.style.display = 'block';
-                    productsSection.style.display = 'none';
-                    
-                    // Update active nav links
-                    const navLinks = document.querySelectorAll('.admin-nav-link');
-                    navLinks.forEach(link => link.classList.remove('active'));
-                    
-                    // Make Dashboard link active
-                    const dashboardLink = document.querySelector('.admin-nav-link i.fa-tachometer-alt').closest('.admin-nav-link');
-                    if (dashboardLink) {
-                        dashboardLink.classList.add('active');
-                        console.log('Dashboard link activated');
-                    }
-                    
-                    // Store the current section in sessionStorage
-                    sessionStorage.setItem('currentAdminSection', 'dashboard');
-                }
+                showDashboardSection();
             }
         });
+        
+        // Helper function to show products section
+        function showProductsSection() {
+            const dashboardSection = document.getElementById('dashboard-section');
+            const productsSection = document.getElementById('products-section');
+            
+            console.log('Dashboard section found:', !!dashboardSection);
+            console.log('Products section found:', !!productsSection);
+            
+            if (dashboardSection && productsSection) {
+                dashboardSection.style.display = 'none';
+                productsSection.style.display = 'block';
+                
+                // Update active nav links
+                const navLinks = document.querySelectorAll('.admin-nav-link');
+                navLinks.forEach(link => link.classList.remove('active'));
+                
+                // Make Products link active by finding the link with the coffee icon
+                const productsLink = document.querySelector('.admin-nav-link i.fa-coffee').closest('.admin-nav-link');
+                if (productsLink) {
+                    productsLink.classList.add('active');
+                    console.log('Products link activated');
+                } else {
+                    console.error('Could not find products link with coffee icon');
+                }
+                
+                // Store the current section in sessionStorage
+                sessionStorage.setItem('currentAdminSection', 'products');
+            } else {
+                console.error('Could not find dashboard or products sections');
+                console.log('Dashboard section:', dashboardSection);
+                console.log('Products section:', productsSection);
+            }
+        }
+        
+        // Helper function to show dashboard section
+        function showDashboardSection() {
+            const dashboardSection = document.getElementById('dashboard-section');
+            const productsSection = document.getElementById('products-section');
+            
+            if (dashboardSection && productsSection) {
+                dashboardSection.style.display = 'block';
+                productsSection.style.display = 'none';
+                
+                // Update active nav links
+                const navLinks = document.querySelectorAll('.admin-nav-link');
+                navLinks.forEach(link => link.classList.remove('active'));
+                
+                // Make Dashboard link active
+                const dashboardLink = document.querySelector('.admin-nav-link i.fa-tachometer-alt').closest('.admin-nav-link');
+                if (dashboardLink) {
+                    dashboardLink.classList.add('active');
+                    console.log('Dashboard link activated');
+                }
+                
+                // Store the current section in sessionStorage
+                sessionStorage.setItem('currentAdminSection', 'dashboard');
+            }
+        }
     </script>
 </head>
 <body style="margin: 0; padding: 0;">
@@ -2113,25 +2124,6 @@
                 adminSidebar.classList.toggle('active');
                 sidebarBackdrop.classList.toggle('active');
             });
-        }
-        
-        // Toggle between dashboard and products sections
-        function showProductsSection() {
-            document.getElementById('dashboard-section').style.display = 'none';
-            document.getElementById('products-section').style.display = 'block';
-            
-            // Update active nav link
-            const navLinks = document.querySelectorAll('.admin-nav-link');
-            navLinks.forEach(link => link.classList.remove('active'));
-            
-            // Make sure we're selecting the Products nav link (index 1)
-            const productsLink = document.querySelector('.admin-nav-link i.fa-coffee').closest('.admin-nav-link');
-            if (productsLink) {
-                productsLink.classList.add('active');
-            }
-            
-            // Store the current section in sessionStorage
-            sessionStorage.setItem('currentAdminSection', 'products');
         }
         
         // Product search functionality
