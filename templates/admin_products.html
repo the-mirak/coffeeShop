@@ -11,7 +11,7 @@
         /* Admin-specific styles */
         .admin-container {
             display: flex;
-            min-height: calc(100vh - 4rem);
+            min-height: 100vh;
             background-color: #f8f9fa;
         }
         
@@ -50,9 +50,14 @@
             color: white;
             padding: 2rem 0;
             position: fixed;
-            height: calc(100vh - 4rem);
+            height: 100vh;
             overflow-y: auto;
             box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            top: 0;
+            left: 0;
         }
         
         .admin-sidebar-header {
@@ -71,6 +76,7 @@
         .admin-nav {
             list-style: none;
             padding: 0;
+            flex: 1;
         }
         
         .admin-nav-item {
@@ -109,6 +115,7 @@
             flex: 1;
             padding: 2rem;
             margin-left: 250px;
+            padding-top: 72px;
         }
         
         .admin-header {
@@ -118,6 +125,15 @@
             margin-bottom: 2rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            background-color: #f8f9fa;
+            z-index: 20;
+            padding-top: 1rem;
+            padding-right: 2rem;
+            padding-left: 2rem;
         }
         
         .admin-title {
@@ -161,6 +177,11 @@
             flex-direction: column;
             gap: 1.5rem;
             margin-bottom: 2rem;
+            position: sticky;
+            top: 72px; /* Adjust based on admin-header height */
+            background-color: #f8f9fa;
+            z-index: 19;
+            padding-bottom: 1rem;
         }
         
         .search-controls {
@@ -256,7 +277,7 @@
             padding: 1.25rem 1rem;
             letter-spacing: 0.5px;
             position: sticky;
-            top: 0;
+            top: 185px; /* Adjust based on the height of admin-header + product-controls */
             z-index: 10;
         }
         
@@ -582,6 +603,21 @@
             
             .toggle-sidebar {
                 display: block;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 101;
+                background-color: var(--accent);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             }
             
             .admin-sidebar-backdrop {
@@ -601,6 +637,34 @@
                 opacity: 1;
                 pointer-events: all;
             }
+            
+            .admin-header {
+                left: 0;
+            }
+        }
+
+        .nav-footer {
+            padding: 1rem 1.5rem 2rem 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: auto;
+        }
+        
+        .home-link {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .home-link:hover {
+            color: var(--accent);
+        }
+        
+        .home-link i {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
         }
     </style>
     <script>
@@ -774,32 +838,13 @@
         }
     </script>
 </head>
-<body>
+<body style="margin: 0; padding: 0;">
     <!-- Notification component -->
-    <div class="notification notification-success" id="notification">
+    <div class="notification notification-success" id="notification" style="position: absolute; z-index: 1000;">
         {% if request.query_params.get('msg') %}
         {{ request.query_params.get('msg') }}
         {% endif %}
     </div>
-
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <nav class="nav admin-nav-bar">
-                <div class="admin-user">
-                    <i class="fas fa-user-circle"></i>
-                    <span>Admin</span>
-                </div>
-                
-                <a href="/" class="logo">
-                    <i class="fas fa-coffee"></i>
-                    <span>Brew Haven</span>
-                </a>
-                
-                <div class="placeholder-div"></div>
-            </nav>
-        </div>
-    </header>
 
     <!-- Admin container -->
     <div class="admin-container">
@@ -854,6 +899,13 @@
                     </a>
                 </li>
             </ul>
+            
+            <div class="nav-footer">
+                <a href="/" class="home-link">
+                    <i class="fas fa-home"></i>
+                    <span>Back to Coffeeshop</span>
+                </a>
+            </div>
         </aside>
         
         <!-- Sidebar backdrop for mobile -->

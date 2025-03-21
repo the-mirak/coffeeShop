@@ -3,48 +3,561 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Product - Brew Haven Admin</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <title>Edit Product - Brew Haven</title>
+    <link rel="stylesheet" href="/static/modern-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Admin-specific styles */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background: linear-gradient(to bottom, var(--primary-dark), #2c3e50);
+            color: white;
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            top: 0;
+            left: 0;
+        }
+        
+        .admin-sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-nav {
+            list-style: none;
+            padding: 0;
+            flex: 1;
+        }
+        
+        .admin-nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .admin-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .admin-nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .admin-nav-link.active {
+            background-color: var(--accent);
+            color: white;
+            border-left: 3px solid white;
+        }
+        
+        .admin-nav-link i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+            margin-left: 250px;
+            padding-top: 72px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            background-color: #f8f9fa;
+            z-index: 20;
+            padding-top: 1rem;
+            padding-right: 2rem;
+            padding-left: 2rem;
+        }
+        
+        .admin-title {
+            font-size: 1.75rem;
+            margin: 0;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-dark), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Product form styles */
+        .product-form-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(215, 109, 58, 0.15);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23555' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 1rem) center;
+            background-size: 12px;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(215, 109, 58, 0.15);
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            min-height: 120px;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(215, 109, 58, 0.15);
+        }
+        
+        .image-upload-container {
+            position: relative;
+            width: 100%;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .image-upload-container:hover {
+            border-color: var(--accent);
+            background-color: rgba(215, 109, 58, 0.05);
+        }
+        
+        .image-upload-icon {
+            font-size: 2.5rem;
+            color: var(--neutral);
+            margin-bottom: 1rem;
+        }
+        
+        .image-upload-text {
+            color: var(--neutral);
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-upload-subtext {
+            font-size: 0.85rem;
+            color: var(--neutral);
+        }
+        
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .preview-container {
+            margin-top: 1rem;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .btn-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        
+        .btn-cancel {
+            padding: 0.75rem 1.5rem;
+            background-color: #ecf0f1;
+            color: #34495e;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #bdc3c7;
+            transform: translateY(-2px);
+        }
+        
+        .btn-submit {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(45deg, var(--accent), #f39c12);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(215, 109, 58, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(215, 109, 58, 0.3);
+            background: linear-gradient(45deg, #e67e22, #f39c12);
+        }
+        
+        .nav-footer {
+            padding: 1rem 1.5rem 2rem 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: auto;
+        }
+        
+        .home-link {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .home-link:hover {
+            color: var(--accent);
+        }
+        
+        .home-link i {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 991px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 100;
+            }
+            
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .admin-content {
+                margin-left: 0;
+            }
+            
+            .toggle-sidebar {
+                display: block;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 101;
+                background-color: var(--accent);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            }
+            
+            .admin-sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 99;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+            
+            .admin-sidebar-backdrop.active {
+                opacity: 1;
+                pointer-events: all;
+            }
+            
+            .admin-header {
+                left: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn-cancel, .btn-submit {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1 class="logo">Brew Haven Admin</h1>
-            <nav class="nav">
-                <a href="/admin" class="nav-link">Dashboard</a>
-                <a href="/add" class="nav-link">Add Product</a>
-            </nav>
-        </header>
-
-        <section>
-            <h2 class="section-title">Edit Product</h2>
-            <form action="/edit/{{ product.product_id }}" method="post" enctype="multipart/form-data" class="edit-product-form" onsubmit="return handleFormSubmit()">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" value="{{ product.name }}" required>
+<body style="margin: 0; padding: 0;">
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="admin-sidebar-header">
+                <div class="admin-sidebar-title">Admin Panel</div>
+                <small>Welcome back, Admin</small>
+            </div>
+            
+            <ul class="admin-nav">
+                <li class="admin-nav-item">
+                    <a href="/admin" class="admin-nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/products" class="admin-nav-link active">
+                        <i class="fas fa-coffee"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/orders" class="admin-nav-link">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/customers" class="admin-nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Customers</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/analytics" class="admin-nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/admin/settings" class="admin-nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="/logout" class="admin-nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="nav-footer">
+                <a href="/" class="home-link">
+                    <i class="fas fa-home"></i>
+                    <span>Back to Coffeeshop</span>
+                </a>
+            </div>
+        </aside>
+        
+        <div class="admin-sidebar-backdrop" id="sidebarBackdrop"></div>
+        
+        <!-- Mobile toggle button -->
+        <button class="toggle-sidebar" id="toggleSidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="admin-header">
+                <div>
+                    <h1 class="admin-title">Edit Product</h1>
+                </div>
                 
-                <label for="description">Description:</label>
-                <textarea id="description" name="description" required>{{ product.description }}</textarea>
-                
-                <label for="price">Price:</label>
-                <input type="number" step="0.01" id="price" name="price" value="{{ product.price }}" required>
-                
-                <label for="type">Type:</label>
-                <select id="type" name="type" required>
-                    <option value="Coffee" {% if product.type == 'Coffee' %}selected{% endif %}>Coffee</option>
-                    <option value="Tea" {% if product.type == 'Tea' %}selected{% endif %}>Tea</option>
-                    <option value="Juice" {% if product.type == 'Juice' %}selected{% endif %}>Juice</option>
-                    <option value="Pastry" {% if product.type == 'Pastry' %}selected{% endif %}>Pastry</option>
-                    <option value="Dessert" {% if product.type == 'Dessert' %}selected{% endif %}>Dessert</option>
-                </select>
-
-                <label for="image">Image:</label>
-                <input type="file" id="image" name="image">
-                
-                <button type="submit" class="submit-button">Update Product</button>
-            </form>
-        </section>
+                <div class="admin-actions">
+                    <a href="/admin?section=products" class="btn-cancel">
+                        <i class="fas fa-chevron-left"></i>
+                        Back to Products
+                    </a>
+                </div>
+            </div>
+            
+            <div class="product-form-container">
+                <form action="/edit/{{ product.product_id }}" method="post" enctype="multipart/form-data" id="productForm" onsubmit="return handleFormSubmit()">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Product Name</label>
+                            <input type="text" id="name" name="name" class="form-input" value="{{ product.name }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="price" class="form-label">Price ($)</label>
+                            <input type="number" step="0.01" id="price" name="price" class="form-input" value="{{ product.price }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="type" class="form-label">Product Type</label>
+                            <select id="type" name="type" class="form-select" required>
+                                <option value="Coffee" {% if product.type == 'Coffee' %}selected{% endif %}>Coffee</option>
+                                <option value="Tea" {% if product.type == 'Tea' %}selected{% endif %}>Tea</option>
+                                <option value="Juice" {% if product.type == 'Juice' %}selected{% endif %}>Juice</option>
+                                <option value="Pastry" {% if product.type == 'Pastry' %}selected{% endif %}>Pastry</option>
+                                <option value="Dessert" {% if product.type == 'Dessert' %}selected{% endif %}>Dessert</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" name="status">
+                                <option value="active" {% if product.status == 'active' %}selected{% endif %}>Active</option>
+                                <option value="draft" {% if product.status == 'draft' %}selected{% endif %}>Draft</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea id="description" name="description" class="form-textarea" required>{{ product.description }}</textarea>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label class="form-label">Product Image</label>
+                            <div class="image-upload-container" id="imageUploadContainer">
+                                <div class="image-upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="image-upload-text">
+                                    <strong>Click to upload</strong> or drag and drop
+                                </div>
+                                <div class="image-upload-subtext">
+                                    SVG, PNG, JPG or JPEG (max. 2MB)
+                                </div>
+                                <input type="file" id="image" name="image" class="file-input" accept="image/*">
+                            </div>
+                            <div class="preview-container" id="previewContainer">
+                                {% if product.image_url %}
+                                <img src="{{ product.image_url }}" alt="Current product image" class="image-preview" id="imagePreview">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-container">
+                        <a href="/admin?section=products" class="btn-cancel">Cancel</a>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-check"></i>
+                            Update Product
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
     </div>
+    
     <script>
+        // Handle form submission to disable the image input if no new file is selected
         function handleFormSubmit() {
             const imageInput = document.getElementById('image');
             if (!imageInput.value) {
@@ -52,6 +565,110 @@
             }
             return true;
         }
+        
+        // Image upload preview
+        const fileInput = document.getElementById('image');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const imageUploadContainer = document.getElementById('imageUploadContainer');
+        
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.addEventListener('load', function() {
+                    // Create image preview if it doesn't exist
+                    if (!imagePreview.src) {
+                        imagePreview = document.createElement('img');
+                        imagePreview.id = 'imagePreview';
+                        imagePreview.classList.add('image-preview');
+                        previewContainer.appendChild(imagePreview);
+                    }
+                    
+                    imagePreview.setAttribute('src', this.result);
+                    previewContainer.style.display = 'block';
+                    imageUploadContainer.style.borderStyle = 'solid';
+                    imageUploadContainer.style.borderColor = 'var(--accent)';
+                });
+                
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Mobile navigation
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const adminSidebar = document.getElementById('adminSidebar');
+        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+        
+        if (toggleSidebar && adminSidebar && sidebarBackdrop) {
+            toggleSidebar.addEventListener('click', () => {
+                adminSidebar.classList.toggle('active');
+                sidebarBackdrop.classList.toggle('active');
+            });
+            
+            sidebarBackdrop.addEventListener('click', () => {
+                adminSidebar.classList.remove('active');
+                sidebarBackdrop.classList.remove('active');
+            });
+        }
+        
+        // Form validation
+        const productForm = document.getElementById('productForm');
+        
+        productForm.addEventListener('submit', function(e) {
+            let valid = true;
+            const name = document.getElementById('name').value.trim();
+            const price = document.getElementById('price').value.trim();
+            const type = document.getElementById('type').value;
+            const description = document.getElementById('description').value.trim();
+            
+            if (!name) {
+                valid = false;
+                document.getElementById('name').classList.add('error');
+            }
+            
+            if (!price || isNaN(parseFloat(price)) || parseFloat(price) <= 0) {
+                valid = false;
+                document.getElementById('price').classList.add('error');
+            }
+            
+            if (!type) {
+                valid = false;
+                document.getElementById('type').classList.add('error');
+            }
+            
+            if (!description) {
+                valid = false;
+                document.getElementById('description').classList.add('error');
+            }
+            
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+        
+        // Clear error class on input
+        const inputs = document.querySelectorAll('.form-input, .form-select, .form-textarea');
+        
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.classList.remove('error');
+            });
+        });
+        
+        imageUploadContainer.addEventListener('click', function() {
+            this.classList.remove('error');
+        });
+        
+        // Show the current image preview on page load if available
+        document.addEventListener('DOMContentLoaded', function() {
+            const previewContainer = document.getElementById('previewContainer');
+            if (previewContainer.querySelector('img')) {
+                previewContainer.style.display = 'block';
+            }
+        });
     </script>
 </body>
 </html>
