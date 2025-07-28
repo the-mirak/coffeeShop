@@ -63,6 +63,7 @@ uploads/
 # Git Docker tools (exclude from repo)
 git-docker-compose.yml
 git-push.sh
+docker-git-push-guide.md
 git-docker.sh
 
 # Temporary files
