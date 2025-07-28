@@ -64,6 +64,7 @@ uploads/
 git-docker-compose.yml
 git-push.sh
 docker-git-push-guide.md
+.env.git
 git-docker.sh
 
 # Temporary files
