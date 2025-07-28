@@ -55,6 +55,30 @@ curl http://localhost:8080/healthz
 curl http://localhost:8080/products
 ```
 
+## Git Operations
+
+### Docker Git Push Solution
+If you encounter HTTP2 framing layer errors when pushing to Git repositories:
+```
+fatal: unable to access 'https://github.com/username/repo.git/': Error in the HTTP2 framing layer
+```
+
+**Solution:** Use the Docker Git container with automated authentication.
+
+**Quick Setup:**
+1. Follow the complete guide in `docker-git-push-guide.md`
+2. Configure your GitHub credentials in `git-docker-compose.yml`
+3. Start container: `docker-compose -f git-docker-compose.yml up -d`
+4. Push changes: `docker exec -it brew-haven-git git push origin main`
+
+**Benefits:**
+- ✅ Bypasses HTTP2 framing layer issues
+- ✅ Automated GitHub authentication (no prompts)
+- ✅ Isolated Git environment
+- ✅ Consistent across different network environments
+
+**Reference:** See `#[[file:docker-git-push-guide.md]]` for complete setup instructions.
+
 ## Deployment
 
 ### AWS Production Setup
