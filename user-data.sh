@@ -1,11 +1,23 @@
 #!/bin/bash
 
+# =============================================================================
+# EC2 User Data Script for CoffeeShop Application Deployment
+# =============================================================================
+
+# For a demo pr
+
+# =============================================================================
+# SYSTEM SETUP AND PACKAGE INSTALLATION
+# =============================================================================
 # Update the system and install necessary packages
 yum update -y
 sleep 15
 yum install -y git python3-pip
 sleep 5
 
+# =============================================================================
+# REPOSITORY CLONING AND VALIDATION
+# =============================================================================
 # Clone the repository
 REPO_URL="https://github.com/the-mirak/coffeeShop.git"
 TARGET_DIR="/home/ec2-user/coffeeShop"
@@ -24,6 +36,9 @@ chmod -R 755 templates
 chmod -R 755 static
 
 
+# =============================================================================
+# APPLICATION CONFIGURATION
+# =============================================================================
 # Create a .env file with necessary environment variables
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
 AVAILABILITY_ZONE=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone)
@@ -35,12 +50,18 @@ DYNAMODB_TABLE_NAME=coffeeShopDB
 AWS_REGION=us-east-1
 EOF
 
+# =============================================================================
+# DEPENDENCY INSTALLATION
+# =============================================================================
 # Install dependencies
 pip3 install -r requirements.txt
 
 # Install gunicorn
 pip3 install gunicorn
 
+# =============================================================================
+# SERVICE CONFIGURATION AND STARTUP
+# =============================================================================
 # Create a systemd service to run the FastAPI application with gunicorn
 cat <<EOF > /etc/systemd/system/coffeeShop.service
 [Unit]
