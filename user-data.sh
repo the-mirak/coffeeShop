@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-#For a demo pr 
+# For a demo pr
 
 # Update the system and install necessary packages
 yum update -y
